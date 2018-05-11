@@ -1,0 +1,17 @@
+Hello,
+
+Your certificate for the domain below will expire in {certificate} days.
+Please make sure to renew your certificate before then, or visitors to your website will encounter errors.
+{url}
+
+
+Please check details by clicking the link below:
+{link}
+
+
+You can edit this beacon by using the website or the API, if you want to stop receiving expiration email for this beacon, click the link below:
+{unsubscribe}
+
+
+Thank you for your confidence,
+The IP Signal team

@@ -1,0 +1,23 @@
+Hello,
+
+A new beacon was created with your email on ip-signal.com with the following information:
+
+URL         : {url}
+Latency     : {latency} ms
+Certificate : {certificate} days
+Path        : {path}
+Expected    : {expected}
+Interval    : {interval} minutes
+Notify      : {notify}
+Retention   : {retention} logs
+
+
+Please CONFIRM this creation by clicking the link below:
+{link}
+
+If you set a notify url you will be notified at this email address.
+If you do not made this request, just ignore this email.
+
+
+Thank you for your confidence,
+The IP Signal team

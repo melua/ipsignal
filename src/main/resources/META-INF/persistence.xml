@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+	version="1.0">
+
+	<persistence-unit name="ipsignal-unit" transaction-type="JTA">
+		<jta-data-source>jdbc/com.ipsignal.DB</jta-data-source>
+		<class>com.ipsignal.entity.impl.SignalEntity</class>
+		<class>com.ipsignal.entity.impl.LogEntity</class>
+		<class>com.ipsignal.entity.impl.UserEntity</class>
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+		<properties>
+			<property name="openjpa.RuntimeUnenhancedClasses" value="supported" />
+			<!--<property name="openjpa.DataCache" value="true" />-->
+			<!--<property name="openjpa.QueryCache" value="true" />-->
+			<!--<property name="openjpa.Log" value="SQL=Trace" />-->
+		</properties>
+	</persistence-unit>
+</persistence>

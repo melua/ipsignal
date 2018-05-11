@@ -1,0 +1,21 @@
+Watch out!
+
+Your beacon fire an alert with the following information:
+
+Access		: {access}
+Latency		: {latency}
+Certificate	: {certificate}
+Http		: {http}
+Obtained	: {obtained}
+Detail		: {detail}
+
+
+Please check details by clicking the link below:
+{link}
+
+You can edit this beacon by using the website or the API, if you want to stop receiving notification email for this beacon, click the link below:
+{unsubscribe}
+
+
+Thank you for your confidence,
+The IP Signal team

@@ -1,0 +1,214 @@
+<?xml version='1.0' encoding='utf-8'?>
+<job-scheduling-data
+	xmlns="http://www.quartz-scheduler.org/xml/JobSchedulingData"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.quartz-scheduler.org/xml/JobSchedulingData http://www.quartz-scheduler.org/xml/job_scheduling_data_1_8.xsd"
+	version="1.8">
+
+	<pre-processing-commands>
+		<delete-jobs-in-group>*</delete-jobs-in-group>
+		<delete-triggers-in-group>*</delete-triggers-in-group>
+	</pre-processing-commands>
+
+	<processing-directives>
+		<overwrite-existing-data>true</overwrite-existing-data>
+		<ignore-duplicates>false</ignore-duplicates>
+	</processing-directives>
+
+	<schedule>
+		<job>
+			<name>RunSignal10mn</name>
+			<job-class>com.ipsignal.invoker.impl.RunSignalInvoker10mn</job-class>
+		</job>
+		<job>
+			<name>RunSignal20mn</name>
+			<job-class>com.ipsignal.invoker.impl.RunSignalInvoker20mn</job-class>
+		</job>
+		<job>
+			<name>RunSignal30mn</name>
+			<job-class>com.ipsignal.invoker.impl.RunSignalInvoker30mn</job-class>
+		</job>
+		<job>
+			<name>RunSignalHourly</name>
+			<job-class>com.ipsignal.invoker.impl.RunSignalInvokerHourly</job-class>
+		</job>
+		<job>
+			<name>RunSignal2h</name>
+			<job-class>com.ipsignal.invoker.impl.RunSignalInvoker2h</job-class>
+		</job>
+		<job>
+			<name>RunSignal6h</name>
+			<job-class>com.ipsignal.invoker.impl.RunSignalInvoker6h</job-class>
+		</job>
+		<job>
+			<name>RunSignal12h</name>
+			<job-class>com.ipsignal.invoker.impl.RunSignalInvoker12h</job-class>
+		</job>
+		<job>
+			<name>RunSignalDaily</name>
+			<job-class>com.ipsignal.invoker.impl.RunSignalInvokerDaily</job-class>
+		</job>
+		<job>
+			<name>PurgeSignalDaily</name>
+			<job-class>com.ipsignal.invoker.impl.PurgeSignalInvokerDaily</job-class>
+		</job>
+		<job>
+			<name>PurgeLogDaily</name>
+			<job-class>com.ipsignal.invoker.impl.PurgeLogInvokerDaily</job-class>
+		</job>
+		<job>
+			<name>PurgeUserWeekly</name>
+			<job-class>com.ipsignal.invoker.impl.PurgeUserInvokerWeekly</job-class>
+		</job>
+		<job>
+			<name>NotifyPremium14d</name>
+			<job-class>com.ipsignal.invoker.impl.NotifyPremiumInvoker14d</job-class>
+		</job>
+		<job>
+			<name>NotifyPremium7d</name>
+			<job-class>com.ipsignal.invoker.impl.NotifyPremiumInvoker7d</job-class>
+		</job>
+		<job>
+			<name>NotifyPremium0d</name>
+			<job-class>com.ipsignal.invoker.impl.NotifyPremiumInvoker0d</job-class>
+		</job>
+		<job>
+			<name>NotifyPremiumPlus7d</name>
+			<job-class>com.ipsignal.invoker.impl.NotifyPremiumInvokerPlus7d</job-class>
+		</job>
+		<job>
+			<name>PurgePremiumDaily</name>
+			<job-class>com.ipsignal.invoker.impl.PurgePremiumInvokerDaily</job-class>
+		</job>
+
+		<trigger>
+			<cron>
+				<name>TriggerRunSignal10mn</name>
+				<description>Every 10 minutes</description>
+				<job-name>RunSignal10mn</job-name>
+				<cron-expression>0 1/10 * ? * MON-SUN *</cron-expression>
+			</cron>
+		</trigger>
+		<trigger>
+			<cron>
+				<name>TriggerRunSignal20mn</name>
+				<description>Every 20 minutes</description>
+				<job-name>RunSignal20mn</job-name>
+				<cron-expression>0 2/20 * ? * MON-SUN *</cron-expression>
+			</cron>
+		</trigger>
+		<trigger>
+			<cron>
+				<name>TriggerRunSignal30mn</name>
+				<description>Every 30 minutes</description>
+				<job-name>RunSignal30mn</job-name>
+				<cron-expression>0 3/30 * ? * MON-SUN *</cron-expression>
+			</cron>
+		</trigger>
+		<trigger>
+			<cron>
+				<name>TriggerRunSignalHourly</name>
+				<description>Every hour</description>
+				<job-name>RunSignalHourly</job-name>
+				<cron-expression>0 6 * ? * MON-SUN *</cron-expression>
+			</cron>
+		</trigger>
+		<trigger>
+			<cron>
+				<name>TriggerRunSignal2h</name>
+				<description>Every 2 hours</description>
+				<job-name>RunSignal2h</job-name>
+				<cron-expression>0 18 1/2 ? * MON-SUN *</cron-expression>
+			</cron>
+		</trigger>
+		<trigger>
+			<cron>
+				<name>TriggerRunSignal6h</name>
+				<description>Every 6 hours</description>
+				<job-name>RunSignal6h</job-name>
+				<cron-expression>0 28 0/6 ? * MON-SUN *</cron-expression>
+			</cron>
+		</trigger>
+		<trigger>
+			<cron>
+				<name>TriggerRunSignal12h</name>
+				<description>Every 12 hours</description>
+				<job-name>RunSignal12h</job-name>
+				<cron-expression>0 37 3/12 ? * MON-SUN *</cron-expression>
+			</cron>
+		</trigger>
+		<trigger>
+			<cron>
+				<name>TriggerRunSignalDaily</name>
+				<description>Every day</description>
+				<job-name>RunSignalDaily</job-name>
+				<cron-expression>0 49 0 ? * MON-SUN *</cron-expression>
+			</cron>
+		</trigger>
+		<trigger>
+			<cron>
+				<name>TriggerPurgeSignalDaily</name>
+				<description>Every day</description>
+				<job-name>PurgeSignalDaily</job-name>
+				<cron-expression>0 52 0 ? * MON-SUN *</cron-expression>
+			</cron>
+		</trigger>
+		<trigger>
+			<cron>
+				<name>TriggerPurgeLogDaily</name>
+				<description>Every day</description>
+				<job-name>PurgeLogDaily</job-name>
+				<cron-expression>0 53 0 ? * MON-SUN *</cron-expression>
+			</cron>
+		</trigger>
+		<trigger>
+			<cron>
+				<name>TriggerPurgeUserWeekly</name>
+				<description>Every week</description>
+				<job-name>PurgeUserWeekly</job-name>
+				<cron-expression>0 54 0 ? * SUN *</cron-expression>
+			</cron>
+		</trigger>
+		<trigger>
+			<cron>
+				<name>TriggerNotifyPremium14d</name>
+				<description>Every day</description>
+				<job-name>NotifyPremium14d</job-name>
+				<cron-expression>0 55 0 ? * MON-SUN *</cron-expression>
+			</cron>
+		</trigger>
+		<trigger>
+			<cron>
+				<name>TriggerNotifyPremium7d</name>
+				<description>Every day</description>
+				<job-name>NotifyPremium7d</job-name>
+				<cron-expression>0 56 0 ? * MON-SUN *</cron-expression>
+			</cron>
+		</trigger>
+		<trigger>
+			<cron>
+				<name>TriggerNotifyPremium0d</name>
+				<description>Every day</description>
+				<job-name>NotifyPremium0d</job-name>
+				<cron-expression>0 57 0 ? * MON-SUN *</cron-expression>
+			</cron>
+		</trigger>
+		<trigger>
+			<cron>
+				<name>TriggerNotifyPremiumPlus7d</name>
+				<description>Every day</description>
+				<job-name>NotifyPremiumPlus7d</job-name>
+				<cron-expression>0 58 0 ? * MON-SUN *</cron-expression>
+			</cron>
+		</trigger>
+		<trigger>
+			<cron>
+				<name>TriggerPurgePremiumDaily</name>
+				<description>Every day</description>
+				<job-name>PurgePremiumDaily</job-name>
+				<cron-expression>0 59 0 ? * MON-SUN *</cron-expression>
+			</cron>
+		</trigger>
+	</schedule>
+
+</job-scheduling-data>

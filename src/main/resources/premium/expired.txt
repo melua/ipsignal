@@ -1,0 +1,6 @@
+Hello,
+
+Your premium account has expired since {days} days. If you want to continue with the premium privileges, please renew your subscription on http://www.ip-signal.com using the same email address.
+
+Thank you for your confidence,
+The IP Signal team

@@ -1,0 +1,20 @@
+Hello,
+
+Your beacon with the following information was deleted:
+
+URL         : {url}
+Latency     : {latency} ms
+Certificate : {certificate} days
+Path        : {path}
+Expected    : {expected}
+Interval    : {interval} minutes
+Notify      : {notify}
+Retention   : {retention} logs
+
+
+If you just want to cancel or if you do not made this request, click the link below:
+{link}
+
+
+Thank you for your confidence,
+The IP Signal team
