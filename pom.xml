@@ -5,7 +5,7 @@
 
 	<groupId>com.ipsignal</groupId>
 	<artifactId>ip-signal</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>IP Signal</name>
 
