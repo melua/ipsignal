@@ -34,7 +34,6 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import com.ipsignal.Config;
-import com.ipsignal.UID;
 import com.ipsignal.automate.Automate;
 import com.ipsignal.dao.LogDAO;
 import com.ipsignal.dao.SignalDAO;
@@ -42,6 +41,7 @@ import com.ipsignal.entity.impl.LogEntity;
 import com.ipsignal.entity.impl.SignalEntity;
 import com.ipsignal.job.RunSignalJob;
 import com.ipsignal.mail.MailManager;
+import com.ipsignal.tool.UID;
 
 @Stateless
 public class RunSignalJobImpl implements RunSignalJob {

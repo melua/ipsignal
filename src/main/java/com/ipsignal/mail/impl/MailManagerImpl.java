@@ -32,11 +32,11 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import com.ipsignal.Config;
-import com.ipsignal.TemplateBuilder;
 import com.ipsignal.entity.impl.LogEntity;
 import com.ipsignal.entity.impl.SignalEntity;
 import com.ipsignal.entity.impl.UserEntity;
 import com.ipsignal.mail.MailManager;
+import com.ipsignal.tool.TemplateBuilder;
 
 @Stateless
 public class MailManagerImpl implements MailManager {

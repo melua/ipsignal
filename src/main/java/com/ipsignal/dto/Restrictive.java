@@ -34,7 +34,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.commons.validator.routines.UrlValidator;
 
-import com.ipsignal.Browser;
 import com.ipsignal.annotation.BrowserName;
 import com.ipsignal.annotation.EmailAddress;
 import com.ipsignal.annotation.Premium;
@@ -42,6 +41,7 @@ import com.ipsignal.annotation.Regexp;
 import com.ipsignal.annotation.Reserved;
 import com.ipsignal.annotation.UrlAddress;
 import com.ipsignal.annotation.Xpath;
+import com.ipsignal.automate.Browser;
 import com.ipsignal.dto.impl.GenericDTO;
 
 public abstract class Restrictive {

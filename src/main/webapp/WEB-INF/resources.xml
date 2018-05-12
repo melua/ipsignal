@@ -9,5 +9,5 @@
 		class-name="org.apache.cxf.jaxrs.impl.WebApplicationExceptionMapper">
 		printStackTrace = false
 	</Service>
-	<Service id="order" class-name="com.ipsignal.AttributeOrder" />
+	<Service id="order" class-name="com.ipsignal.Order" />
 </resources>

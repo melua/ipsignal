@@ -8,8 +8,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.ipsignal.Browser;
 import com.ipsignal.Config;
+import com.ipsignal.automate.Browser;
 import com.ipsignal.dto.impl.GenericDTO;
 import com.ipsignal.dto.impl.SignalDTO;
 import com.ipsignal.mock.resource.SignalResourceMock;

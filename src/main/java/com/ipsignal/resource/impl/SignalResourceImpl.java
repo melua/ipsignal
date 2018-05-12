@@ -26,8 +26,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.ipsignal.Config;
-import com.ipsignal.Memcached;
-import com.ipsignal.TemplateBuilder;
 import com.ipsignal.automate.Automate;
 import com.ipsignal.dao.LogDAO;
 import com.ipsignal.dao.SignalDAO;
@@ -42,7 +40,9 @@ import com.ipsignal.entity.impl.UserEntity;
 import com.ipsignal.mail.MailManager;
 import com.ipsignal.mapper.LogMapper;
 import com.ipsignal.mapper.SignalMapper;
+import com.ipsignal.mem.Memcached;
 import com.ipsignal.resource.SignalResource;
+import com.ipsignal.tool.TemplateBuilder;
 
 @Stateless
 public class SignalResourceImpl implements SignalResource {
@@ -63,12 +63,14 @@ public class SignalResourceImpl implements SignalResource {
 	private MailManager mailer;
 	@EJB
 	private Automate automate;
+	@EJB
+	private Memcached mem;
 
 	public SignalResourceImpl() {
 		// For injection
 	}
 
-	protected SignalResourceImpl(SignalMapper mapper, LogMapper logmap, SignalDAO dao, UserDAO user, LogDAO log, MailManager mailer, Automate automate) {
+	protected SignalResourceImpl(SignalMapper mapper, LogMapper logmap, SignalDAO dao, UserDAO user, LogDAO log, MailManager mailer, Automate automate, Memcached mem) {
 		// For tests
 		this.mapper = mapper;
 		this.logmap = logmap;
@@ -77,6 +79,7 @@ public class SignalResourceImpl implements SignalResource {
 		this.log = log;
 		this.mailer = mailer;
 		this.automate = automate;
+		this.mem = mem;
 	}
 
 	@Override
@@ -116,7 +119,7 @@ public class SignalResourceImpl implements SignalResource {
 
 				if (Config.MEMC_TIME != 0) {
 					// Persist in cache
-					Memcached.add(SANDBOX_PATH + "/" + failed.getUuid(), failed.getSource());
+					mem.store(SANDBOX_PATH + "/" + failed.getUuid(), failed.getSource());
 				} else {
 					// Persist log without signal
 					failed.setSignal(null);
@@ -263,7 +266,7 @@ public class SignalResourceImpl implements SignalResource {
 
 					if (Config.MEMC_TIME != 0) {
 						// Persist in cache
-						Memcached.add(SANDBOX_PATH + "/" + failed.getUuid(), failed.getSource());
+						mem.store(SANDBOX_PATH + "/" + failed.getUuid(), failed.getSource());
 					} else {
 						// Persist log without signal
 						failed.setSignal(null);

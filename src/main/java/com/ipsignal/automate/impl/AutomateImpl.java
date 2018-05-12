@@ -35,8 +35,8 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.ipsignal.Browser;
 import com.ipsignal.automate.Automate;
+import com.ipsignal.automate.Browser;
 import com.ipsignal.dto.Restrictive;
 import com.ipsignal.entity.impl.LogEntity;
 import com.ipsignal.entity.impl.SignalEntity;

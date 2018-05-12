@@ -30,8 +30,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.ipsignal.UID;
 import com.ipsignal.entity.Entity;
+import com.ipsignal.tool.UID;
 
 @javax.persistence.Entity
 @Table(name = "logs")

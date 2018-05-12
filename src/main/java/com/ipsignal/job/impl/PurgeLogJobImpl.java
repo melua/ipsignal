@@ -26,10 +26,10 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import com.ipsignal.Config;
-import com.ipsignal.UID;
 import com.ipsignal.dao.LogDAO;
 import com.ipsignal.entity.impl.LogEntity;
 import com.ipsignal.job.PurgeLogJob;
+import com.ipsignal.tool.UID;
 
 @Stateless
 public class PurgeLogJobImpl implements PurgeLogJob {

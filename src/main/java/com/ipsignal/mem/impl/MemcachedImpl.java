@@ -1,4 +1,4 @@
-package com.ipsignal;
+package com.ipsignal.mem.impl;
 
 /*
  * Copyright (C) 2017 Kevin Guignard
@@ -21,19 +21,25 @@ import java.net.InetSocketAddress;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.ejb.Stateful;
+
+import com.ipsignal.Config;
+import com.ipsignal.mem.Memcached;
+
 import net.spy.memcached.MemcachedClient;
 import net.spy.memcached.transcoders.SerializingTranscoder;
 
-public class Memcached {
+@Stateful
+public class MemcachedImpl implements Memcached {
 
 	private static final Logger LOGGER = Logger.getLogger(Memcached.class.getName());
 	private static final String KEYBASE = Config.SERVICE_URL.getHost().concat("/");
-	private static final MemcachedClient MEMCACHED_CLIENT;
-	private static final SerializingTranscoder TRANSCODER;
 
-	static {
-		MemcachedClient client = null;
-		SerializingTranscoder trans = new SerializingTranscoder();
+	private MemcachedClient client;
+	private SerializingTranscoder trans;
+
+	public MemcachedImpl() {
+		trans = new SerializingTranscoder();
 		trans.setCompressionThreshold(Integer.MAX_VALUE);
 		if (Config.MEMC_TIME != 0) {
 			try {
@@ -42,15 +48,11 @@ public class Memcached {
 				LOGGER.log(Level.SEVERE, "Error with Memcached: {0}", ex.getMessage());
 			}
 		}
-		MEMCACHED_CLIENT = client;
-		TRANSCODER = trans;
-	}
-	
-	private Memcached() {
 	}
 
-	public static void add(String key, String value) {
-        MEMCACHED_CLIENT.set(KEYBASE + key, Config.MEMC_TIME, value, TRANSCODER);
+	@Override
+	public void store(String key, String value) {
+		client.set(KEYBASE + key, Config.MEMC_TIME, value, trans);
 	}
 
 }

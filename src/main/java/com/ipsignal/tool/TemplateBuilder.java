@@ -1,9 +1,11 @@
-package com.ipsignal;
+package com.ipsignal.tool;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.ipsignal.Config;
 
 /*
  * Copyright (C) 2017 Kevin Guignard

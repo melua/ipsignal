@@ -1,4 +1,4 @@
-package com.ipsignal;
+package com.ipsignal.tool;
 
 /*
  * Copyright (C) 2017 Kevin Guignard

@@ -21,7 +21,7 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class AttributeOrder implements Comparator<String> {
+public class Order implements Comparator<String> {
 
 	private static final List<String> attributes = new LinkedList<>();
 

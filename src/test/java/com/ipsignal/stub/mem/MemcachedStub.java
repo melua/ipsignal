@@ -1,4 +1,4 @@
-package com.ipsignal.mock.resource;
+package com.ipsignal.stub.mem;
 
 /*
  * Copyright (C) 2017 Kevin Guignard
@@ -17,20 +17,13 @@ package com.ipsignal.mock.resource;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.ipsignal.mapper.impl.LogMapperImpl;
-import com.ipsignal.mock.mail.MailManagerMock;
-import com.ipsignal.mock.mapper.SignalMapperMock;
-import com.ipsignal.resource.impl.SignalResourceImpl;
-import com.ipsignal.stub.automate.AutomateStub;
-import com.ipsignal.stub.dao.LogDAOStub;
-import com.ipsignal.stub.dao.SignalDAOStub;
-import com.ipsignal.stub.dao.UserDAOStub;
-import com.ipsignal.stub.mem.MemcachedStub;
+import com.ipsignal.mem.Memcached;
 
-public class SignalResourceMock extends SignalResourceImpl {
-	
-	public SignalResourceMock() {
-		super(new SignalMapperMock(), new LogMapperImpl(), new SignalDAOStub(), new UserDAOStub(), new LogDAOStub(), new MailManagerMock(), new AutomateStub(), new MemcachedStub());
+public class MemcachedStub implements Memcached {
+
+	@Override
+	public void store(String key, String value) {
+		System.out.println("Added " + key + " to memory cache");
 	}
 
 }

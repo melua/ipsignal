@@ -26,12 +26,12 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import com.ipsignal.Config;
-import com.ipsignal.UID;
 import com.ipsignal.dao.UserDAO;
 import com.ipsignal.entity.impl.SignalEntity;
 import com.ipsignal.entity.impl.UserEntity;
 import com.ipsignal.job.PurgePremiumJob;
 import com.ipsignal.mail.MailManager;
+import com.ipsignal.tool.UID;
 
 @Stateless
 public class PurgePremiumJobImpl implements PurgePremiumJob {

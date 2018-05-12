@@ -26,11 +26,11 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import com.ipsignal.Config;
-import com.ipsignal.UID;
 import com.ipsignal.dao.UserDAO;
 import com.ipsignal.entity.impl.UserEntity;
 import com.ipsignal.job.NotifyPremiumJob;
 import com.ipsignal.mail.MailManager;
+import com.ipsignal.tool.UID;
 
 @Stateless
 public class NotifyPremiumJobImpl implements NotifyPremiumJob {

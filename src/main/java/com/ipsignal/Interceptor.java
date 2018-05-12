@@ -30,11 +30,16 @@ import javax.ws.rs.ext.WriterInterceptorContext;
 
 import com.ipsignal.annotation.Cached;
 import com.ipsignal.dto.impl.GenericDTO;
+import com.ipsignal.mem.Memcached;
+import com.ipsignal.mem.impl.MemcachedImpl;
 
 @Cached
 @Provider
-public class CachedInterceptor implements WriterInterceptor {
-	
+public class Interceptor implements WriterInterceptor {
+
+	// JAX-RS 2.0 does not support injection of EJBs into JAX-RS components.
+	private static final Memcached MEMC = new MemcachedImpl();
+
 	@Context
 	private UriInfo uriInfo;
 
@@ -53,7 +58,7 @@ public class CachedInterceptor implements WriterInterceptor {
         try {
             context.setOutputStream(buffer);
             context.proceed();
-            Memcached.add(uriInfo.getPath(), buffer.toString(Charset.defaultCharset().toString()));
+            MEMC.store(uriInfo.getPath(), buffer.toString(Charset.defaultCharset().toString()));
             original.write(buffer.toByteArray());
         } finally {
             context.setOutputStream(original);
