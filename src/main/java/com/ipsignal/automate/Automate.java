@@ -17,6 +17,7 @@ package com.ipsignal.automate;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import javax.ejb.Asynchronous;
 import javax.ejb.Local;
 
 import com.ipsignal.entity.impl.LogEntity;
@@ -26,5 +27,8 @@ import com.ipsignal.entity.impl.SignalEntity;
 public interface Automate {
 	
 	LogEntity execute(SignalEntity signal);
+
+	@Asynchronous
+	void executeAsync(SignalEntity signal);
 
 }

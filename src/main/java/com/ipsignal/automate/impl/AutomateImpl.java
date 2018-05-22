@@ -1,5 +1,22 @@
 package com.ipsignal.automate.impl;
 
+/*
+ * Copyright (C) 2017 Kevin Guignard
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +37,7 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.net.ssl.HttpsURLConnection;
 import javax.ws.rs.core.HttpHeaders;
@@ -37,6 +55,8 @@ import org.xml.sax.SAXException;
 
 import com.ipsignal.automate.Automate;
 import com.ipsignal.automate.Browser;
+import com.ipsignal.dao.LogDAO;
+import com.ipsignal.dao.SignalDAO;
 import com.ipsignal.dto.Restrictive;
 import com.ipsignal.entity.impl.LogEntity;
 import com.ipsignal.entity.impl.SignalEntity;
@@ -52,7 +72,12 @@ public class AutomateImpl implements Automate {
 	private static final int TIMEOUT = 2000;
 	private static final int DAY = 86400000;
 	private static final int LEAF = 0;
-	
+
+	@EJB
+	private SignalDAO signals;
+	@EJB
+	private LogDAO logs;
+
 	@Override
 	public LogEntity execute(SignalEntity signal) {
 
@@ -248,6 +273,21 @@ public class AutomateImpl implements Automate {
 
 	private static String strip(String value) {
 		return value.replaceAll("[\t\r\n]+", " ").trim();
+	}
+
+	@Override
+	public void executeAsync(SignalEntity signal) {
+		// Execute signal
+		LogEntity log = this.execute(signal);
+
+		if (log != null) {
+			// Add log
+			signal.getLogs().add(log);
+
+			// Persist in database
+			logs.add(log);
+			signals.update(signal);
+		}
 	}
 
 }

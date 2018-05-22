@@ -29,4 +29,9 @@ public class AutomateStub implements Automate {
 		return null;
 	}
 
+	@Override
+	public void executeAsync(SignalEntity signal) {
+		this.execute(signal);
+	}
+
 }

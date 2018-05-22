@@ -32,7 +32,6 @@ import com.ipsignal.dao.SignalDAO;
 import com.ipsignal.dao.UserDAO;
 import com.ipsignal.dto.Restrictive.Constraint;
 import com.ipsignal.dto.impl.GenericDTO;
-import com.ipsignal.dto.impl.LogDTO;
 import com.ipsignal.dto.impl.SignalDTO;
 import com.ipsignal.entity.impl.LogEntity;
 import com.ipsignal.entity.impl.SignalEntity;
@@ -46,8 +45,6 @@ import com.ipsignal.tool.TemplateBuilder;
 
 @Stateless
 public class SignalResourceImpl implements SignalResource {
-
-	private static final String SANDBOX_PATH = "sandbox";
 
 	@EJB
 	private SignalMapper mapper;
@@ -108,27 +105,6 @@ public class SignalResourceImpl implements SignalResource {
 		// Create entity from DTO
 		final SignalEntity entity = mapper.dtoToEntity(dto, null);
 
-		// Check automate
-		LogEntity failed = automate.execute(entity);
-		
-		if (failed != null) {
-			LogDTO fail = logmap.entityToDto(failed);
-			if (failed.getSource() != null) {
-				// Set source url
-				fail.setSource(Config.SERVICE_URL + "/" + SANDBOX_PATH + "/" + failed.getUuid());
-
-				if (Config.MEMC_TIME != 0) {
-					// Persist in cache
-					mem.store(SANDBOX_PATH + "/" + failed.getUuid(), failed.getSource());
-				} else {
-					// Persist log without signal
-					failed.setSignal(null);
-					log.add(failed);
-				}
-			}
-			return Response.status(Status.BAD_REQUEST).entity(GenericDTO.OBJECTFAILED.log(fail)).build();
-		}
-
 		// Send email
 		if (!mailer.sendSignalCreation(entity)) {
 			return Response.serverError().entity(GenericDTO.SENDMAILFAILED.format(dto.getEmail())).build();
@@ -143,6 +119,9 @@ public class SignalResourceImpl implements SignalResource {
 		
 		// Persist in database
 		dao.add(entity);
+
+		// Run automate
+		automate.executeAsync(entity);
 
 		// Send response
 		return Response.ok().entity(GenericDTO.OBJECTCREATED.signal(mapper.entityToDto(entity))).build();
@@ -196,8 +175,7 @@ public class SignalResourceImpl implements SignalResource {
 		}
 
 		// Check signal uuid
-		if (uuid.equals(SANDBOX_PATH) && entity.getSignal() != null
-				|| !entity.getSignal().getUuid().equals(uuid)) {
+		if (!entity.getSignal().getUuid().equals(uuid)) {
 			return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(GenericDTO.OBJECTNOTLINKED.format(uuid2, uuid)).build();
 		}
 
@@ -254,29 +232,6 @@ public class SignalResourceImpl implements SignalResource {
 		// Update entity
 		mapper.dtoToEntity(dto, entity);
 		
-		// Check automate
-		if (Config.CHECK_ON_UPDATE) {
-			LogEntity failed = automate.execute(entity);
-		
-			if (failed != null) {
-				LogDTO fail = logmap.entityToDto(failed);
-				if (failed.getSource() != null) {
-					// Set source url
-					fail.setSource(Config.SERVICE_URL + "/" + SANDBOX_PATH + "/" + failed.getUuid());
-
-					if (Config.MEMC_TIME != 0) {
-						// Persist in cache
-						mem.store(SANDBOX_PATH + "/" + failed.getUuid(), failed.getSource());
-					} else {
-						// Persist log without signal
-						failed.setSignal(null);
-						log.add(failed);
-					}
-				}
-				return Response.status(Status.BAD_REQUEST).entity(GenericDTO.OBJECTFAILED.log(fail)).build();
-			}
-		}
-		
 		// Send email
 		if (!mailer.sendSignalModification(entity, backup)) {
 			return Response.serverError().entity(GenericDTO.SENDMAILFAILED.format(dto.getEmail())).build();
@@ -285,6 +240,9 @@ public class SignalResourceImpl implements SignalResource {
 		// Update in database
 		dao.add(backup);
 		dao.update(entity);
+
+		// Run automate
+		automate.executeAsync(entity);
 
 		// Send response
 		return Response.ok(GenericDTO.OBJECTUPDATED.signal(mapper.entityToDto(entity))).build();

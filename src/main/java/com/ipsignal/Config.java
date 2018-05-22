@@ -39,7 +39,6 @@ public final class Config
 	public static final int MEMC_PORT;
 	public static final int MEMC_TIME;
 
-	public static final boolean CHECK_ON_UPDATE;
 	public static final boolean DISABLE_JOBS;
 	public static final boolean DISABLE_PURGES;
 
@@ -67,7 +66,6 @@ public final class Config
 		MEMC_PORT = getInt("memc.port", 11211);
 		MEMC_TIME = getInt("memc.time", 0);
 		
-		CHECK_ON_UPDATE = getBoolean("upd.check", false);
 		DISABLE_JOBS = getBoolean("jobs.skip", false);
 		DISABLE_PURGES = getBoolean("dele.skip", false);
 
