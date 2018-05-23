@@ -3,11 +3,11 @@ Watch out!
 Your beacon fire an alert with the following information:
 
 Access		: {access}
+Detail		: {detail}
 Latency		: {latency}
 Certificate	: {certificate}
 Http		: {http}
 Obtained	: {obtained}
-Detail		: {detail}
 
 
 Please check details by clicking the link below:
