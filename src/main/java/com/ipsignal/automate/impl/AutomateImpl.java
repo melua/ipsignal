@@ -83,7 +83,7 @@ public class AutomateImpl implements Automate {
 	private MailManager mailer;
 
 	@Override
-	public LogEntity execute(SignalEntity signal) {
+	public LogEntity execute(SignalEntity signal, boolean feedback) {
 
 		// Default values
 		Integer ping = -1;
@@ -213,6 +213,13 @@ public class AutomateImpl implements Automate {
 				return LogEntity.LATENCY.getInstance(signal, ping, ssl, browser.toString(), status, shorten(obtained), null, signal.getLatency());
 			}
 
+			/*
+			 * forced feedback
+			 */
+			if (feedback) {
+				return LogEntity.SUCCESS.getInstance(signal, ping, ssl, browser.toString(), status, shorten(obtained), source);
+			}
+
 		} catch (MalformedURLException muex) {
 			LOGGER.log(Level.WARNING, "Error with stored URL: {0}", muex.getMessage());
 			return LogEntity.URL.getInstance(signal, ping, ssl, browser.toString(), null, null, null);
@@ -271,62 +278,59 @@ public class AutomateImpl implements Automate {
 		return null;
 	}
 
+	@Override
+	public void executeAsync(SignalEntity signal) {
+		// Execute signal
+		LogEntity log = this.execute(signal, true);
+
+		// Notify
+		if (signal.getNotify() != null) {
+
+			try {
+				// Call GET
+				URL url = new URL(signal.getNotify() + (signal.getNotify().endsWith("=") ? "" : "?uuid=") + log.getSignal().getUuid() + "/" + log.getUuid());
+				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+				conn.connect();
+
+				if (LOGGER.isLoggable(Level.FINE)) {
+					LOGGER.log(Level.FINE, "GET \"{1}\" {2}", new Object[] { url, conn.getResponseCode() });
+				}
+
+				conn.disconnect();
+
+			} catch (MalformedURLException muex) {
+				LOGGER.log(Level.WARNING, "Error with new URL: {0}", muex.getMessage());
+
+			} catch (UnknownHostException uhe) {
+				if (LOGGER.isLoggable(Level.FINE)) {
+					LOGGER.log(Level.FINE, "Error with new domain name: {0}", uhe.getMessage());
+				}
+
+			} catch (IOException ioex) {
+				LOGGER.log(Level.WARNING, "Error with I/O: {0}", ioex.getMessage());
+
+			}
+
+		} else {
+
+			// Send email
+			mailer.sendSignalNotification(signal, log);
+		}
+
+		// Add log
+		signal.getLogs().add(log);
+
+		// Persist in database
+		logs.add(log);
+		signals.update(signal);
+	}
+
 	private static String shorten(String value) {
 		return value.length() > MAX_CHARS ? value.substring(0, MAX_CHARS-1).concat(" [...]") : value;
 	}
 
 	private static String strip(String value) {
 		return value.replaceAll("[\t\r\n]+", " ").trim();
-	}
-
-	@Override
-	public void executeAsync(SignalEntity signal) {
-		// Execute signal
-		LogEntity log = this.execute(signal);
-
-		if (log != null) {
-
-			// Notify
-			if (signal.getNotify() != null) {
-
-				try {
-					// Call GET
-					URL url = new URL(signal.getNotify() + (signal.getNotify().endsWith("=") ? "" : "?uuid=") + log.getSignal().getUuid() + "/" + log.getUuid());
-					HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-					conn.connect();
-
-					if (LOGGER.isLoggable(Level.FINE)) {
-						LOGGER.log(Level.FINE, "GET \"{1}\" {2}", new Object[] { url, conn.getResponseCode() });
-					}
-
-					conn.disconnect();
-
-				} catch (MalformedURLException muex) {
-					LOGGER.log(Level.WARNING, "Error with new URL: {0}", muex.getMessage());
-
-				} catch (UnknownHostException uhe) {
-					if (LOGGER.isLoggable(Level.FINE)) {
-						LOGGER.log(Level.FINE, "Error with new domain name: {0}", uhe.getMessage());
-					}
-
-				} catch (IOException ioex) {
-					LOGGER.log(Level.WARNING, "Error with I/O: {0}", ioex.getMessage());
-
-				}
-
-			} else {
-
-				// Send email
-				mailer.sendSignalNotification(signal, log);
-			}
-
-			// Add log
-			signal.getLogs().add(log);
-
-			// Persist in database
-			logs.add(log);
-			signals.update(signal);
-		}
 	}
 
 }

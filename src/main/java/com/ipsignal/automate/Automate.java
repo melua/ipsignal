@@ -26,7 +26,7 @@ import com.ipsignal.entity.impl.SignalEntity;
 @Local(Automate.class)
 public interface Automate {
 	
-	LogEntity execute(SignalEntity signal);
+	LogEntity execute(SignalEntity signal, boolean feedback);
 
 	@Asynchronous
 	void executeAsync(SignalEntity signal);

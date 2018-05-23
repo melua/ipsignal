@@ -31,6 +31,7 @@ public class Order implements Comparator<String> {
 		attributes.add("premium");
 		attributes.add("notify");
 		attributes.add("access");
+		attributes.add("detail");
 		attributes.add("browser");
 		attributes.add("url");
 		attributes.add("path");
@@ -41,7 +42,6 @@ public class Order implements Comparator<String> {
 		attributes.add("retention");
 		attributes.add("http");
 		attributes.add("obtained");
-		attributes.add("detail");
 		attributes.add("source");
 		attributes.add("logs");
 		attributes.add("log");

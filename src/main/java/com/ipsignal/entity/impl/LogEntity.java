@@ -52,6 +52,7 @@ public class LogEntity implements Entity, Comparable<LogEntity> {
 	public static final LogEntity XPATH = new LogEntity("Invalid XPath.");
 	public static final LogEntity REGEX = new LogEntity("Invalid regex pattern.");
 	public static final LogEntity BROWSER = new LogEntity("Invalid browser name.");
+	public static final LogEntity SUCCESS = new LogEntity("Test successful.");
 
 	@Id
 	@Column(name = "id")

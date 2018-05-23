@@ -24,14 +24,14 @@ import com.ipsignal.entity.impl.SignalEntity;
 public class AutomateStub implements Automate {
 
 	@Override
-	public LogEntity execute(SignalEntity signal) {
+	public LogEntity execute(SignalEntity signal, boolean feedback) {
 		System.out.println("Automate executed");
 		return null;
 	}
 
 	@Override
 	public void executeAsync(SignalEntity signal) {
-		this.execute(signal);
+		this.execute(signal, false);
 	}
 
 }

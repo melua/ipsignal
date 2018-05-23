@@ -92,7 +92,7 @@ public class RunSignalJobImpl implements RunSignalJob {
 			for (SignalEntity entity : copy) {
 
 				// Execute signal
-				LogEntity log = automate.execute(entity);
+				LogEntity log = automate.execute(entity, false);
 
 				if (log != null) {
 					
