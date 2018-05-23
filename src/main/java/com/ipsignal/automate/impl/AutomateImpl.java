@@ -21,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
@@ -60,10 +61,11 @@ import com.ipsignal.dao.SignalDAO;
 import com.ipsignal.dto.Restrictive;
 import com.ipsignal.entity.impl.LogEntity;
 import com.ipsignal.entity.impl.SignalEntity;
+import com.ipsignal.mail.MailManager;
 
 @Stateless
 public class AutomateImpl implements Automate {
-	
+
 	private static final Logger LOGGER = Logger.getLogger(AutomateImpl.class.getName());
 
 	private static final int MAX_BYTES = 2097152;
@@ -77,6 +79,8 @@ public class AutomateImpl implements Automate {
 	private SignalDAO signals;
 	@EJB
 	private LogDAO logs;
+	@EJB
+	private MailManager mailer;
 
 	@Override
 	public LogEntity execute(SignalEntity signal) {
@@ -281,6 +285,41 @@ public class AutomateImpl implements Automate {
 		LogEntity log = this.execute(signal);
 
 		if (log != null) {
+
+			// Notify
+			if (signal.getNotify() != null) {
+
+				try {
+					// Call GET
+					URL url = new URL(signal.getNotify() + (signal.getNotify().endsWith("=") ? "" : "?uuid=") + log.getSignal().getUuid() + "/" + log.getUuid());
+					HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+					conn.connect();
+
+					if (LOGGER.isLoggable(Level.FINE)) {
+						LOGGER.log(Level.FINE, "GET \"{1}\" {2}", new Object[] { url, conn.getResponseCode() });
+					}
+
+					conn.disconnect();
+
+				} catch (MalformedURLException muex) {
+					LOGGER.log(Level.WARNING, "Error with new URL: {0}", muex.getMessage());
+
+				} catch (UnknownHostException uhe) {
+					if (LOGGER.isLoggable(Level.FINE)) {
+						LOGGER.log(Level.FINE, "Error with new domain name: {0}", uhe.getMessage());
+					}
+
+				} catch (IOException ioex) {
+					LOGGER.log(Level.WARNING, "Error with I/O: {0}", ioex.getMessage());
+
+				}
+
+			} else {
+
+				// Send email
+				mailer.sendSignalNotification(signal, log);
+			}
+
 			// Add log
 			signal.getLogs().add(log);
 

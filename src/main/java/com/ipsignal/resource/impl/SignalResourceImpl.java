@@ -120,9 +120,6 @@ public class SignalResourceImpl implements SignalResource {
 		// Persist in database
 		dao.add(entity);
 
-		// Run automate
-		automate.executeAsync(entity);
-
 		// Send response
 		return Response.ok().entity(GenericDTO.OBJECTCREATED.signal(mapper.entityToDto(entity))).build();
 	}
@@ -145,15 +142,17 @@ public class SignalResourceImpl implements SignalResource {
 			dao.delete(entity);
 			return Response.ok().entity(GenericDTO.OBJECTRESTORED.signal(mapper.entityToDto(parent))).build();
 		}
-		
+
 		// Update last access
 		entity.setLastaccess(new Date());
 		
-		// Set active
 		if (!entity.getActive()) {
+			// Set active
 			entity.setActive(true);
+			// Run automate
+			automate.executeAsync(entity);
 		}
-		
+
 		// Update entity
 		dao.update(entity);
 

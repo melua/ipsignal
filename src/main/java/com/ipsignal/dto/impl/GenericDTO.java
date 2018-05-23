@@ -40,7 +40,6 @@ public class GenericDTO implements DTO {
 	public static final GenericDTO OBJECTNOTLINKED = new GenericDTO("ERR-RES-LINK", "The resource [%s] is not linked to the resource [%s].");
 	public static final GenericDTO OBJECTBACKUP = new GenericDTO("ERR-RES-BCK", "The resource [%s] cannot be modified.");
 	public static final GenericDTO OBJECTCONFLICT = new GenericDTO("ERR-RES-DUP", "The resource for [%s] and [%s] and [%s] already exists.");
-	public static final GenericDTO OBJECTFAILED = new GenericDTO("ERR-RES-FAIL", "The test failed.");
 	public static final GenericDTO OBJECTUSBS = new GenericDTO("ERR-RES-USBS", "The resource [%s] notifies by URL.");
 	public static final GenericDTO OBJECTNTLS = new GenericDTO("ERR-RES-NTLS", "The resource [%s] do not check certificate.");
 	
