@@ -55,7 +55,7 @@ public class MailManagerImpl implements MailManager {
 		TemplateBuilder body = new TemplateBuilder(Config.MAIL_CRUD_CREATE);
 		body.formatSignal(entity);
 		body.formatLink(entity.getUuid());
-		return send("Confirm your email address", body.toString(), DONOTREPLY, entity.getUser().getEmail(), null);
+		return send("Confirm your email address.", body.toString(), DONOTREPLY, entity.getUser().getEmail(), null);
 	}
 	
 	@Override
@@ -63,7 +63,7 @@ public class MailManagerImpl implements MailManager {
 		TemplateBuilder body = new TemplateBuilder(Config.MAIL_CRUD_DELETE);
 		body.formatSignal(entity);
 		body.formatLink(entity.getUuid());
-		return send("Beacon deleted", body.toString(), DONOTREPLY, entity.getUser().getEmail(), null);
+		return send("Beacon deleted.", body.toString(), DONOTREPLY, entity.getUser().getEmail(), null);
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class MailManagerImpl implements MailManager {
 		TemplateBuilder body = new TemplateBuilder(Config.MAIL_CRUD_UPDATE);
 		body.formatSignal(entity);
 		body.formatLink(backup.getUuid());
-		return send("Beacon modified", body.toString(), DONOTREPLY, entity.getUser().getEmail(), null);
+		return send("Beacon modified.", body.toString(), DONOTREPLY, entity.getUser().getEmail(), null);
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class MailManagerImpl implements MailManager {
 		body.formatLog(log);
 		body.formatLink(entity.getUuid(), log.getUuid());
 		body.formatUnsubscribe(unsubscribe);
-		send("Beacon Alert", body.toString(), ALERT, entity.getUser().getEmail(), unsubscribe);
+		send("Beacon alert : " + log.getDetail(), body.toString(), ALERT, entity.getUser().getEmail(), unsubscribe);
 	}
 	
 	@Override
@@ -91,21 +91,21 @@ public class MailManagerImpl implements MailManager {
 		body.formatSignal(entity);
 		body.formatLink(entity.getUuid());
 		body.formatUnsubscribe(unsubscribe);
-		send("Your certificate expires soon", body.toString(), ALERT, entity.getUser().getEmail(), unsubscribe);
+		send("Your certificate expires soon.", body.toString(), ALERT, entity.getUser().getEmail(), unsubscribe);
 	}
 
 	@Override
 	public void sendPremiumExpiration(final UserEntity entity, final Integer days) {
 		TemplateBuilder body = new TemplateBuilder(Config.MAIL_PREMIUM_EXPIRED);
 		body.formatDays(days);
-		send("Your premium expirated", body.toString(), PREMIUM, entity.getEmail(), null);
+		send("Your premium expirated.", body.toString(), PREMIUM, entity.getEmail(), null);
 	}
 
 	@Override
 	public void sendPremiumExpirateSoon(final UserEntity entity, final Integer days) {
 		TemplateBuilder body = new TemplateBuilder(Config.MAIL_PREMIUM_SOON);
 		body.formatDays(days);
-		send("Your premium expires soon", body.toString(), PREMIUM, entity.getEmail(), null);
+		send("Your premium expires soon.", body.toString(), PREMIUM, entity.getEmail(), null);
 	}
 
 	protected Boolean send(final String title, final String body, final String sender, final String recipient, final String unsubscribe) {

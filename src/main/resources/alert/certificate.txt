@@ -1,8 +1,7 @@
 Hello,
 
-Your certificate for the domain below will expire in {certificate} days.
+The certificate for the domain of {url} will expire in {certificate} days.
 Please make sure to renew your certificate before then, or visitors to your website will encounter errors.
-{url}
 
 
 Please check details by clicking the link below:
