@@ -26,4 +26,9 @@ public class MemcachedStub implements Memcached {
 		System.out.println("Added " + key + " to memory cache");
 	}
 
+	@Override
+	public void remove(String key) {
+		System.out.println("Removed " + key + " from memory cache");
+	}
+
 }

@@ -55,4 +55,9 @@ public class MemcachedImpl implements Memcached {
 		client.set(KEYBASE + key, Config.MEMC_TIME, value, trans);
 	}
 
+	@Override
+	public void remove(String key) {
+		client.delete(KEYBASE + key);
+	}
+
 }

@@ -23,4 +23,7 @@ import javax.ejb.Local;
 public interface Memcached {
 
 	void store(String key, String value);
+
+	void remove(String key);
+
 }

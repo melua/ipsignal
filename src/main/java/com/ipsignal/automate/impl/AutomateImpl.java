@@ -54,6 +54,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.ipsignal.Config;
 import com.ipsignal.automate.Automate;
 import com.ipsignal.automate.Browser;
 import com.ipsignal.dao.LogDAO;
@@ -62,6 +63,7 @@ import com.ipsignal.dto.Restrictive;
 import com.ipsignal.entity.impl.LogEntity;
 import com.ipsignal.entity.impl.SignalEntity;
 import com.ipsignal.mail.MailManager;
+import com.ipsignal.mem.Memcached;
 
 @Stateless
 public class AutomateImpl implements Automate {
@@ -81,6 +83,8 @@ public class AutomateImpl implements Automate {
 	private LogDAO logs;
 	@EJB
 	private MailManager mailer;
+	@EJB
+	private Memcached mem;
 
 	@Override
 	public LogEntity execute(SignalEntity signal, boolean feedback) {
@@ -323,6 +327,11 @@ public class AutomateImpl implements Automate {
 		// Persist in database
 		logs.add(log);
 		signals.update(signal);
+
+		if (Config.MEMC_TIME != 0) {
+			// Remove from cache
+			mem.remove(signal.getUuid());
+		}
 	}
 
 	private static String shorten(String value) {
