@@ -57,7 +57,7 @@ public class SignalDTO extends Restrictive implements DTO {
 	
 	@Reserved(numbers={1440,720,360,120,60,30,20,10})
 	@Premium(numbers={30,20,10})
-	private Integer interval = 360;
+	private Integer interval = 1440;
 	
 	@Reserved(numbers={3,25,50,75,100})
 	@Premium(numbers={25,50,75,100})
