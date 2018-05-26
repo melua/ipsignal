@@ -1,5 +1,7 @@
 package com.ipsignal.tool;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -90,6 +92,14 @@ public class TemplateBuilder {
 
 	public void formatDays(Integer days) {
 		replace("days", days);
+	}
+
+	public void formatDomain(String url) {
+		try {
+			replace("domain", new URI(url).getHost());
+		} catch (URISyntaxException ex) {
+			LOGGER.log(Level.WARNING, "Invalid url {0} while resolving template", url);
+		}
 	}
 
 	@Override

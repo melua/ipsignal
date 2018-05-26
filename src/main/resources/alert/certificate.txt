@@ -1,6 +1,6 @@
 Hello,
 
-The certificate for the domain of {url} will expire in {certificate} days.
+The certificate for {domain} will expire in {days} days.
 Please make sure to renew your certificate before then, or visitors to your website will encounter errors.
 
 

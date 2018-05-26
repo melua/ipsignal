@@ -81,14 +81,15 @@ public class MailManagerImpl implements MailManager {
 		body.formatLog(log);
 		body.formatLink(entity.getUuid(), log.getUuid());
 		body.formatUnsubscribe(unsubscribe);
-		send("Beacon alert : " + log.getDetail(), body.toString(), ALERT, entity.getUser().getEmail(), unsubscribe);
+		send("Beacon alert: " + log.getDetail(), body.toString(), ALERT, entity.getUser().getEmail(), unsubscribe);
 	}
 	
 	@Override
 	public void sendCertificateExpirationSoon(final SignalEntity entity, final LogEntity log) {
 		String unsubscribe = Config.SERVICE_URL + CERTIFICATE_UNSUBSCRIBE_PATH + entity.getUuid();
 		TemplateBuilder body = new TemplateBuilder(Config.MAIL_ALERT_CERTIFICATE);
-		body.formatSignal(entity);
+		body.formatDomain(entity.getUrl());
+		body.formatDays(log.getCertificate());
 		body.formatLink(entity.getUuid());
 		body.formatUnsubscribe(unsubscribe);
 		send("Your certificate expires soon.", body.toString(), ALERT, entity.getUser().getEmail(), unsubscribe);
