@@ -12,7 +12,7 @@ Notify      : {notify}
 Retention   : {retention} logs
 
 
-If you just want to cancel or if you do not made this request, click the link below:
+This email was sent automatically, please do not reply, if you just want to cancel or if you do not made this request, click the link below:
 {link}
 
 

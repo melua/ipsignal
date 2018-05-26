@@ -16,7 +16,7 @@ Please CONFIRM this creation by clicking the link below:
 {link}
 
 If you set a notify url you will be notified at this email address.
-If you do not made this request, just ignore this email.
+This email was sent automatically, please do not reply, if you do not made this request, just ignore this email.
 
 
 Thank you for your confidence,

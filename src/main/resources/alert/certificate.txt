@@ -8,7 +8,8 @@ Please check details by clicking the link below:
 {link}
 
 
-You can edit this beacon by using the website or the API, if you want to stop receiving expiration email for this beacon, click the link below:
+You can edit this beacon by using the website or the API.
+This email was sent automatically, please do not reply, if you want to stop receiving expiration email for this beacon, click the link below:
 {unsubscribe}
 
 
