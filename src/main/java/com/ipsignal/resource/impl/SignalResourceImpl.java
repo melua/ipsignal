@@ -257,6 +257,11 @@ public class SignalResourceImpl implements SignalResource {
 	}
 
 	@Override
+	public Response getVersion() {
+		return Response.ok(GenericDTO.SERVERVERSION).build();
+	}
+
+	@Override
 	public Response deleteById(String uuid) {
 		// Nothing found in db
 		final SignalEntity entity = dao.findById(uuid);

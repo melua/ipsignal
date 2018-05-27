@@ -60,6 +60,11 @@ public interface SignalResource extends Resource<SignalDTO> {
 	@Produces(MediaType.TEXT_PLAIN)
 	Response getCount();
 
+	@GET
+	@Path("/")
+	@Produces(MediaType.APPLICATION_JSON)
+	Response getVersion();
+
 	@PATCH
 	@Path("{uuid}")
 	@Consumes(MediaType.APPLICATION_JSON)
