@@ -1,5 +1,11 @@
 package com.ipsignal.mock.mail;
 
+import java.io.IOException;
+import java.util.Arrays;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
 /*
  * Copyright (C) 2017 Kevin Guignard
  *
@@ -22,13 +28,17 @@ import com.ipsignal.mail.impl.MailManagerImpl;
 public class MailManagerMock extends MailManagerImpl {
 
 	@Override
-	protected Boolean send(String title, String body, String sender, String recipient, String unsubscribe) {
-		System.out.println("From: " + sender);
-		System.out.println("To: " + recipient);
-		if (unsubscribe != null) {
-			System.out.println("List-Unsubscribe: " + unsubscribe);
+	protected void send(MimeMessage message) throws MessagingException {
+		System.out.println("From: " + Arrays.toString(message.getHeader("From")));
+		System.out.println("To: " + Arrays.toString(message.getHeader("To")));
+		if (message.getHeader("List-Unsubscribe") != null) {
+			System.out.println("List-Unsubscribe: " + Arrays.toString(message.getHeader("List-Unsubscribe")));
 		}
-		System.out.println(body);
-		return true;
+		try {
+			System.out.println(message.getContent());
+		} catch (IOException ex) {
+			// TODO Auto-generated catch block
+			ex.printStackTrace();
+		}
 	}
 }

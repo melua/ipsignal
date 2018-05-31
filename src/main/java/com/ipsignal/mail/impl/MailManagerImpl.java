@@ -92,7 +92,7 @@ public class MailManagerImpl implements MailManager {
 		body.formatDays(log.getCertificate());
 		body.formatLink(entity.getUuid());
 		body.formatUnsubscribe(unsubscribe);
-		send("Your certificate expires soon.", body.toString(), ALERT, entity.getUser().getEmail(), unsubscribe);
+		send("Your certificate expires in " + log.getCertificate() + " days.", body.toString(), ALERT, entity.getUser().getEmail(), unsubscribe);
 	}
 
 	@Override
@@ -109,7 +109,16 @@ public class MailManagerImpl implements MailManager {
 		send("Your premium expires soon.", body.toString(), PREMIUM, entity.getEmail(), null);
 	}
 
-	protected Boolean send(final String title, final String body, final String sender, final String recipient, final String unsubscribe) {
+	/**
+	 * Prepare mail for SMTP and call {@link #send(MimeMessage)}
+	 * @param title
+	 * @param body
+	 * @param sender mail address
+	 * @param recipient mail address
+	 * @param unsubscribe link
+	 * @return true if successful, false otherwise
+	 */
+	private Boolean send(final String title, final String body, final String sender, final String recipient, final String unsubscribe) {
 		final Properties properties = System.getProperties();
 		properties.setProperty("mail.smtp.host", Config.SMTP_HOST);
 		properties.setProperty("mail.smtp.port", String.valueOf(Config.SMTP_PORT));
@@ -126,13 +135,22 @@ public class MailManagerImpl implements MailManager {
 			message.setSubject(title, "UTF-8");
 			message.setContent(body, "text/plain; charset=utf-8");
 			message.setSentDate(new Date());
-			Transport.send(message);
+			send(message);
 			LOGGER.log(Level.INFO, "{0} has sent a mail to {1}", new String[]{sender, recipient});
 			return true;
 		} catch (MessagingException | UnsupportedEncodingException ex) {
 			LOGGER.log(Level.SEVERE, "Error with message or encoding: {0}", ex.getMessage());
 			return false;
 		}
+	}
+
+	/**
+	 * Send the message to the mail server
+	 * @param message
+	 * @throws MessagingException
+	 */
+	protected void send(final MimeMessage message) throws MessagingException {
+		Transport.send(message);
 	}
 
 }

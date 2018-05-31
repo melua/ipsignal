@@ -26,6 +26,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -86,6 +87,18 @@ public class AutomateImpl implements Automate {
 	@EJB
 	private Memcached mem;
 
+	public AutomateImpl() {
+		// For injection
+	}
+
+	protected AutomateImpl(SignalDAO signals, LogDAO logs, MailManager mailer, Memcached mem) {
+		// For tests
+		this.signals = signals;
+		this.logs = logs;
+		this.mailer = mailer;
+		this.mem = mem;
+	}
+
 	@Override
 	public LogEntity execute(SignalEntity signal, boolean feedback) {
 
@@ -120,17 +133,13 @@ public class AutomateImpl implements Automate {
 			// First we ping
 			soc = new Socket();
 			long start = Calendar.getInstance().getTimeInMillis();
-			soc.connect(new InetSocketAddress(inetAddress, isHttps ? 443 : 80), TIMEOUT); /* do not requires root privileges */
+			this.doConnect(soc, new InetSocketAddress(inetAddress, isHttps ? 443 : 80), TIMEOUT);
 			long end = Calendar.getInstance().getTimeInMillis();
 			ping = (int) (end - start);
 			
 			// Then we get SSL/TLS certificate
 			if (isHttps && signal.getCertificate() != null) {
-				conn = (HttpsURLConnection) url.openConnection();
-				conn.connect();
-		        Certificate[] chain = conn.getServerCertificates();
-		        X509Certificate cert = (X509Certificate) chain[LEAF];
-		        long expiration = cert.getNotAfter().getTime();
+		        long expiration = this.getExpirationTimestamp(conn, url);
 		        long now = Calendar.getInstance().getTimeInMillis();
 		        ssl = (int) ((expiration - now) / DAY);
 			}
@@ -140,7 +149,7 @@ public class AutomateImpl implements Automate {
 					.replaceHeader(HttpHeaders.USER_AGENT, browser.getUserAgent())
 					.accept(MediaType.TEXT_HTML, MediaType.APPLICATION_XHTML_XML, MediaType.APPLICATION_XML);
 			
-			Response response = client.get();
+			Response response = this.doGet(client);
 			int status = response.getStatus();
 
 			/*
@@ -340,6 +349,23 @@ public class AutomateImpl implements Automate {
 
 	private static String strip(String value) {
 		return value.replaceAll("[\t\r\n]+", " ").trim();
+	}
+
+	protected void doConnect(Socket socket, SocketAddress endpoint, int timeout) throws IOException {
+		/* do not requires root privileges */
+		socket.connect(endpoint, timeout);
+	}
+
+	protected Response doGet(WebClient client) throws IOException {
+		return client.get();
+	}
+
+	protected long getExpirationTimestamp(HttpsURLConnection conn, URL url) throws IOException {
+		conn = (HttpsURLConnection) url.openConnection();
+		conn.connect();
+        Certificate[] chain = conn.getServerCertificates();
+        X509Certificate cert = (X509Certificate) chain[LEAF];
+        return cert.getNotAfter().getTime();
 	}
 
 }

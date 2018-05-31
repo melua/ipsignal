@@ -26,8 +26,19 @@ import com.ipsignal.entity.impl.SignalEntity;
 @Local(Automate.class)
 public interface Automate {
 	
+	/**
+	 * Execute a signal
+	 * @param signal to test
+	 * @param feedback if set to true also return a log when successful
+	 * @return a log in case of failure
+	 */
 	LogEntity execute(SignalEntity signal, boolean feedback);
 
+	/**
+	 * Execute a signal when available
+	 * without waiting for the return
+	 * @param signal to test
+	 */
 	@Asynchronous
 	void executeAsync(SignalEntity signal);
 

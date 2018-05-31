@@ -25,8 +25,18 @@ import com.ipsignal.entity.impl.SignalEntity;
 @Local(SignalMapper.class)
 public interface SignalMapper extends Mapper<SignalEntity, SignalDTO> {
 	
+	/**
+	 * Create a backup copy of the given signal
+	 * @param parent signal to backup
+	 * @return a backup copy
+	 */
 	SignalEntity backupEntity(SignalEntity parent);
 
+	/**
+	 * Restore the parent signal with the backup copy
+	 * @param child signal used to restore
+	 * @param parent signal to restore
+	 */
 	void restoreEntity(SignalEntity child, SignalEntity parent);
 	
 }

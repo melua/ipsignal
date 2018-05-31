@@ -18,15 +18,15 @@ package com.ipsignal.mock.job;
  */
 
 import com.ipsignal.job.impl.RunSignalJobImpl;
+import com.ipsignal.mock.automate.AutomateMock;
 import com.ipsignal.mock.mail.MailManagerMock;
-import com.ipsignal.stub.automate.AutomateStub;
 import com.ipsignal.stub.dao.LogDAOStub;
 import com.ipsignal.stub.dao.SignalDAOStub;
 
 public class RunSignalJobMock extends RunSignalJobImpl {
 	
 	public RunSignalJobMock() {
-		super(new SignalDAOStub(), new LogDAOStub(), new MailManagerMock(), new AutomateStub());
+		super(new SignalDAOStub(), new LogDAOStub(), new MailManagerMock(), new AutomateMock());
 	}
 
 }

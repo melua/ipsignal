@@ -22,8 +22,17 @@ import javax.ejb.Local;
 @Local(Memcached.class)
 public interface Memcached {
 
+	/**
+	 * Add the object to the cache with the given key
+	 * @param key
+	 * @param value
+	 */
 	void store(String key, String value);
 
+	/**
+	 * Delete the object from the cache by the given key
+	 * @param key
+	 */
 	void remove(String key);
 
 }

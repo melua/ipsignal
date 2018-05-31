@@ -18,10 +18,10 @@ package com.ipsignal.mock.resource;
  */
 
 import com.ipsignal.mapper.impl.LogMapperImpl;
+import com.ipsignal.mock.automate.AutomateMock;
 import com.ipsignal.mock.mail.MailManagerMock;
 import com.ipsignal.mock.mapper.SignalMapperMock;
 import com.ipsignal.resource.impl.SignalResourceImpl;
-import com.ipsignal.stub.automate.AutomateStub;
 import com.ipsignal.stub.dao.LogDAOStub;
 import com.ipsignal.stub.dao.SignalDAOStub;
 import com.ipsignal.stub.dao.UserDAOStub;
@@ -30,7 +30,7 @@ import com.ipsignal.stub.mem.MemcachedStub;
 public class SignalResourceMock extends SignalResourceImpl {
 	
 	public SignalResourceMock() {
-		super(new SignalMapperMock(), new LogMapperImpl(), new SignalDAOStub(), new UserDAOStub(), new LogDAOStub(), new MailManagerMock(), new AutomateStub(), new MemcachedStub());
+		super(new SignalMapperMock(), new LogMapperImpl(), new SignalDAOStub(), new UserDAOStub(), new LogDAOStub(), new MailManagerMock(), new AutomateMock(), new MemcachedStub());
 	}
 
 }
