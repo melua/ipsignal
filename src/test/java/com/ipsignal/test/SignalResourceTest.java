@@ -1,6 +1,10 @@
 package com.ipsignal.test;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+
 import javax.ws.rs.core.Response;
+import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Assert;
@@ -51,7 +55,7 @@ public class SignalResourceTest {
 	}
 	
 	@Test
-	public void testCreate() {
+	public void testCreate1() {
 		SignalDTO dto = new SignalDTO(url, certificate, latency, path, expected, email, browser, null, notify, interval, retention);
 		
 		Response response = resource.create(dto);
@@ -75,6 +79,93 @@ public class SignalResourceTest {
 		Assert.assertEquals(dto.getBrowser(), res.getBeacon().getBrowser());
 		Assert.assertEquals(dto.getInterval(), res.getBeacon().getInterval());
 		Assert.assertEquals(dto.getRetention(), res.getBeacon().getRetention());
+	}
+	
+	@Test
+	public void testCreate2() {
+		
+		byte[] bBrowser = browser.getBytes(StandardCharsets.UTF_8);
+		byte[] bCertificate = String.valueOf(certificate).getBytes(StandardCharsets.UTF_8);
+		byte[] bEmail = email.getBytes(StandardCharsets.UTF_8);
+		byte[] bExpected = expected.getBytes(StandardCharsets.UTF_8);
+		byte[] bInterval = String.valueOf(interval).getBytes(StandardCharsets.UTF_8);
+		byte[] bLatency = String.valueOf(latency).getBytes(StandardCharsets.UTF_8);
+		byte[] bNotify = String.valueOf(notify).getBytes(StandardCharsets.UTF_8);
+		byte[] bPath = path.getBytes(StandardCharsets.UTF_8);
+		byte[] bUrl = url.getBytes(StandardCharsets.UTF_8);
+		
+		ByteBuffer buffer = ByteBuffer.allocate(
+				2 + bBrowser.length
+				+ 2 + bCertificate.length
+				+ 2 + bEmail.length
+				+ 2 + bExpected.length
+				+ 2 + bInterval.length
+				+ 2 + bLatency.length
+				+ 2 + bNotify.length
+				+ 2 + bPath.length
+				+ 2 + bUrl.length);
+		
+		buffer.put(SignalDTO.T_BROWSER);
+		buffer.put((byte) bBrowser.length);
+		buffer.put(bBrowser);
+
+		buffer.put(SignalDTO.T_CERTIFICATE);
+		buffer.put((byte) bCertificate.length);
+		buffer.put(bCertificate);
+		
+		buffer.put(SignalDTO.T_EMAIL);
+		buffer.put((byte) bEmail.length);
+		buffer.put(bEmail);
+		
+		buffer.put(SignalDTO.T_EXPECTED);
+		buffer.put((byte) bExpected.length);
+		buffer.put(bExpected);
+		
+		buffer.put(SignalDTO.T_INTERVAL);
+		buffer.put((byte) bInterval.length);
+		buffer.put(bInterval);
+		
+		buffer.put(SignalDTO.T_LATENCY);
+		buffer.put((byte) bLatency.length);
+		buffer.put(bLatency);
+		
+		buffer.put(SignalDTO.T_NOTIFY);
+		buffer.put((byte) bNotify.length);
+		buffer.put(bNotify);
+		
+		buffer.put(SignalDTO.T_PATH);
+		buffer.put((byte) bPath.length);
+		buffer.put(bPath);
+		
+		buffer.put(SignalDTO.T_URL);
+		buffer.put((byte) bUrl.length);
+		buffer.put(bUrl);
+		
+		byte[] data = buffer.array();
+		
+		System.out.println(DatatypeConverter.printHexBinary(data));
+		
+		Response response = resource.create(data);
+		
+		Assert.assertNotNull(response);
+		Assert.assertEquals(200, response.getStatus());
+		Assert.assertTrue(response.getEntity() instanceof GenericDTO);
+		
+		GenericDTO res = (GenericDTO) response.getEntity();
+		Assert.assertEquals(GenericDTO.OBJECTCREATED.getCode(), res.getCode());
+		Assert.assertNotNull(res.getDetail());
+		Assert.assertNotNull(res.getBeacon());
+		
+		Assert.assertEquals(url, res.getBeacon().getUrl());
+		Assert.assertEquals(email, res.getBeacon().getEmail());
+		Assert.assertEquals(notify, res.getBeacon().getNotify());
+		Assert.assertEquals(certificate, res.getBeacon().getCertificate());
+		Assert.assertEquals(latency, res.getBeacon().getLatency());
+		Assert.assertEquals(path, res.getBeacon().getPath());
+		Assert.assertEquals(expected, res.getBeacon().getExpected());
+		Assert.assertEquals(browser, res.getBeacon().getBrowser());
+		Assert.assertEquals(interval, res.getBeacon().getInterval());
+		Assert.assertEquals(retention, res.getBeacon().getRetention());
 	}
 	
 	@Test

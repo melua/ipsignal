@@ -34,6 +34,7 @@ import com.ipsignal.entity.impl.SignalEntity;
 import com.ipsignal.entity.impl.UserEntity;
 import com.ipsignal.mapper.LogMapper;
 import com.ipsignal.mapper.SignalMapper;
+import com.ipsignal.tool.TLVParser;
 
 @Stateless
 public class SignalMapperImpl implements SignalMapper {
@@ -135,6 +136,21 @@ public class SignalMapperImpl implements SignalMapper {
 		parent.setRetention(child.getRetention());
 		parent.setCertificate(child.getCertificate());
 		parent.setLatency(child.getLatency());
+	}
+
+	@Override
+	public SignalDTO tlvToDto(byte[] tlv) {
+		SignalDTO dto = new SignalDTO();
+		dto.setBrowser(TLVParser.readTLV(tlv, SignalDTO.T_BROWSER));
+		dto.setCertificate(Integer.valueOf(TLVParser.readTLV(tlv, SignalDTO.T_CERTIFICATE)));
+		dto.setEmail(TLVParser.readTLV(tlv, SignalDTO.T_EMAIL));
+		dto.setExpected(TLVParser.readTLV(tlv, SignalDTO.T_EXPECTED));
+		dto.setInterval(Integer.valueOf(TLVParser.readTLV(tlv, SignalDTO.T_INTERVAL)));
+		dto.setLatency(Integer.valueOf(TLVParser.readTLV(tlv, SignalDTO.T_LATENCY)));
+		dto.setNotify(TLVParser.readTLV(tlv, SignalDTO.T_NOTIFY));
+		dto.setPath(TLVParser.readTLV(tlv, SignalDTO.T_PATH));
+		dto.setUrl(TLVParser.readTLV(tlv, SignalDTO.T_URL));
+		return dto;
 	}
 
 }

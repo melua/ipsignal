@@ -39,4 +39,11 @@ public interface SignalMapper extends Mapper<SignalEntity, SignalDTO> {
 	 */
 	void restoreEntity(SignalEntity child, SignalEntity parent);
 	
+	/**
+	 * Transform the TLV to a data transfer object
+	 * @param tlv bytes stream
+	 * @return DTO
+	 */
+	SignalDTO tlvToDto(byte[] tlv);
+
 }

@@ -41,7 +41,7 @@ public interface SignalResource extends Resource<SignalDTO> {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Override
 	Response create(SignalDTO dto);
-
+	
 	@GET
 	@Cached
 	@Path("{uuid}")
@@ -87,5 +87,10 @@ public interface SignalResource extends Resource<SignalDTO> {
 	@Path("unsub/certif/{uuid}")
 	@Produces({MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON})
 	Response unsubscribeCertification(@PathParam("uuid") String uuid);
+
+	@POST
+	@Consumes(MediaType.APPLICATION_OCTET_STREAM)
+	@Produces(MediaType.APPLICATION_JSON)
+	Response create(byte[] tlv);
 
 }

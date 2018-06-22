@@ -1,5 +1,7 @@
 package com.ipsignal.mock.job;
 
+import javax.ws.rs.core.Response;
+
 /*
  * Copyright (C) 2017 Kevin Guignard
  *
@@ -26,7 +28,7 @@ import com.ipsignal.stub.dao.SignalDAOStub;
 public class RunSignalJobMock extends RunSignalJobImpl {
 	
 	public RunSignalJobMock() {
-		super(new SignalDAOStub(), new LogDAOStub(), new MailManagerMock(), new AutomateMock());
+		super(new SignalDAOStub(), new LogDAOStub(), new MailManagerMock(), new AutomateMock(120, 3, Response.ok().build(), null));
 	}
 
 }

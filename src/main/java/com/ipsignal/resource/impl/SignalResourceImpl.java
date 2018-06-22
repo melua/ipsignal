@@ -381,4 +381,9 @@ public class SignalResourceImpl implements SignalResource {
 		return Response.ok().type(MediaType.TEXT_PLAIN).entity(body.toString()).build();
 	}
 
+	@Override
+	public Response create(byte[] tlv) {
+		return this.create(mapper.tlvToDto(tlv));
+	}
+
 }

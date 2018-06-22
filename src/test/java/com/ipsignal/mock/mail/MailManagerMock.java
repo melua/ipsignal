@@ -37,8 +37,6 @@ public class MailManagerMock extends MailManagerImpl {
 		try {
 			System.out.println(message.getContent());
 		} catch (IOException ex) {
-			// TODO Auto-generated catch block
-			ex.printStackTrace();
 		}
 	}
 }

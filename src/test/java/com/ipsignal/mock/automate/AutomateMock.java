@@ -1,6 +1,16 @@
 package com.ipsignal.mock.automate;
 
-import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.SocketAddress;
+import java.net.SocketTimeoutException;
+import java.net.URL;
+import java.util.Calendar;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.ws.rs.core.Response;
+
+import org.apache.cxf.jaxrs.client.WebClient;
 
 /*
  * Copyright (C) 2017 Kevin Guignard
@@ -19,17 +29,6 @@ import java.io.ByteArrayInputStream;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.io.IOException;
-import java.net.Socket;
-import java.net.SocketAddress;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-
-import javax.net.ssl.HttpsURLConnection;
-import javax.ws.rs.core.Response;
-
-import org.apache.cxf.jaxrs.client.WebClient;
-
 import com.ipsignal.automate.impl.AutomateImpl;
 import com.ipsignal.mock.mail.MailManagerMock;
 import com.ipsignal.stub.dao.LogDAOStub;
@@ -37,28 +36,48 @@ import com.ipsignal.stub.dao.SignalDAOStub;
 import com.ipsignal.stub.mem.MemcachedStub;
 
 public class AutomateMock extends AutomateImpl {
-
-	public AutomateMock() {
-		super(new SignalDAOStub(), new LogDAOStub(), new MailManagerMock(), new MemcachedStub());
+	
+	public enum Exception {
+		SOCKET_TIMEOUT_EXCEPTION,
+		IO_EXCEPTION
 	}
+	
+	private final int latency;
+	private final int expiration;
+	private final Response response;
+	private final Exception exception;
 
+	public AutomateMock(int latency, int expiration, Response response, Exception exception) {
+		super(new SignalDAOStub(), new LogDAOStub(), new MailManagerMock(), new MemcachedStub());
+		this.latency = latency;
+		this.expiration = expiration;
+		this.response = response;
+		this.exception = exception;
+	}
+	
 	@Override
 	protected void doConnect(Socket socket, SocketAddress endpoint, int timeout) throws IOException {
+		if (Exception.SOCKET_TIMEOUT_EXCEPTION.equals(exception)) {
+			throw new SocketTimeoutException();
+		} else if (Exception.IO_EXCEPTION.equals(exception)) {
+			throw new IOException();
+		}
 		try {
-			Thread.sleep(150);
+			Thread.sleep(this.latency);
 		} catch (InterruptedException ex) {
 		}
 	}
 
 	@Override
 	protected Response doGet(WebClient client) throws IOException {
-		String body = "<html><head><title>Title</title></head><body><h1>Test</h1><p>lorem ipsum</p></body></html>";
-		return Response.ok(new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8))).build();
+		return this.response;
 	}
 
 	@Override
 	protected long getExpirationTimestamp(HttpsURLConnection conn, URL url) throws IOException {
-		return 25;
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DATE, this.expiration);
+		return calendar.getTimeInMillis();
 	}
 
 }
