@@ -19,6 +19,8 @@ package com.ipsignal.tool;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,6 +28,7 @@ import java.util.logging.Logger;
 public class TLVParser {
 	
 	private static final Logger LOGGER = Logger.getLogger(TLVParser.class.getName());
+	private static final Charset CHARSET = StandardCharsets.UTF_8;
 
 	public static String readTLV(byte[] tlv, byte tag) {
 
@@ -42,7 +45,7 @@ public class TLVParser {
 					byte[] value = new byte[lenght];
 					stream.read(value);
 					if (type == tag) {
-						return new String(value, StandardCharsets.UTF_8);
+						return new String(value, CHARSET);
 					}
 				}
 			}
@@ -52,6 +55,19 @@ public class TLVParser {
 		}
 
 		return null;
+	}
+	
+	public static byte[] writeTLV(String value, byte tag) {
+		byte[] bytes = value.getBytes(CHARSET);
+		ByteBuffer buffer = ByteBuffer.allocate(2 + bytes.length);
+		buffer.put(tag);
+		buffer.put((byte) bytes.length);
+		buffer.put(bytes);
+		return buffer.array();
+	}
+	
+	public static byte[] writeTLV(Integer value, byte tag) {
+		return writeTLV(String.valueOf(value), tag);
 	}
 
 }
