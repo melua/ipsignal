@@ -1,5 +1,9 @@
 package com.ipsignal.mapper.impl;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
 /*
  * Copyright (C) 2017 Kevin Guignard
  *
@@ -40,6 +44,8 @@ import com.ipsignal.tool.TLVParser;
 public class SignalMapperImpl implements SignalMapper {
 	
 	private static final Format FORMATTER = FastDateFormat.getInstance("yyyy-MM-dd");
+	private static final Charset CHARSET = StandardCharsets.UTF_8;
+	private static final int BUFFER_MAX = 4096;
 
 	@EJB
 	LogMapper mapper;
@@ -151,6 +157,78 @@ public class SignalMapperImpl implements SignalMapper {
 		dto.setPath(TLVParser.readTLV(tlv, SignalDTO.T_PATH));
 		dto.setUrl(TLVParser.readTLV(tlv, SignalDTO.T_URL));
 		return dto;
+	}
+
+	@Override
+	public byte[] DtoToTlv(SignalDTO dto) {
+		
+		ByteBuffer buffer = ByteBuffer.allocate(BUFFER_MAX);
+		
+		if (dto.getBrowser() != null) {
+			byte[] browser = dto.getBrowser().getBytes(CHARSET);
+			buffer.put(SignalDTO.T_BROWSER);
+			buffer.put((byte) browser.length);
+			buffer.put(browser);
+		}
+		
+		if (dto.getCertificate() != null) {
+			byte[] certificate = String.valueOf(dto.getCertificate()).getBytes(CHARSET);
+			buffer.put(SignalDTO.T_CERTIFICATE);
+			buffer.put((byte) certificate.length);
+			buffer.put(certificate);
+		}
+		
+		if (dto.getEmail() != null) {
+			byte[] email = dto.getEmail().getBytes(CHARSET);
+			buffer.put(SignalDTO.T_EMAIL);
+			buffer.put((byte) email.length);
+			buffer.put(email);
+		}
+
+		if (dto.getExpected() != null) {
+			byte[] expected = dto.getExpected().getBytes(CHARSET);
+			buffer.put(SignalDTO.T_EXPECTED);
+			buffer.put((byte) expected.length);
+			buffer.put(expected);
+		}
+		
+		if (dto.getInterval() != null) {
+			byte[] interval = String.valueOf(dto.getInterval()).getBytes(CHARSET);
+			buffer.put(SignalDTO.T_INTERVAL);
+			buffer.put((byte) interval.length);
+			buffer.put(interval);
+		}
+		
+		if (dto.getLatency() != null) {
+			byte[] latency = String.valueOf(dto.getLatency()).getBytes(CHARSET);
+			buffer.put(SignalDTO.T_LATENCY);
+			buffer.put((byte) latency.length);
+			buffer.put(latency);
+		}
+		
+		if (dto.getNotify() != null) {
+			byte[] notify = String.valueOf(dto.getNotify()).getBytes(CHARSET);
+			buffer.put(SignalDTO.T_NOTIFY);
+			buffer.put((byte) notify.length);
+			buffer.put(notify);
+		}
+		
+		if (dto.getPath() != null) {
+			byte[] path = dto.getPath().getBytes(CHARSET);
+			buffer.put(SignalDTO.T_PATH);
+			buffer.put((byte) path.length);
+			buffer.put(path);
+		}
+		
+		if (dto.getUrl() != null) {
+			byte[] url = dto.getUrl().getBytes(CHARSET);
+			buffer.put(SignalDTO.T_URL);
+			buffer.put((byte) url.length);
+			buffer.put(url);
+		}
+		
+		buffer.flip();
+		return buffer.array();
 	}
 
 }

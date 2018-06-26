@@ -1,8 +1,5 @@
 package com.ipsignal.test;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-
 import javax.ws.rs.core.Response;
 import javax.xml.bind.DatatypeConverter;
 
@@ -16,6 +13,8 @@ import com.ipsignal.Config;
 import com.ipsignal.automate.Browser;
 import com.ipsignal.dto.impl.GenericDTO;
 import com.ipsignal.dto.impl.SignalDTO;
+import com.ipsignal.mapper.SignalMapper;
+import com.ipsignal.mock.mapper.SignalMapperMock;
 import com.ipsignal.mock.resource.SignalResourceMock;
 import com.ipsignal.resource.SignalResource;
 import com.ipsignal.stub.dao.LogDAOStub;
@@ -24,6 +23,7 @@ import com.ipsignal.stub.dao.SignalDAOStub;
 public class SignalResourceTest {
 	
 	private static SignalResource resource;
+	private static SignalMapper mapper;
 	private String browser;
 	private Integer certificate;
 	private String email;
@@ -38,6 +38,7 @@ public class SignalResourceTest {
 	@BeforeClass
 	public static void init() throws Exception {
 		resource = new SignalResourceMock();
+		mapper = new SignalMapperMock();
 	}
 	
 	@Before	
@@ -84,64 +85,9 @@ public class SignalResourceTest {
 	@Test
 	public void testCreate2() {
 		
-		byte[] bBrowser = browser.getBytes(StandardCharsets.UTF_8);
-		byte[] bCertificate = String.valueOf(certificate).getBytes(StandardCharsets.UTF_8);
-		byte[] bEmail = email.getBytes(StandardCharsets.UTF_8);
-		byte[] bExpected = expected.getBytes(StandardCharsets.UTF_8);
-		byte[] bInterval = String.valueOf(interval).getBytes(StandardCharsets.UTF_8);
-		byte[] bLatency = String.valueOf(latency).getBytes(StandardCharsets.UTF_8);
-		byte[] bNotify = String.valueOf(notify).getBytes(StandardCharsets.UTF_8);
-		byte[] bPath = path.getBytes(StandardCharsets.UTF_8);
-		byte[] bUrl = url.getBytes(StandardCharsets.UTF_8);
+		SignalDTO dto = new SignalDTO(url, certificate, latency, path, expected, email, browser, null, notify, interval, retention);
 		
-		ByteBuffer buffer = ByteBuffer.allocate(
-				2 + bBrowser.length
-				+ 2 + bCertificate.length
-				+ 2 + bEmail.length
-				+ 2 + bExpected.length
-				+ 2 + bInterval.length
-				+ 2 + bLatency.length
-				+ 2 + bNotify.length
-				+ 2 + bPath.length
-				+ 2 + bUrl.length);
-		
-		buffer.put(SignalDTO.T_BROWSER);
-		buffer.put((byte) bBrowser.length);
-		buffer.put(bBrowser);
-
-		buffer.put(SignalDTO.T_CERTIFICATE);
-		buffer.put((byte) bCertificate.length);
-		buffer.put(bCertificate);
-		
-		buffer.put(SignalDTO.T_EMAIL);
-		buffer.put((byte) bEmail.length);
-		buffer.put(bEmail);
-		
-		buffer.put(SignalDTO.T_EXPECTED);
-		buffer.put((byte) bExpected.length);
-		buffer.put(bExpected);
-		
-		buffer.put(SignalDTO.T_INTERVAL);
-		buffer.put((byte) bInterval.length);
-		buffer.put(bInterval);
-		
-		buffer.put(SignalDTO.T_LATENCY);
-		buffer.put((byte) bLatency.length);
-		buffer.put(bLatency);
-		
-		buffer.put(SignalDTO.T_NOTIFY);
-		buffer.put((byte) bNotify.length);
-		buffer.put(bNotify);
-		
-		buffer.put(SignalDTO.T_PATH);
-		buffer.put((byte) bPath.length);
-		buffer.put(bPath);
-		
-		buffer.put(SignalDTO.T_URL);
-		buffer.put((byte) bUrl.length);
-		buffer.put(bUrl);
-		
-		byte[] data = buffer.array();
+		byte[] data = mapper.DtoToTlv(dto);
 		
 		System.out.println(DatatypeConverter.printHexBinary(data));
 		

@@ -22,16 +22,16 @@ import com.ipsignal.dto.Restrictive;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SignalDTO extends Restrictive implements DTO {
 	
-	public static final byte T_URL = 0x00;
-	public static final byte T_CERTIFICATE = 0x01;
-	public static final byte T_LATENCY = 0x02;
-	public static final byte T_PATH = 0x03;
-	public static final byte T_EXPECTED = 0x04;
-	public static final byte T_EMAIL = 0x05;
-	public static final byte T_BROWSER = 0x06;
-	public static final byte T_NOTIFY = 0x07;
-	public static final byte T_INTERVAL = 0x08;
-	public static final byte T_RETENTION = 0x09;
+	public static final byte T_URL = 0x01;
+	public static final byte T_CERTIFICATE = 0x02;
+	public static final byte T_LATENCY = 0x03;
+	public static final byte T_PATH = 0x04;
+	public static final byte T_EXPECTED = 0x05;
+	public static final byte T_EMAIL = 0x06;
+	public static final byte T_BROWSER = 0x07;
+	public static final byte T_NOTIFY = 0x08;
+	public static final byte T_INTERVAL = 0x09;
+	public static final byte T_RETENTION = 0x0f;
 
 	@NotNull
 	@UrlAddress
