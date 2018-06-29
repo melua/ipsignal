@@ -46,11 +46,11 @@ public class SignalResourceTest {
 		browser = Browser.CHROME.toString();
 		certificate = 7;
 		email = "test@example.com";
-		expected = RandomStringUtils.randomAlphanumeric(10);
+		expected = RandomStringUtils.random(255);
 		interval = 60;
 		latency = 15;
 		notify = "http://www.example.com/notify";
-		path = RandomStringUtils.randomAlphanumeric(30);
+		path = RandomStringUtils.random(255);
 		retention = 3;
 		url = "http://www.example.com";
 	}

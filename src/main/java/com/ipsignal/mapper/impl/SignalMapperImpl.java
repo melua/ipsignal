@@ -144,15 +144,44 @@ public class SignalMapperImpl implements SignalMapper {
 	@Override
 	public SignalDTO tlvToDto(byte[] tlv) {
 		SignalDTO dto = new SignalDTO();
-		dto.setBrowser(TLVParser.readTLV(tlv, SignalDTO.T_BROWSER));
-		dto.setCertificate(Integer.valueOf(TLVParser.readTLV(tlv, SignalDTO.T_CERTIFICATE)));
-		dto.setEmail(TLVParser.readTLV(tlv, SignalDTO.T_EMAIL));
-		dto.setExpected(TLVParser.readTLV(tlv, SignalDTO.T_EXPECTED));
-		dto.setInterval(Integer.valueOf(TLVParser.readTLV(tlv, SignalDTO.T_INTERVAL)));
-		dto.setLatency(Integer.valueOf(TLVParser.readTLV(tlv, SignalDTO.T_LATENCY)));
-		dto.setNotify(TLVParser.readTLV(tlv, SignalDTO.T_NOTIFY));
-		dto.setPath(TLVParser.readTLV(tlv, SignalDTO.T_PATH));
-		dto.setUrl(TLVParser.readTLV(tlv, SignalDTO.T_URL));
+		String browser = TLVParser.readTLV(tlv, SignalDTO.T_BROWSER);
+		String certificate = TLVParser.readTLV(tlv, SignalDTO.T_CERTIFICATE);
+		String email = TLVParser.readTLV(tlv, SignalDTO.T_EMAIL);
+		String expected = TLVParser.readTLV(tlv, SignalDTO.T_EXPECTED);
+		String interval = TLVParser.readTLV(tlv, SignalDTO.T_INTERVAL);
+		String latency = TLVParser.readTLV(tlv, SignalDTO.T_LATENCY);
+		String notify = TLVParser.readTLV(tlv, SignalDTO.T_NOTIFY);
+		String path = TLVParser.readTLV(tlv, SignalDTO.T_PATH);
+		String url = TLVParser.readTLV(tlv, SignalDTO.T_URL);
+	
+		if (browser != null) {
+			dto.setBrowser(browser);
+		}
+		if (certificate != null) {
+			dto.setCertificate(Integer.valueOf(certificate));
+		}
+		if (email != null) {
+			dto.setEmail(email);
+		}
+		if (expected != null) {
+			dto.setExpected(expected);
+		}
+		if (interval != null) {
+			dto.setInterval(Integer.valueOf(interval));
+		}
+		if (latency != null) {
+			dto.setLatency(Integer.valueOf(latency));
+		}
+		if (notify != null) {
+			dto.setNotify(notify);
+		}
+		if (path != null) {
+			dto.setPath(path);
+		}
+		if (url != null) {
+			dto.setUrl(url);
+		}
+
 		return dto;
 	}
 
@@ -198,7 +227,9 @@ public class SignalMapperImpl implements SignalMapper {
 		}
 		
 		buffer.flip();
-		return buffer.array();
+		byte[] result = new byte[buffer.limit()];
+		buffer.get(result, 0, buffer.limit());
+		return result;
 	}
 
 }
