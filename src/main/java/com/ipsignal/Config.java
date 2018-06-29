@@ -40,6 +40,7 @@ public final class Config
 	public static final String MEMC_HOST;
 	public static final int MEMC_PORT;
 	public static final int MEMC_TIME;
+	public static final String FILER_PATH;
 
 	public static final boolean DISABLE_JOBS;
 	public static final boolean DISABLE_PURGES;
@@ -70,6 +71,7 @@ public final class Config
 		MEMC_HOST = getString(PROPS, "memc.host", "localhost");
 		MEMC_PORT = getInt(PROPS, "memc.port", 11211);
 		MEMC_TIME = getInt(PROPS, "memc.time", 0);
+		FILER_PATH = getString(PROPS, "filer.path", "/var/lib/tomcat");
 
 		DISABLE_JOBS = getBoolean(PROPS, "jobs.skip", false);
 		DISABLE_PURGES = getBoolean(PROPS, "dele.skip", false);

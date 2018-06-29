@@ -36,6 +36,7 @@ import com.ipsignal.dto.impl.SignalDTO;
 import com.ipsignal.entity.impl.LogEntity;
 import com.ipsignal.entity.impl.SignalEntity;
 import com.ipsignal.entity.impl.UserEntity;
+import com.ipsignal.file.FileManager;
 import com.ipsignal.mail.MailManager;
 import com.ipsignal.mapper.LogMapper;
 import com.ipsignal.mapper.SignalMapper;
@@ -62,12 +63,14 @@ public class SignalResourceImpl implements SignalResource {
 	private Automate automate;
 	@EJB
 	private Memcached mem;
+	@EJB
+	private FileManager filer;
 
 	public SignalResourceImpl() {
 		// For injection
 	}
 
-	protected SignalResourceImpl(SignalMapper mapper, LogMapper logmap, SignalDAO dao, UserDAO user, LogDAO log, MailManager mailer, Automate automate, Memcached mem) {
+	protected SignalResourceImpl(SignalMapper mapper, LogMapper logmap, SignalDAO dao, UserDAO user, LogDAO log, MailManager mailer, Automate automate, Memcached mem, FileManager filer) {
 		// For tests
 		this.mapper = mapper;
 		this.logmap = logmap;
@@ -77,6 +80,7 @@ public class SignalResourceImpl implements SignalResource {
 		this.mailer = mailer;
 		this.automate = automate;
 		this.mem = mem;
+		this.filer = filer;
 	}
 
 	@Override
@@ -119,6 +123,10 @@ public class SignalResourceImpl implements SignalResource {
 		
 		// Persist in database
 		dao.add(entity);
+
+		// Write TLV do disk
+		byte[] bytes = mapper.DtoToTlv(dto);
+		filer.writeToDisk(bytes, entity.getUuid());
 
 		// Send response
 		return Response.ok().entity(GenericDTO.OBJECTCREATED.signal(mapper.entityToDto(entity))).build();
