@@ -38,6 +38,15 @@ public class FileManagerImpl implements FileManager {
 	
 	@EJB
 	private SignalMapper mapper;
+	
+	public FileManagerImpl() {
+		// For injection
+	}
+	
+	protected FileManagerImpl(SignalMapper mapper) {
+		// For tests
+		this.mapper = mapper;
+	}
 
 	@Override
 	public boolean writeToDisk(SignalDTO dto, final String uid) {
