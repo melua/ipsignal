@@ -1,5 +1,7 @@
 package com.ipsignal.file;
 
+import javax.ejb.Asynchronous;
+
 /*
  * Copyright (C) 2017 Kevin Guignard
  *
@@ -19,15 +21,27 @@ package com.ipsignal.file;
 
 import javax.ejb.Local;
 
+import com.ipsignal.dto.impl.SignalDTO;
+
 @Local(FileManager.class)
 public interface FileManager {
 
 	/**
 	 * Write TLV on disk
-	 * @param data bytes to write
+	 * @param dto to write
 	 * @param uid of the signal
 	 * @return true if successful, false otherwise
 	 */
-	boolean writeToDisk(byte[] data, String uid);
+	boolean writeToDisk(SignalDTO dto, String uid);
+	
+	
+	/**
+	 * Write TLV on disk when available
+	 * without waiting for the return
+	 * @param dto to write
+	 * @param uid of the signal
+	 */
+	@Asynchronous
+	void writeToDiskAsync(SignalDTO dto, String uid);
 
 }

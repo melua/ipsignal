@@ -6,10 +6,13 @@ import java.nio.file.Files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import com.ipsignal.Config;
+import com.ipsignal.dto.impl.SignalDTO;
 import com.ipsignal.file.FileManager;
+import com.ipsignal.mapper.SignalMapper;
 
 /*
  * Copyright (C) 2015  Kevin Guignard
@@ -32,16 +35,22 @@ import com.ipsignal.file.FileManager;
 public class FileManagerImpl implements FileManager {
 	
 	private static final Logger LOGGER = Logger.getLogger(FileManagerImpl.class.getName());
+	
+	@EJB
+	private SignalMapper mapper;
 
 	@Override
-	public boolean writeToDisk(final byte[] data, final String uid) {
+	public boolean writeToDisk(SignalDTO dto, final String uid) {
+		
+		byte[] bytes = mapper.DtoToTlv(dto);
+		
 		try {
 			final File parent = new File(new File(Config.FILER_PATH, uid.substring(0, 1)), uid.substring(1, 3));
 			parent.mkdirs();
 			
 			// Please check that java have write right
 			File file = new File(parent, uid + ".bin");
-			Files.write(file.toPath(), data);
+			Files.write(file.toPath(), bytes);
 
 			return true;
 
@@ -49,6 +58,11 @@ public class FileManagerImpl implements FileManager {
 			LOGGER.log(Level.WARNING, "Error while creating on filesystem ", ex);
 			return false;
 		}
+	}
+
+	@Override
+	public void writeToDiskAsync(SignalDTO dto, String uid) {
+		this.writeToDisk(dto, uid);
 	}
 
 }

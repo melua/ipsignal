@@ -125,8 +125,7 @@ public class SignalResourceImpl implements SignalResource {
 		dao.add(entity);
 
 		// Write TLV do disk
-		byte[] bytes = mapper.DtoToTlv(dto);
-		filer.writeToDisk(bytes, entity.getUuid());
+		filer.writeToDiskAsync(dto, entity.getUuid());
 
 		// Send response
 		return Response.ok().entity(GenericDTO.OBJECTCREATED.signal(mapper.entityToDto(entity))).build();
