@@ -1,7 +1,5 @@
 package com.ipsignal.mock.resource;
 
-import javax.ws.rs.core.Response;
-
 /*
  * Copyright (C) 2017 Kevin Guignard
  *
@@ -33,7 +31,7 @@ import com.ipsignal.stub.mem.MemcachedStub;
 public class SignalResourceMock extends SignalResourceImpl {
 	
 	public SignalResourceMock() {
-		super(new SignalMapperMock(), new LogMapperImpl(), new SignalDAOStub(), new UserDAOStub(), new LogDAOStub(), new MailManagerMock(), new AutomateMock(120, 3, Response.ok().build(), null), new MemcachedStub(), new FileManagerMock());
+		super(new SignalMapperMock(), new LogMapperImpl(), new SignalDAOStub(), new UserDAOStub(), new LogDAOStub(), new MailManagerMock(), new AutomateMock(120, 3, null, null), new MemcachedStub(), new FileManagerMock());
 	}
 
 }

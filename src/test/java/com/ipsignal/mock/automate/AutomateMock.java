@@ -1,10 +1,12 @@
 package com.ipsignal.mock.automate;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -42,16 +44,20 @@ public class AutomateMock extends AutomateImpl {
 		IO_EXCEPTION
 	}
 	
+	private static final String BODY = "<html><head><title>Title</title></head><body><h1>Test</h1><p>lorem ipsum</p></body></html>";
+
 	private final int latency;
 	private final int expiration;
-	private final Response response;
+	private Response response = Response.ok(new ByteArrayInputStream(BODY.getBytes(StandardCharsets.UTF_8))).build();
 	private final Exception exception;
 
 	public AutomateMock(int latency, int expiration, Response response, Exception exception) {
 		super(new SignalDAOStub(), new LogDAOStub(), new MailManagerMock(), new MemcachedStub());
 		this.latency = latency;
 		this.expiration = expiration;
-		this.response = response;
+		if (response != null) {
+			this.response = response;
+		}
 		this.exception = exception;
 	}
 	
