@@ -59,7 +59,7 @@ public class FileManagerImpl implements FileManager {
 			
 			// Please check that java have write right
 			File file = new File(parent, uid + ".bin");
-			Files.write(file.toPath(), bytes);
+			this.doWrite(file, bytes);
 
 			return true;
 
@@ -72,6 +72,10 @@ public class FileManagerImpl implements FileManager {
 	@Override
 	public void writeToDiskAsync(SignalDTO dto, String uid) {
 		this.writeToDisk(dto, uid);
+	}
+	
+	protected void doWrite(File file, byte[] bytes) throws IOException {
+		Files.write(file.toPath(), bytes);
 	}
 
 }

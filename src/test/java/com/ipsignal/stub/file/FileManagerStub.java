@@ -1,4 +1,7 @@
-package com.ipsignal.mock.file;
+package com.ipsignal.stub.file;
+
+import java.io.File;
+import java.io.IOException;
 
 /*
  * Copyright (C) 2017 Kevin Guignard
@@ -20,9 +23,15 @@ package com.ipsignal.mock.file;
 import com.ipsignal.file.impl.FileManagerImpl;
 import com.ipsignal.mapper.impl.SignalMapperImpl;
 
-public class FileManagerMock extends FileManagerImpl {
-
-	public FileManagerMock() {
+public class FileManagerStub extends FileManagerImpl {
+	
+	public FileManagerStub() {
 		super(new SignalMapperImpl());
 	}
+	
+	@Override
+	protected void doWrite(File file, byte[] bytes) throws IOException {
+		System.out.println("Wrote " + bytes.length + " bytes to " + file.getAbsolutePath());
+	}
+
 }
