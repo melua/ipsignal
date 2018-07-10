@@ -75,7 +75,7 @@ public class SignalMapperTest {
 		SignalEntity entity = mapper.dtoToEntity(dto, null);
 		
 		Assert.assertNotNull(entity);
-		Assert.assertNotNull(entity.getUuid());
+		Assert.assertNotNull(entity.getId());
 		
 		Assert.assertEquals(dto.getUrl(), entity.getUrl());
 		Assert.assertEquals(dto.getCertificate(), entity.getCertificate());
@@ -142,7 +142,7 @@ public class SignalMapperTest {
 		SignalEntity backup = mapper.backupEntity(entity);
 		
 		Assert.assertNotNull(backup);
-		Assert.assertNotEquals(entity.getUuid(), backup.getUuid());
+		Assert.assertNotEquals(entity.getId(), backup.getId());
 		Assert.assertEquals(entity.getUrl(), backup.getUrl());
 		Assert.assertEquals(entity.getCertificate(), backup.getCertificate());
 		Assert.assertEquals(entity.getLatency(), backup.getLatency());
@@ -166,7 +166,7 @@ public class SignalMapperTest {
 		mapper.restoreEntity(child, parent);
 		
 		Assert.assertNotNull(parent);
-		Assert.assertNotEquals(child.getUuid(), parent.getUuid());
+		Assert.assertNotEquals(child.getId(), parent.getId());
 		Assert.assertNotEquals(child.getUrl(), parent.getUrl());
 		Assert.assertNotEquals(child.getUser().getEmail(), parent.getUser().getEmail());
 		Assert.assertNotEquals(child.getUser().getPremium(), parent.getUser().getPremium());

@@ -31,7 +31,7 @@ import com.ipsignal.entity.impl.SignalEntity;
 import com.ipsignal.entity.impl.UserEntity;
 import com.ipsignal.job.PurgePremiumJob;
 import com.ipsignal.mail.MailManager;
-import com.ipsignal.tool.UID;
+import com.ipsignal.tool.IdFactory;
 
 @Stateless
 public class PurgePremiumJobImpl implements PurgePremiumJob {
@@ -56,7 +56,7 @@ public class PurgePremiumJobImpl implements PurgePremiumJob {
 
 	@Override
 	public void execute() {
-		final String hexid = UID.randomUID(HEXID_LENGTH);
+		final String hexid = IdFactory.generateId(HEXID_LENGTH);
 
 		final List<UserEntity> entities = users.findExpired();
 		if (LOGGER.isLoggable(Level.FINE)) {

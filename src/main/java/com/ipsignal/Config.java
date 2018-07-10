@@ -65,7 +65,7 @@ public final class Config
 		MAVEN = loadProperties("/version.properties");
 
 		SERVICE_URL = getURI(PROPS, "serve.url", "http://localhost");
-		READ_ONLY = getString(PROPS, "read.uids", "");
+		READ_ONLY = getString(PROPS, "read.ids", "");
 		SMTP_HOST = getString(PROPS, "smtp.host", "localhost");
 		SMTP_PORT = getInt(PROPS, "smtp.port", 25);
 		MEMC_HOST = getString(PROPS, "memc.host", "localhost");

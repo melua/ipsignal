@@ -48,36 +48,36 @@ public class SignalDAOStub implements SignalDAO {
 	}
 	
 	public SignalDAOStub() {
-		database.put(FIRST.getUuid(), FIRST);
-		database.put(SECOND.getUuid(), SECOND);
-		database.put(THIRD.getUuid(), THIRD);
-		database.put(FOURTH.getUuid(), FOURTH);
-		database.put(FIFTH.getUuid(), FIFTH);
-		database.put(EXPIRED.getUuid(), EXPIRED);
+		database.put(FIRST.getId(), FIRST);
+		database.put(SECOND.getId(), SECOND);
+		database.put(THIRD.getId(), THIRD);
+		database.put(FOURTH.getId(), FOURTH);
+		database.put(FIFTH.getId(), FIFTH);
+		database.put(EXPIRED.getId(), EXPIRED);
 	}
 
 	@Override
 	public void add(SignalEntity entity) {
-		System.out.println("Added signal " + entity.getUuid() + " to database");
-		database.put(entity.getUuid(), entity);
+		System.out.println("Added signal " + entity.getId() + " to database");
+		database.put(entity.getId(), entity);
 	}
 
 	@Override
 	public void update(SignalEntity entity) {
-		System.out.println("Updated signal " + entity.getUuid() + " in database");
-		database.put(entity.getUuid(), entity);
+		System.out.println("Updated signal " + entity.getId() + " in database");
+		database.put(entity.getId(), entity);
 	}
 
 	@Override
 	public void delete(SignalEntity entity) {
-		System.out.println("Deleted signal " + entity.getUuid() + " from database");
-		database.remove(entity.getUuid());
+		System.out.println("Deleted signal " + entity.getId() + " from database");
+		database.remove(entity.getId());
 	}
 
 	@Override
-	public SignalEntity findById(String uuid) {
-		System.out.println("Searching signal " + uuid + " in database");
-		return database.get(uuid);
+	public SignalEntity findById(String id) {
+		System.out.println("Searching signal " + id + " in database");
+		return database.get(id);
 	}
 
 	@Override

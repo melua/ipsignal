@@ -30,7 +30,7 @@ import com.ipsignal.dao.UserDAO;
 import com.ipsignal.entity.impl.UserEntity;
 import com.ipsignal.job.NotifyPremiumJob;
 import com.ipsignal.mail.MailManager;
-import com.ipsignal.tool.UID;
+import com.ipsignal.tool.IdFactory;
 
 @Stateless
 public class NotifyPremiumJobImpl implements NotifyPremiumJob {
@@ -55,7 +55,7 @@ public class NotifyPremiumJobImpl implements NotifyPremiumJob {
 
 	@Override
 	public void execute(Integer days) {
-		final String hexid = UID.randomUID(HEXID_LENGTH);
+		final String hexid = IdFactory.generateId(HEXID_LENGTH);
 
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -days);

@@ -31,7 +31,7 @@ import com.ipsignal.dao.UserDAO;
 import com.ipsignal.entity.impl.SignalEntity;
 import com.ipsignal.entity.impl.UserEntity;
 import com.ipsignal.job.PurgeSignalJob;
-import com.ipsignal.tool.UID;
+import com.ipsignal.tool.IdFactory;
 
 @Stateless
 public class PurgeSignalJobImpl implements PurgeSignalJob {
@@ -56,7 +56,7 @@ public class PurgeSignalJobImpl implements PurgeSignalJob {
 
 	@Override
 	public void execute() {
-		final String hexid = UID.randomUID(HEXID_LENGTH);
+		final String hexid = IdFactory.generateId(HEXID_LENGTH);
 
 		final List<SignalEntity> entities = signals.findExpired();
 		if (LOGGER.isLoggable(Level.FINE)) {

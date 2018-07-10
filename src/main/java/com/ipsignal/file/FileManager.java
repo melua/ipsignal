@@ -29,19 +29,19 @@ public interface FileManager {
 	/**
 	 * Write TLV on disk
 	 * @param dto to write
-	 * @param uid of the signal
+	 * @param id of the signal
 	 * @return true if successful, false otherwise
 	 */
-	boolean writeToDisk(SignalDTO dto, String uid);
+	boolean writeToDisk(SignalDTO dto, String id);
 	
 	
 	/**
 	 * Write TLV on disk when available
 	 * without waiting for the return
 	 * @param dto to write
-	 * @param uid of the signal
+	 * @param id of the signal
 	 */
 	@Asynchronous
-	void writeToDiskAsync(SignalDTO dto, String uid);
+	void writeToDiskAsync(SignalDTO dto, String id);
 
 }

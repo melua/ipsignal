@@ -29,7 +29,7 @@ import com.ipsignal.Config;
 import com.ipsignal.dao.UserDAO;
 import com.ipsignal.entity.impl.UserEntity;
 import com.ipsignal.job.PurgeUserJob;
-import com.ipsignal.tool.UID;
+import com.ipsignal.tool.IdFactory;
 
 @Stateless
 public class PurgeUserJobImpl implements PurgeUserJob {
@@ -51,7 +51,7 @@ public class PurgeUserJobImpl implements PurgeUserJob {
 
 	@Override
 	public void execute() {
-		final String hexid = UID.randomUID(HEXID_LENGTH);
+		final String hexid = IdFactory.generateId(HEXID_LENGTH);
 
 		final List<UserEntity> entities = users.findAlone();
 		if (LOGGER.isLoggable(Level.FINE)) {

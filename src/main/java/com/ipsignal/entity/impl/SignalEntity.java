@@ -35,7 +35,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.ipsignal.entity.Entity;
-import com.ipsignal.tool.UID;
+import com.ipsignal.tool.IdFactory;
 
 @javax.persistence.Entity
 @Table(name = "signals")
@@ -47,7 +47,7 @@ public class SignalEntity implements Entity, Comparable<SignalEntity> {
 
 	@Id
 	@Column(name = "id")
-	private String uuid;
+	private String id;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "user")
@@ -99,7 +99,7 @@ public class SignalEntity implements Entity, Comparable<SignalEntity> {
 	
 	public SignalEntity() {
 		// for manager
-		this.uuid = UID.randomUID(8,4,4);
+		this.id = IdFactory.generateId(8,4,4);
 		this.logs = new ArrayList<>();
 		this.children = new ArrayList<>();
 		this.lastaccess = new Date();
@@ -122,12 +122,12 @@ public class SignalEntity implements Entity, Comparable<SignalEntity> {
 		this.retention = retention;
 	}
 
-	public String getUuid() {
-		return uuid;
+	public String getId() {
+		return id;
 	}
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public Boolean getActive() {

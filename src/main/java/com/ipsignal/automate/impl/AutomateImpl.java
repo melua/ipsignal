@@ -301,7 +301,7 @@ public class AutomateImpl implements Automate {
 
 			try {
 				// Call GET
-				URL url = new URL(signal.getNotify() + (signal.getNotify().endsWith("=") ? "" : "?uuid=") + log.getSignal().getUuid() + "/" + log.getUuid());
+				URL url = new URL(signal.getNotify() + (signal.getNotify().endsWith("=") ? "" : "?id=") + log.getSignal().getId() + "/" + log.getId());
 				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 				conn.connect();
 
@@ -339,7 +339,7 @@ public class AutomateImpl implements Automate {
 
 		if (Config.MEMC_TIME != 0) {
 			// Remove from cache
-			mem.remove(signal.getUuid());
+			mem.remove(signal.getId());
 		}
 	}
 

@@ -18,33 +18,32 @@ package com.ipsignal.tool;
  */
 
 import java.security.SecureRandom;
-import java.util.Random;
 
-public class UID {
+public class IdFactory {
 
+	private static final SecureRandom RAND = new SecureRandom();
 	private static final String SEPARATOR = "-";
 
-	private UID() {
+	private IdFactory() {
 	}
 
-	public static String randomUID(int block, int... blocks) {
+	public static String generateId(int block, int... blocks) {
 		
-		SecureRandom rand = new SecureRandom();		
-		StringBuilder uid = new StringBuilder();
-		uid.append(randomHex(block, rand));
+		StringBuilder builder = new StringBuilder();
+		builder.append(randomHex(block));
 		
 		for (Integer b : blocks) {
-			uid.append(SEPARATOR);
-			uid.append(randomHex(b, rand));
+			builder.append(SEPARATOR);
+			builder.append(randomHex(b));
 		}	
 		
-		return uid.toString();
+		return builder.toString();
 	}
 	
-	private static String randomHex(int size, Random rnd) {
+	private static String randomHex(int size) {
 		StringBuilder sb = new StringBuilder();
         while(sb.length() < size){
-            sb.append(Integer.toHexString(rnd.nextInt()));
+            sb.append(Integer.toHexString(RAND.nextInt()));
         }
         return sb.toString().substring(0, size);
 	}

@@ -92,7 +92,7 @@ public class SignalMapperImpl implements SignalMapper {
 		} else {
 			/*
 			 * CAN'T PATCH
-			 * uuid
+			 * id
 			 * url
 			 * email
 			 * notify

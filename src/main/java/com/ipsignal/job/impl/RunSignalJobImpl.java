@@ -41,7 +41,7 @@ import com.ipsignal.entity.impl.LogEntity;
 import com.ipsignal.entity.impl.SignalEntity;
 import com.ipsignal.job.RunSignalJob;
 import com.ipsignal.mail.MailManager;
-import com.ipsignal.tool.UID;
+import com.ipsignal.tool.IdFactory;
 
 @Stateless
 public class RunSignalJobImpl implements RunSignalJob {
@@ -72,7 +72,7 @@ public class RunSignalJobImpl implements RunSignalJob {
 
 	@Override
 	public void execute(Integer interval) {
-		final String hexid = UID.randomUID(HEXID_LENGTH);
+		final String hexid = IdFactory.generateId(HEXID_LENGTH);
 
 		final List<SignalEntity> entities = signals.findByInterval(interval);
 		if (LOGGER.isLoggable(Level.FINE)) {
@@ -101,7 +101,7 @@ public class RunSignalJobImpl implements RunSignalJob {
 
 						try {
 							// Call GET
-							URL url = new URL(entity.getNotify() + (entity.getNotify().endsWith("=") ? "" : "?uuid=") + log.getSignal().getUuid() + "/" + log.getUuid());
+							URL url = new URL(entity.getNotify() + (entity.getNotify().endsWith("=") ? "" : "?id=") + log.getSignal().getId() + "/" + log.getId());
 							HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 							conn.connect();
 

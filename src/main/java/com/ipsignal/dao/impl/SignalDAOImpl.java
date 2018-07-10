@@ -53,8 +53,8 @@ public class SignalDAOImpl implements SignalDAO {
     }
 
     @Override
-	public SignalEntity findById(final String uuid) {
-    	return entityManager.find(SignalEntity.class, uuid);
+	public SignalEntity findById(final String id) {
+    	return entityManager.find(SignalEntity.class, id);
     }
 
 	@Override

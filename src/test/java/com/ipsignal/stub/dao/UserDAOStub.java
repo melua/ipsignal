@@ -43,34 +43,34 @@ public class UserDAOStub implements UserDAO {
 	}
 	
 	public UserDAOStub() {
-		database.put(STANDARD.getUuid(), STANDARD);
-		database.put(PREMIUM.getUuid(), PREMIUM);
-		database.put(ALONE.getUuid(), ALONE);
-		database.put(EXPIRED.getUuid(), EXPIRED);
+		database.put(STANDARD.getId(), STANDARD);
+		database.put(PREMIUM.getId(), PREMIUM);
+		database.put(ALONE.getId(), ALONE);
+		database.put(EXPIRED.getId(), EXPIRED);
 	}
 
 	@Override
 	public void add(UserEntity entity) {
-		System.out.println("Added user " + entity.getUuid() + " to database");
-		database.put(entity.getUuid(), entity);
+		System.out.println("Added user " + entity.getId() + " to database");
+		database.put(entity.getId(), entity);
 	}
 
 	@Override
 	public void update(UserEntity entity) {
-		System.out.println("Updated user " + entity.getUuid() + " in database");
-		database.put(entity.getUuid(), entity);	
+		System.out.println("Updated user " + entity.getId() + " in database");
+		database.put(entity.getId(), entity);	
 	}
 
 	@Override
 	public void delete(UserEntity entity) {
-		System.out.println("Deleted user " + entity.getUuid() + " from database");
-		database.remove(entity.getUuid());	
+		System.out.println("Deleted user " + entity.getId() + " from database");
+		database.remove(entity.getId());	
 	}
 
 	@Override
-	public UserEntity findById(String uuid) {
-		System.out.println("Searching user " + uuid + " in database");
-		return database.get(uuid);
+	public UserEntity findById(String id) {
+		System.out.println("Searching user " + id + " in database");
+		return database.get(id);
 	}
 
 	@Override

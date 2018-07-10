@@ -116,7 +116,7 @@ public class SignalResourceTest {
 	
 	@Test
 	public void testDeleteById() {
-		Response response = resource.deleteById(SignalDAOStub.FIRST.getUuid());
+		Response response = resource.deleteById(SignalDAOStub.FIRST.getId());
 		
 		Assert.assertNotNull(response);
 		Assert.assertEquals(200, response.getStatus());
@@ -130,7 +130,7 @@ public class SignalResourceTest {
 	
 	@Test
 	public void testGetById1() {
-		Response response = resource.getById(SignalDAOStub.THIRD.getUuid());
+		Response response = resource.getById(SignalDAOStub.THIRD.getId());
 		
 		Assert.assertNotNull(response);
 		Assert.assertEquals(200, response.getStatus());
@@ -152,7 +152,7 @@ public class SignalResourceTest {
 	
 	@Test
 	public void testGetById2() {
-		Response response = resource.getById(SignalDAOStub.THIRD.getUuid(), LogDAOStub.FIRST.getUuid());
+		Response response = resource.getById(SignalDAOStub.THIRD.getId(), LogDAOStub.FIRST.getId());
 		
 		Assert.assertNotNull(response);
 		Assert.assertEquals(200, response.getStatus());
@@ -166,7 +166,7 @@ public class SignalResourceTest {
 	public void testUpdateById() {
 		SignalDTO dto = new SignalDTO(url, certificate, latency, path, expected, email, browser, null, notify, interval, retention);
 		
-		Response response = resource.updateById(SignalDAOStub.SECOND.getUuid(), dto);
+		Response response = resource.updateById(SignalDAOStub.SECOND.getId(), dto);
 		
 		Assert.assertNotNull(response);
 		Assert.assertEquals(200, response.getStatus());
@@ -202,27 +202,27 @@ public class SignalResourceTest {
 	
 	@Test
 	public void testUnsubscribeCertification() {
-		Response response = resource.unsubscribeCertification(SignalDAOStub.FOURTH.getUuid());
+		Response response = resource.unsubscribeCertification(SignalDAOStub.FOURTH.getId());
 		
 		Assert.assertNotNull(response);
 		Assert.assertEquals(200, response.getStatus());
 		Assert.assertTrue(response.getEntity() instanceof String);
 		
 		String res = (String) response.getEntity();
-		Assert.assertTrue(res.contains(SignalDAOStub.FOURTH.getUuid()));
+		Assert.assertTrue(res.contains(SignalDAOStub.FOURTH.getId()));
 		Assert.assertTrue(res.contains(Config.SERVICE_URL.toString()));
 	}
 	
 	@Test
 	public void testUnsubscribeNotification() {
-		Response response = resource.unsubscribeNotification(SignalDAOStub.FIFTH.getUuid());
+		Response response = resource.unsubscribeNotification(SignalDAOStub.FIFTH.getId());
 		
 		Assert.assertNotNull(response);
 		Assert.assertEquals(200, response.getStatus());
 		Assert.assertTrue(response.getEntity() instanceof String);
 		
 		String res = (String) response.getEntity();
-		Assert.assertTrue(res.contains(SignalDAOStub.FIFTH.getUuid()));
-		Assert.assertTrue(res.contains(Config.SERVICE_URL + "/" + SignalDAOStub.FIFTH.getUuid()));
+		Assert.assertTrue(res.contains(SignalDAOStub.FIFTH.getId()));
+		Assert.assertTrue(res.contains(Config.SERVICE_URL + "/" + SignalDAOStub.FIFTH.getId()));
 	}
 }

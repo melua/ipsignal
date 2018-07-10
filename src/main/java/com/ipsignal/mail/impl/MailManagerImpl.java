@@ -54,7 +54,7 @@ public class MailManagerImpl implements MailManager {
 	public Boolean sendSignalCreation(final SignalEntity entity) {
 		TemplateBuilder body = new TemplateBuilder(Config.MAIL_CRUD_CREATE);
 		body.formatSignal(entity);
-		body.formatLink(entity.getUuid());
+		body.formatLink(entity.getId());
 		return send("Confirm your email address.", body.toString(), DONOTREPLY, entity.getUser().getEmail(), null);
 	}
 	
@@ -62,7 +62,7 @@ public class MailManagerImpl implements MailManager {
 	public Boolean sendSignalDeletion(SignalEntity entity) {
 		TemplateBuilder body = new TemplateBuilder(Config.MAIL_CRUD_DELETE);
 		body.formatSignal(entity);
-		body.formatLink(entity.getUuid());
+		body.formatLink(entity.getId());
 		return send("Beacon deleted.", body.toString(), DONOTREPLY, entity.getUser().getEmail(), null);
 	}
 
@@ -70,27 +70,27 @@ public class MailManagerImpl implements MailManager {
 	public Boolean sendSignalModification(final SignalEntity entity, final SignalEntity backup) {
 		TemplateBuilder body = new TemplateBuilder(Config.MAIL_CRUD_UPDATE);
 		body.formatSignal(entity);
-		body.formatLink(backup.getUuid());
+		body.formatLink(backup.getId());
 		return send("Beacon modified.", body.toString(), DONOTREPLY, entity.getUser().getEmail(), null);
 	}
 
 	@Override
 	public void sendSignalNotification(final SignalEntity entity, final LogEntity log) {
-		String unsubscribe = Config.SERVICE_URL + NOTIFY_UNSUBSCRIBE_PATH + entity.getUuid();
+		String unsubscribe = Config.SERVICE_URL + NOTIFY_UNSUBSCRIBE_PATH + entity.getId();
 		TemplateBuilder body = new TemplateBuilder(Config.MAIL_ALERT_NOTIFICATION);
 		body.formatLog(log);
-		body.formatLink(entity.getUuid(), log.getUuid());
+		body.formatLink(entity.getId(), log.getId());
 		body.formatUnsubscribe(unsubscribe);
 		send("Beacon alert: " + log.getDetail(), body.toString(), ALERT, entity.getUser().getEmail(), unsubscribe);
 	}
 	
 	@Override
 	public void sendCertificateExpirationSoon(final SignalEntity entity, final LogEntity log) {
-		String unsubscribe = Config.SERVICE_URL + CERTIFICATE_UNSUBSCRIBE_PATH + entity.getUuid();
+		String unsubscribe = Config.SERVICE_URL + CERTIFICATE_UNSUBSCRIBE_PATH + entity.getId();
 		TemplateBuilder body = new TemplateBuilder(Config.MAIL_ALERT_CERTIFICATE);
 		body.formatDomain(entity.getUrl());
 		body.formatDays(log.getCertificate());
-		body.formatLink(entity.getUuid());
+		body.formatLink(entity.getId());
 		body.formatUnsubscribe(unsubscribe);
 		send("Your certificate expires in " + log.getCertificate() + " days.", body.toString(), ALERT, entity.getUser().getEmail(), unsubscribe);
 	}

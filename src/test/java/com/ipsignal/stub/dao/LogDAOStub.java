@@ -44,34 +44,34 @@ public class LogDAOStub implements LogDAO {
 	}
 	
 	public LogDAOStub() {
-		database.put(FIRST.getUuid(), FIRST);
-		database.put(SECOND.getUuid(), SECOND);
-		database.put(THIRD.getUuid(), THIRD);
-		database.put(EXPIRED.getUuid(), EXPIRED);
+		database.put(FIRST.getId(), FIRST);
+		database.put(SECOND.getId(), SECOND);
+		database.put(THIRD.getId(), THIRD);
+		database.put(EXPIRED.getId(), EXPIRED);
 	}
 
 	@Override
 	public void add(LogEntity entity) {
-		System.out.println("Added log " + entity.getUuid() + " to database");
-		database.put(entity.getUuid(), entity);
+		System.out.println("Added log " + entity.getId() + " to database");
+		database.put(entity.getId(), entity);
 	}
 
 	@Override
 	public void update(LogEntity entity) {
-		System.out.println("Updated log " + entity.getUuid() + " in database");
-		database.put(entity.getUuid(), entity);
+		System.out.println("Updated log " + entity.getId() + " in database");
+		database.put(entity.getId(), entity);
 	}
 
 	@Override
 	public void delete(LogEntity entity) {
-		System.out.println("Deleted log " + entity.getUuid() + " from database");
-		database.remove(entity.getUuid());
+		System.out.println("Deleted log " + entity.getId() + " from database");
+		database.remove(entity.getId());
 	}
 
 	@Override
-	public LogEntity findById(String uuid) {
-		System.out.println("Searching log " + uuid + " in database");
-		return database.get(uuid);
+	public LogEntity findById(String id) {
+		System.out.println("Searching log " + id + " in database");
+		return database.get(id);
 	}
 
 	@Override

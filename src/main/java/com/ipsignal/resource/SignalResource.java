@@ -44,16 +44,16 @@ public interface SignalResource extends Resource<SignalDTO> {
 	
 	@GET
 	@Cached
-	@Path("{uuid}")
+	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Override
-	Response getById(@PathParam("uuid") String uuid);
+	Response getById(@PathParam("id") String id);
 
 	@GET
 	@Cached
-	@Path("{uuid}/{uuid2}")
+	@Path("{id}/{id2}")
 	@Produces({MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON})
-	Response getById(@PathParam("uuid") String uuid, @PathParam("uuid2") String uuid2);
+	Response getById(@PathParam("id") String id, @PathParam("id2") String id2);
 	
 	@GET
 	@Path("count")
@@ -66,27 +66,27 @@ public interface SignalResource extends Resource<SignalDTO> {
 	Response getVersion();
 
 	@PATCH
-	@Path("{uuid}")
+	@Path("{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Override
-	Response updateById(@PathParam("uuid") String uuid, SignalDTO dto);
+	Response updateById(@PathParam("id") String id, SignalDTO dto);
 
 	@DELETE
-	@Path("{uuid}")
+	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Override
-	Response deleteById(@PathParam("uuid") String uuid);
+	Response deleteById(@PathParam("id") String id);
 
 	@GET
-	@Path("unsub/notif/{uuid}")
+	@Path("unsub/notif/{id}")
 	@Produces({MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON})
-	Response unsubscribeNotification(@PathParam("uuid") String uuid);
+	Response unsubscribeNotification(@PathParam("id") String id);
 
 	@GET
-	@Path("unsub/certif/{uuid}")
+	@Path("unsub/certif/{id}")
 	@Produces({MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON})
-	Response unsubscribeCertification(@PathParam("uuid") String uuid);
+	Response unsubscribeCertification(@PathParam("id") String id);
 
 	@POST
 	@Consumes(MediaType.APPLICATION_OCTET_STREAM)

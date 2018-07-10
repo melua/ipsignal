@@ -31,7 +31,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.ipsignal.entity.Entity;
-import com.ipsignal.tool.UID;
+import com.ipsignal.tool.IdFactory;
 
 @javax.persistence.Entity
 @Table(name = "logs")
@@ -56,7 +56,7 @@ public class LogEntity implements Entity, Comparable<LogEntity> {
 
 	@Id
 	@Column(name = "id")
-	private String uuid;
+	private String id;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "signaal")
@@ -89,7 +89,7 @@ public class LogEntity implements Entity, Comparable<LogEntity> {
 	
 	public LogEntity() {
 		// for manager
-		this.uuid = UID.randomUID(4,12);
+		this.id = IdFactory.generateId(4,12);
 		this.access = new Date();
 	}
 	
@@ -113,12 +113,12 @@ public class LogEntity implements Entity, Comparable<LogEntity> {
 		return new LogEntity(signal, latency, certificate, browser, http, obtained, String.format(this.getDetail(), args), source);
 	}
 
-	public String getUuid() {
-		return uuid;
+	public String getId() {
+		return id;
 	}
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public SignalEntity getSignal() {

@@ -85,8 +85,8 @@ public class TemplateBuilder {
 		replace("unsubscribe", unsubscribe);
 	}
 
-	public void formatHtml(String uuid, String cancel) {
-		replace("uuid", uuid);
+	public void formatHtml(String id, String cancel) {
+		replace("id", id);
 		replace("link", Config.SERVICE_URL + "/" + cancel);
 	}
 

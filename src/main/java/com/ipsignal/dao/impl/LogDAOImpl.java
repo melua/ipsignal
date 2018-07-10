@@ -53,8 +53,8 @@ public class LogDAOImpl implements LogDAO {
     }
 
     @Override
-	public LogEntity findById(final String uuid) {
-    	return entityManager.find(LogEntity.class, uuid);
+	public LogEntity findById(final String id) {
+    	return entityManager.find(LogEntity.class, id);
     }
 
 	@Override

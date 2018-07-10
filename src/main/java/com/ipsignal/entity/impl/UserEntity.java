@@ -33,7 +33,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.ipsignal.entity.Entity;
-import com.ipsignal.tool.UID;
+import com.ipsignal.tool.IdFactory;
 
 @javax.persistence.Entity
 @Table(name = "users")
@@ -45,7 +45,7 @@ public class UserEntity implements Entity {
 
 	@Id
 	@Column(name = "id")
-	private String uuid;
+	private String id;
 	
 	@Column(name = "email")
 	private String email;
@@ -59,7 +59,7 @@ public class UserEntity implements Entity {
 	
 	public UserEntity() {
 		// for manager
-		this.uuid = UID.randomUID(16);
+		this.id = IdFactory.generateId(16);
 		this.signals = new ArrayList<>();
 	}
 
@@ -69,12 +69,12 @@ public class UserEntity implements Entity {
 		this.premium = premium;
 	}
 
-	public String getUuid() {
-		return uuid;
+	public String getId() {
+		return id;
 	}
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getEmail() {

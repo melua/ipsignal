@@ -46,10 +46,10 @@ public interface Resource<T extends DTO> {
 	 * If a successful HTTP response contains a message body, 200 "OK" is the response code.
 	 * If the response doesn’t contain a message body, 204 "No Content" must be returned.
 	 *
-	 * @param uuid unique identifier
+	 * @param id unique identifier
 	 * @return appropriate response status
 	 */
-	Response getById(String uuid);
+	Response getById(String id);
 
 	/**
 	 * Update a resource
@@ -58,11 +58,11 @@ public interface Resource<T extends DTO> {
 	 * that you send a response code of 200 "OK" and a response message body
 	 * or a response code of 204 "No Content" without any response body.
 	 *
-	 * @param uuid unique identifier
+	 * @param id unique identifier
 	 * @param dto of the resource representation
 	 * @return appropriate response status
 	 */
-	Response updateById(String uuid, T dto);
+	Response updateById(String id, T dto);
 
 	/**
 	 * Delete a resource
@@ -71,9 +71,9 @@ public interface Resource<T extends DTO> {
 	 * that you send a response code of 200 "OK" and a response message body
 	 * or a response code of 204 "No Content" without any response body.
 	 *
-	 * @param uuid unique identifier
+	 * @param id unique identifier
 	 * @return appropriate response status
 	 */
-	Response deleteById(String uuid);
+	Response deleteById(String id);
 
 }

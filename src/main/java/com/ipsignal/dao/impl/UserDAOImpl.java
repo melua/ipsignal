@@ -54,8 +54,8 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-	public UserEntity findById(final String uuid) {
-    	return entityManager.find(UserEntity.class, uuid);
+	public UserEntity findById(final String id) {
+    	return entityManager.find(UserEntity.class, id);
     }
 
 	@Override

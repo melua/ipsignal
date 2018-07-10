@@ -81,7 +81,7 @@ public class LogMapperTest {
 		Assert.assertEquals(entity.getHttp(), dto.getHttp());
 		Assert.assertEquals(entity.getObtained(), dto.getObtained());
 		Assert.assertEquals(String.format(LogEntity.EQUALS.getDetail(), arg), dto.getDetail());
-		Assert.assertEquals(Config.SERVICE_URL + "/" + signal.getUuid() + "/" + entity.getUuid(), dto.getSource());
+		Assert.assertEquals(Config.SERVICE_URL + "/" + signal.getId() + "/" + entity.getId(), dto.getSource());
 	}
 
 	@Test

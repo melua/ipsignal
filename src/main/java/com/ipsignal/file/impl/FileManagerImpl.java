@@ -49,16 +49,16 @@ public class FileManagerImpl implements FileManager {
 	}
 
 	@Override
-	public boolean writeToDisk(SignalDTO dto, final String uid) {
+	public boolean writeToDisk(SignalDTO dto, final String id) {
 		
 		byte[] bytes = mapper.DtoToTlv(dto);
 		
 		try {
-			final File parent = new File(new File(Config.FILER_PATH, uid.substring(0, 1)), uid.substring(1, 3));
+			final File parent = new File(new File(Config.FILER_PATH, id.substring(0, 1)), id.substring(1, 3));
 			parent.mkdirs();
 			
 			// Please check that java have write right
-			File file = new File(parent, uid + ".bin");
+			File file = new File(parent, id + ".bin");
 			this.doWrite(file, bytes);
 
 			return true;
@@ -70,8 +70,8 @@ public class FileManagerImpl implements FileManager {
 	}
 
 	@Override
-	public void writeToDiskAsync(SignalDTO dto, String uid) {
-		this.writeToDisk(dto, uid);
+	public void writeToDiskAsync(SignalDTO dto, String id) {
+		this.writeToDisk(dto, id);
 	}
 	
 	protected void doWrite(File file, byte[] bytes) throws IOException {

@@ -125,20 +125,20 @@ public class SignalResourceImpl implements SignalResource {
 		dao.add(entity);
 
 		// Write TLV do disk
-		filer.writeToDiskAsync(dto, entity.getUuid());
+		filer.writeToDiskAsync(dto, entity.getId());
 
 		// Send response
 		return Response.ok().entity(GenericDTO.OBJECTCREATED.signal(mapper.entityToDto(entity))).build();
 	}
 
 	@Override
-	public Response getById(final String uuid) {
+	public Response getById(final String id) {
 		// Retrieve entity from database
-		final SignalEntity entity = dao.findById(uuid);
+		final SignalEntity entity = dao.findById(id);
 		
 		// Nothing found in db
 		if (entity == null) {
-			return Response.status(Status.NOT_FOUND).entity(GenericDTO.OBJECTNOTFOUND.format(uuid)).build();
+			return Response.status(Status.NOT_FOUND).entity(GenericDTO.OBJECTNOTFOUND.format(id)).build();
 		}
 		
 		// Rollback
@@ -171,18 +171,18 @@ public class SignalResourceImpl implements SignalResource {
 	}
 	
 	@Override
-	public Response getById(final String uuid, final String uuid2) {
+	public Response getById(final String id, final String id2) {
 		// Retrieve entity from database
-		final LogEntity entity = log.findById(uuid2);
+		final LogEntity entity = log.findById(id2);
 
 		// Nothing found in db
 		if (entity == null) {
-			return Response.status(Status.NOT_FOUND).type(MediaType.APPLICATION_JSON).entity(GenericDTO.OBJECTNOTFOUND.format(uuid2)).build();
+			return Response.status(Status.NOT_FOUND).type(MediaType.APPLICATION_JSON).entity(GenericDTO.OBJECTNOTFOUND.format(id2)).build();
 		}
 
-		// Check signal uuid
-		if (!entity.getSignal().getUuid().equals(uuid)) {
-			return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(GenericDTO.OBJECTNOTLINKED.format(uuid2, uuid)).build();
+		// Check signal id
+		if (!entity.getSignal().getId().equals(id)) {
+			return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(GenericDTO.OBJECTNOTLINKED.format(id2, id)).build();
 		}
 
 		// Check source
@@ -195,21 +195,21 @@ public class SignalResourceImpl implements SignalResource {
 	}
 
 	@Override
-	public Response updateById(final String uuid, final SignalDTO dto) {
+	public Response updateById(final String id, final SignalDTO dto) {
 		// Nothing found in db
-		final SignalEntity entity = dao.findById(uuid);
+		final SignalEntity entity = dao.findById(id);
 		if (entity == null) {
-			return Response.status(Status.NOT_FOUND).entity(GenericDTO.OBJECTNOTFOUND.format(uuid)).build();
+			return Response.status(Status.NOT_FOUND).entity(GenericDTO.OBJECTNOTFOUND.format(id)).build();
 		}
 		
 		// Is read only
-		if (Config.READ_ONLY.contains(entity.getUuid())) {
-			return Response.status(Status.BAD_REQUEST).entity(GenericDTO.OBJECTREADONLY.format(uuid)).build();
+		if (Config.READ_ONLY.contains(entity.getId())) {
+			return Response.status(Status.BAD_REQUEST).entity(GenericDTO.OBJECTREADONLY.format(id)).build();
 		}
 
 		// Is backup
 		if (entity.getParent() != null) {
-			return Response.status(Status.BAD_REQUEST).entity(GenericDTO.OBJECTBACKUP.format(uuid)).build();
+			return Response.status(Status.BAD_REQUEST).entity(GenericDTO.OBJECTBACKUP.format(id)).build();
 		}
 
 		// Check fields
@@ -269,26 +269,26 @@ public class SignalResourceImpl implements SignalResource {
 	}
 
 	@Override
-	public Response deleteById(String uuid) {
+	public Response deleteById(String id) {
 		// Nothing found in db
-		final SignalEntity entity = dao.findById(uuid);
+		final SignalEntity entity = dao.findById(id);
 		if (entity == null) {
-			return Response.status(Status.NOT_FOUND).entity(GenericDTO.OBJECTNOTFOUND.format(uuid)).build();
+			return Response.status(Status.NOT_FOUND).entity(GenericDTO.OBJECTNOTFOUND.format(id)).build();
 		}
 
 		// Is read only
-		if (Config.READ_ONLY.contains(entity.getUuid())) {
-			return Response.status(Status.BAD_REQUEST).entity(GenericDTO.OBJECTREADONLY.format(uuid)).build();
+		if (Config.READ_ONLY.contains(entity.getId())) {
+			return Response.status(Status.BAD_REQUEST).entity(GenericDTO.OBJECTREADONLY.format(id)).build();
 		}
 
 		// Is backup
 		if (entity.getParent() != null) {
-			return Response.status(Status.BAD_REQUEST).entity(GenericDTO.OBJECTBACKUP.format(uuid)).build();
+			return Response.status(Status.BAD_REQUEST).entity(GenericDTO.OBJECTBACKUP.format(id)).build();
 		}
 
 		// Is disabled
 		if (!entity.getActive()) {
-			return Response.status(Status.BAD_REQUEST).entity(GenericDTO.OBJECTDELETED.format(uuid)).build();
+			return Response.status(Status.BAD_REQUEST).entity(GenericDTO.OBJECTDELETED.format(id)).build();
 		}
 
 		// Set inactive
@@ -307,28 +307,28 @@ public class SignalResourceImpl implements SignalResource {
 	}
 
 	@Override
-	public Response unsubscribeNotification(String uuid) {
+	public Response unsubscribeNotification(String id) {
 		// Retrieve entity from database
-		final SignalEntity entity = dao.findById(uuid);
+		final SignalEntity entity = dao.findById(id);
 
 		// Nothing found in db
 		if (entity == null) {
-			return Response.status(Status.NOT_FOUND).type(MediaType.APPLICATION_JSON).entity(GenericDTO.OBJECTNOTFOUND.format(uuid)).build();
+			return Response.status(Status.NOT_FOUND).type(MediaType.APPLICATION_JSON).entity(GenericDTO.OBJECTNOTFOUND.format(id)).build();
 		}
 
 		// Is read only
-		if (Config.READ_ONLY.contains(entity.getUuid())) {
-			return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(GenericDTO.OBJECTREADONLY.format(uuid)).build();
+		if (Config.READ_ONLY.contains(entity.getId())) {
+			return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(GenericDTO.OBJECTREADONLY.format(id)).build();
 		}
 
 		// Is disabled
 		if (!entity.getActive()) {
-			return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(GenericDTO.OBJECTDELETED.format(uuid)).build();
+			return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(GenericDTO.OBJECTDELETED.format(id)).build();
 		}
 
 		// Check if notify is set
 		if (entity.getNotify() != null) {
-			return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(GenericDTO.OBJECTUSBS.format(uuid)).build();
+			return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(GenericDTO.OBJECTUSBS.format(id)).build();
 		}
 
 		// Set inactive
@@ -339,35 +339,35 @@ public class SignalResourceImpl implements SignalResource {
 
 		// Build response
 		TemplateBuilder body = new TemplateBuilder(Config.HTML_UNSUBSCRIBE_NOTIFICATION);
-		body.formatHtml(entity.getUuid(), entity.getUuid());
+		body.formatHtml(entity.getId(), entity.getId());
 
 		// Send response
 		return Response.ok().type(MediaType.TEXT_PLAIN).entity(body.toString()).build();
 	}
 
 	@Override
-	public Response unsubscribeCertification(String uuid) {
+	public Response unsubscribeCertification(String id) {
 		// Retrieve entity from database
-		final SignalEntity entity = dao.findById(uuid);
+		final SignalEntity entity = dao.findById(id);
 
 		// Nothing found in db
 		if (entity == null) {
-			return Response.status(Status.NOT_FOUND).type(MediaType.APPLICATION_JSON).entity(GenericDTO.OBJECTNOTFOUND.format(uuid)).build();
+			return Response.status(Status.NOT_FOUND).type(MediaType.APPLICATION_JSON).entity(GenericDTO.OBJECTNOTFOUND.format(id)).build();
 		}
 
 		// Is read only
-		if (Config.READ_ONLY.contains(entity.getUuid())) {
-			return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(GenericDTO.OBJECTREADONLY.format(uuid)).build();
+		if (Config.READ_ONLY.contains(entity.getId())) {
+			return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(GenericDTO.OBJECTREADONLY.format(id)).build();
 		}
 
 		// Is disabled
 		if (!entity.getActive()) {
-			return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(GenericDTO.OBJECTDELETED.format(uuid)).build();
+			return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(GenericDTO.OBJECTDELETED.format(id)).build();
 		}
 
 		// Check if certificate is set
 		if (entity.getCertificate() == null) {
-			return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(GenericDTO.OBJECTNTLS.format(uuid)).build();
+			return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(GenericDTO.OBJECTNTLS.format(id)).build();
 		}
 
 		// Backup entity
@@ -382,7 +382,7 @@ public class SignalResourceImpl implements SignalResource {
 
 		// Build response
 		TemplateBuilder body = new TemplateBuilder(Config.HTML_UNSUBSCRIBE_CERTIFICATE);
-		body.formatHtml(entity.getUuid(), backup.getUuid());
+		body.formatHtml(entity.getId(), backup.getId());
 
 		// Send response
 		return Response.ok().type(MediaType.TEXT_PLAIN).entity(body.toString()).build();

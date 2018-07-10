@@ -40,7 +40,7 @@ public class LogMapperImpl implements LogMapper {
 		}
 
 		String access = FORMATTER.format(entity.getAccess());
-		String source = entity.getSource() != null ? Config.SERVICE_URL + "/" + entity.getSignal().getUuid() + "/" + entity.getUuid() : null;
+		String source = entity.getSource() != null ? Config.SERVICE_URL + "/" + entity.getSignal().getId() + "/" + entity.getId() : null;
 		return new LogDTO(access, entity.getLatency(), entity.getCertificate(), entity.getBrowser(), entity.getHttp(), entity.getObtained(), entity.getDetail(), source);
 	}
 

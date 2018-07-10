@@ -47,9 +47,9 @@ public interface DAO<T extends Entity> {
 
 	/**
 	 * Retrieve an entity by its primary key
-	 * @param uuid
+	 * @param id
 	 * @return entity if any, null otherwise
 	 */
-	T findById(String uuid);
+	T findById(String id);
 
 }
