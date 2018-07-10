@@ -33,16 +33,28 @@ public class TemplateBuilder {
 
 	private static final Logger LOGGER = Logger.getLogger(TemplateBuilder.class.getName());
 
-	private static final String BEGIN_TAG = "{";
-	private static final String CLOSE_TAG = "}";
-	private static final String UNSET_TAG = "(n/a)";
+	private static final String LINK_SEPARATOR = "/";
+	public static final String BEGIN_TAG = "{";
+	public static final String CLOSE_TAG = "}";
+	public static final String UNSET_TAG = "(n/a)";
 
 	private String value;
 
+	/**
+	 * Create a new TemplateBuilder
+	 * initialized with the given template
+	 * @param template
+	 */
 	public TemplateBuilder(String template) {
 		value = template;
 	}
 
+	/**
+	 * Replace original (inside {@value #BEGIN_TAG} and {@value #CLOSE_TAG} enclosing tags)
+	 * with replacement or {@value #UNSET_TAG} if replacement is null
+	 * @param original
+	 * @param replacement
+	 */
 	public void replace(String original, Object replacement) {
 		Matcher matcher = Pattern.compile(BEGIN_TAG + original + CLOSE_TAG, Pattern.LITERAL).matcher(value);
 		if (matcher.find()) {
@@ -52,6 +64,10 @@ public class TemplateBuilder {
 		}
 	}
 
+	/**
+	 * Replace template with {@link SignalEntity} attributes
+	 * @param entity
+	 */
 	public void formatSignal(SignalEntity entity) {
 		replace("url", entity.getUrl());
 		replace("latency", entity.getLatency());
@@ -63,6 +79,10 @@ public class TemplateBuilder {
 		replace("retention", entity.getRetention());
 	}
 
+	/**
+	 * Replace template with {@link LogEntity} attributes
+	 * @param entity
+	 */
 	public void formatLog(LogEntity entity) {
 		replace("access", entity.getAccess());
 		replace("latency", entity.getLatency());
@@ -72,28 +92,49 @@ public class TemplateBuilder {
 		replace("detail", entity.getDetail());
 	}
 
+	/**
+	 * Replace template link with given values
+	 * @param values
+	 */
 	public void formatLink(String... values) {
 		StringBuilder link = new StringBuilder();
 		for (String val : values) {
-			link.append("/");
+			link.append(LINK_SEPARATOR);
 			link.append(val);
 		}
 		replace("link", Config.SERVICE_URL + link.toString());
 	}
 
+	/**
+	 * Replace template unsubscribe with given value
+	 * @param unsubscribe
+	 */
 	public void formatUnsubscribe(String unsubscribe) {
 		replace("unsubscribe", unsubscribe);
 	}
 
+	/**
+	 * Replace template id and cancel link with given values
+	 * @param id
+	 * @param cancel
+	 */
 	public void formatHtml(String id, String cancel) {
 		replace("id", id);
-		replace("link", Config.SERVICE_URL + "/" + cancel);
+		replace("link", Config.SERVICE_URL + LINK_SEPARATOR + cancel);
 	}
 
+	/**
+	 * Replace template days with given value
+	 * @param days
+	 */
 	public void formatDays(Integer days) {
 		replace("days", days);
 	}
 
+	/**
+	 * Replace template domain with given value
+	 * @param url
+	 */
 	public void formatDomain(String url) {
 		try {
 			replace("domain", new URI(url).getHost());

@@ -22,11 +22,18 @@ import java.security.SecureRandom;
 public class IdFactory {
 
 	private static final SecureRandom RAND = new SecureRandom();
-	private static final String SEPARATOR = "-";
+	public static final String SEPARATOR = "-";
 
 	private IdFactory() {
 	}
 
+	/**
+	 * Generate an new ID based on the given hex sizes sequence
+	 * separated by {@value #SEPARATOR} character
+	 * @param block size of the first hex block
+	 * @param blocks sizes of the optional following hex blocks
+	 * @return a generated ID
+	 */
 	public static String generateId(int block, int... blocks) {
 		
 		StringBuilder builder = new StringBuilder();
@@ -40,6 +47,11 @@ public class IdFactory {
 		return builder.toString();
 	}
 	
+	/**
+	 * Generate a random hex block of the given size
+	 * @param size of the block
+	 * @return random hex block
+	 */
 	private static String randomHex(int size) {
 		StringBuilder sb = new StringBuilder();
         while(sb.length() < size){

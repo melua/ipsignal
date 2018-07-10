@@ -37,7 +37,10 @@ import com.ipsignal.mem.impl.MemcachedImpl;
 @Provider
 public class Interceptor implements WriterInterceptor {
 
-	// JAX-RS 2.0 does not support injection of EJBs into JAX-RS components.
+	/*
+	 *  JAX-RS 2.0 does not support injection
+	 *  of EJBs into JAX-RS components.
+	 */
 	private static final Memcached MEMC = new MemcachedImpl();
 
 	@Context

@@ -31,8 +31,18 @@ public class TLVParser {
 	
 	private static final Logger LOGGER = Logger.getLogger(TLVParser.class.getName());
 	private static final Charset CHARSET = StandardCharsets.UTF_8;
-	private static final byte EXTENTED_BYTES = 0x00;
+	public static final byte EXTENTED_BYTES = 0x00;
 
+	/**
+	 * Read the byte and extract value for the given 1-byte or 2-bytes tag.
+	 * From 0x01 (1) to 0xff (255) the tag is represented as one byte.
+	 * From 0x0100 (256) to 0xffff (65535) the tag is represented as two bytes
+	 * and must be given in {@link ByteOrder#BIG_ENDIAN} order.
+	 * 
+	 * @param tlv byte to read
+	 * @param tags to search for
+	 * @return value for the given tag
+	 */
 	public static String readTLV(byte[] tlv, byte... tags) {
 
 		// Prevent bad input
@@ -42,10 +52,10 @@ public class TLVParser {
 		
 		// Convert tags byte array to short
 		ByteBuffer buffer = ByteBuffer.allocate(2);
-		buffer.order(ByteOrder.LITTLE_ENDIAN);
-		for (byte b : tags) {
-			buffer.put(b);
+		if (tags.length < 2) {
+			buffer.put((byte) 0x00);
 		}
+		buffer.put(tags);
 		short tag = buffer.getShort(0);
 
 		try (DataInputStream stream = new DataInputStream(new ByteArrayInputStream(tlv))) {
@@ -83,6 +93,18 @@ public class TLVParser {
 		return null;
 	}
 	
+	/**
+	 * Write a Tag-Length-Value for the given tag and value,
+	 * and store them as 1-byte or 2-bytes.
+	 * From 0x01 (1) to 0xff (255) tag and length are represented as one byte.
+	 * From 0x0100 (256) to 0xffff (65535) tag and length are represented as two bytes
+	 * and must be given in {@link ByteOrder#BIG_ENDIAN} order. An extra
+	 * {@link #EXTENTED_BYTES} byte is automatically added for 2-bytes tag and length.
+	 * 
+	 * @param value for the given tag
+	 * @param tags to write
+	 * @return byte in Tag-Length-Value representation
+	 */
 	public static byte[] writeTLV(String value, byte... tags) {
 		byte[] bytes = value.getBytes(CHARSET);
 		
@@ -116,6 +138,14 @@ public class TLVParser {
 		return buffer.array();
 	}
 	
+	/**
+	 * Write a Tag-Length-Value for the given tag and integer value
+	 * @see #writeTLV(String, byte...)
+	 * 
+	 * @param value for the given tag
+	 * @param tags to write
+	 * @return byte in Tag-Length-Value representation
+	 */
 	public static byte[] writeTLV(Integer value, byte... tags) {
 		return writeTLV(String.valueOf(value), tags);
 	}

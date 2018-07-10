@@ -96,6 +96,11 @@ public final class Config
 	private Config() {
 	}
 
+	/**
+	 * Load the properties from the given path
+	 * @param path where properties are stored
+	 * @return an instance of properties
+	 */
 	private static Properties loadProperties(String path) {
 		Properties properties = new Properties();
 		try {
@@ -106,6 +111,12 @@ public final class Config
 		return properties;
 	}
 	
+	/**
+	 * Retrieve the value for the given key
+	 * @param properties where to search
+	 * @param key index for the value
+	 * @return the value for the key, or null if the key doesn't exists
+	 */
 	private static String getValue(Properties properties, String key) {
 		if (properties == null) {
 			return null;
@@ -114,6 +125,13 @@ public final class Config
 		return value != null ? value.trim() : null;
 	}
 	
+	/**
+	 * Retrieve a boolean value
+	 * @param properties where to search
+	 * @param key index for the value
+	 * @param defaultValue the value if the key doesn't exists
+	 * @return the boolean for the key, or the default value if the key doesn't exists
+	 */
 	private static boolean getBoolean(Properties properties, String key, boolean defaultValue) {
 		String value = getValue(properties, key);
 
@@ -134,6 +152,13 @@ public final class Config
 		}
 	}
 	
+	/**
+	 * Retrieve an integer value
+	 * @param properties where to search
+	 * @param key index for the value
+	 * @param defaultValue the value if the key doesn't exists
+	 * @return the integer for the key, or the default value if the key doesn't exists
+	 */
 	private static int getInt(Properties properties, String key, int defaultValue) {
 		String value = getValue(properties, key);
 		if (value == null) {
@@ -149,6 +174,13 @@ public final class Config
 		}
 	}
 	
+	/**
+	 * Retrieve a value
+	 * @param properties where to search
+	 * @param key index for the value
+	 * @param defaultValue the value if the key doesn't exists
+	 * @return the value for the key, or the default value if the key doesn't exists
+	 */
 	private static String getString(Properties properties, String key, String defaultValue) {
 		String value = getValue(properties, key);
 		if (value == null) {
@@ -158,6 +190,13 @@ public final class Config
 		return value;
 	}
 	
+	/**
+	 * Retrieve a URI
+	 * @param properties where to search
+	 * @param key index for the value
+	 * @param defaultValue the value if the key doesn't exists
+	 * @return the URI for the key, or the default value if the key doesn't exists
+	 */
 	private static URI getURI(Properties properties, String key, String defaultValue) {
 		URI def = null;
 		try {
@@ -180,6 +219,11 @@ public final class Config
 		}
 	}
 	
+	/**
+	 * Load content from the given path
+	 * @param path where content are stored
+	 * @return the content
+	 */
 	private static String getContent(String path) {
 		String value = null;
 		try {		

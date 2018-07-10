@@ -25,6 +25,10 @@ public class Order implements Comparator<String> {
 
 	private static final List<String> attributes = new LinkedList<>();
 
+	/**
+	 * Set the order of the attributes
+	 * for the marshaler
+	 */
 	static {
 		attributes.add("code");
 		attributes.add("email");
