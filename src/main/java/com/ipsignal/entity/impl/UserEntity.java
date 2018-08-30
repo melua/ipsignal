@@ -43,6 +43,8 @@ import com.ipsignal.tool.IdFactory;
 				@NamedQuery(name = "User.findExpired", query = "SELECT a FROM UserEntity a WHERE a.premium IS NOT NULL AND a.premium < :min") })
 public class UserEntity implements Entity {
 
+	private static final int HEXID_LENGTH = 16;
+
 	@Id
 	@Column(name = "id")
 	private String id;
@@ -59,7 +61,7 @@ public class UserEntity implements Entity {
 	
 	public UserEntity() {
 		// for manager
-		this.id = IdFactory.generateId(16);
+		this.id = IdFactory.generateId(HEXID_LENGTH);
 		this.signals = new ArrayList<>();
 	}
 

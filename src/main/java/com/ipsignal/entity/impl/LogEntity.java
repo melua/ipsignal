@@ -54,6 +54,8 @@ public class LogEntity implements Entity, Comparable<LogEntity> {
 	public static final LogEntity BROWSER = new LogEntity("Invalid browser name.");
 	public static final LogEntity SUCCESS = new LogEntity("Test successful.");
 
+	private static final int[] HEXID_LENGTH = {4,12};
+
 	@Id
 	@Column(name = "id")
 	private String id;
@@ -89,7 +91,7 @@ public class LogEntity implements Entity, Comparable<LogEntity> {
 	
 	public LogEntity() {
 		// for manager
-		this.id = IdFactory.generateId(4,12);
+		this.id = IdFactory.generateId(HEXID_LENGTH);
 		this.access = new Date();
 	}
 	

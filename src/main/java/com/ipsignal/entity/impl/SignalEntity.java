@@ -45,6 +45,8 @@ import com.ipsignal.tool.IdFactory;
 	@NamedQuery(name = "Signal.findCount", query = "SELECT COUNT(a) FROM SignalEntity a")})
 public class SignalEntity implements Entity, Comparable<SignalEntity> {
 
+	private static final int[] HEXID_LENGTH = {8,4,4};
+
 	@Id
 	@Column(name = "id")
 	private String id;
@@ -99,7 +101,7 @@ public class SignalEntity implements Entity, Comparable<SignalEntity> {
 	
 	public SignalEntity() {
 		// for manager
-		this.id = IdFactory.generateId(8,4,4);
+		this.id = IdFactory.generateId(HEXID_LENGTH);
 		this.logs = new ArrayList<>();
 		this.children = new ArrayList<>();
 		this.lastaccess = new Date();

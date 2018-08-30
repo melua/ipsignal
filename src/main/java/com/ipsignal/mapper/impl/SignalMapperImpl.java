@@ -69,7 +69,7 @@ public class SignalMapperImpl implements SignalMapper {
 
 		/*
 		 * The JSON provider doesn't
-		 * skip empty arrays...
+		 * skip empty arrays
 		 */
 		if (!entity.getLogs().isEmpty()) {
 			dto.setLogs(new LinkedList<LogDTO>());

@@ -19,6 +19,8 @@ package com.ipsignal.tool;
 
 import java.security.SecureRandom;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class IdFactory {
 
 	private static final SecureRandom RAND = new SecureRandom();
@@ -30,21 +32,26 @@ public class IdFactory {
 	/**
 	 * Generate an new ID based on the given hex sizes sequence
 	 * separated by {@value #SEPARATOR} character
-	 * @param block size of the first hex block
-	 * @param blocks sizes of the optional following hex blocks
+	 * @param blocks array of sizes
 	 * @return a generated ID
 	 */
-	public static String generateId(int block, int... blocks) {
+	public static String generateId(int[] blocks) {
+		String[] hexes = new String[blocks.length];
 		
-		StringBuilder builder = new StringBuilder();
-		builder.append(randomHex(block));
+		for (int i = 0; i < blocks.length; i++) {
+			hexes[i] = randomHex(blocks[i]);
+		}
 		
-		for (Integer b : blocks) {
-			builder.append(SEPARATOR);
-			builder.append(randomHex(b));
-		}	
-		
-		return builder.toString();
+		return StringUtils.join(hexes, SEPARATOR);
+	}
+
+	/**
+	 * Generate an new ID based on the given hex size
+	 * @param block size
+	 * @return a generated ID
+	 */
+	public static String generateId(int block) {
+		return randomHex(block);
 	}
 	
 	/**
