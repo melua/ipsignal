@@ -11,6 +11,7 @@ import java.util.Calendar;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.cxf.jaxrs.client.WebClient;
 
@@ -45,19 +46,19 @@ public class AutomateMock extends AutomateImpl {
 	}
 	
 	private static final String BODY = "<html><head><title>Title</title></head><body><h1>Test</h1><p>lorem ipsum</p></body></html>";
+	public static final Response RESPONSE200 = Response.ok(new ByteArrayInputStream(BODY.getBytes(StandardCharsets.UTF_8))).build();
+	public static final Response RESPONSE404 = Response.status(Status.NOT_FOUND).entity(new ByteArrayInputStream(BODY.getBytes(StandardCharsets.UTF_8))).build();
 
 	private final int latency;
 	private final int expiration;
-	private Response response = Response.ok(new ByteArrayInputStream(BODY.getBytes(StandardCharsets.UTF_8))).build();
+	private final Response response;
 	private final Exception exception;
 
 	public AutomateMock(int latency, int expiration, Response response, Exception exception) {
 		super(new SignalDAOStub(), new LogDAOStub(), new MailManagerMock(), new MemcachedStub());
 		this.latency = latency;
 		this.expiration = expiration;
-		if (response != null) {
-			this.response = response;
-		}
+		this.response = response;
 		this.exception = exception;
 	}
 	

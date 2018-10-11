@@ -155,7 +155,7 @@ public class AutomateImpl implements Automate {
 			/*
 			 *  check the status
 			 */
-			if (status < 200 && status > 399) {
+			if (status < 200 || status > 399) {
 				if (LOGGER.isLoggable(Level.FINE)) {
 					LOGGER.log(Level.FINE, "Error with HTTP status: {0}", status);
 				}

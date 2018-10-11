@@ -31,7 +31,7 @@ import com.ipsignal.stub.mem.MemcachedStub;
 public class SignalResourceMock extends SignalResourceImpl {
 	
 	public SignalResourceMock() {
-		super(new SignalMapperMock(), new LogMapperImpl(), new SignalDAOStub(), new UserDAOStub(), new LogDAOStub(), new MailManagerMock(), new AutomateMock(120, 3, null, null), new MemcachedStub(), new FileManagerStub());
+		super(new SignalMapperMock(), new LogMapperImpl(), new SignalDAOStub(), new UserDAOStub(), new LogDAOStub(), new MailManagerMock(), new AutomateMock(120, 3, AutomateMock.RESPONSE200, null), new MemcachedStub(), new FileManagerStub());
 	}
 
 }
