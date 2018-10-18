@@ -71,10 +71,10 @@ public class AutomateImpl implements Automate {
 
 	private static final Logger LOGGER = Logger.getLogger(AutomateImpl.class.getName());
 
-	private static final int MAX_BYTES = 2097152;
+	public static final int TIMEOUT = 2000;
+	public static final int MAX_BYTES = 2097152;
 	private static final int BUFFER_BYTES = 4096;
 	private static final int MAX_CHARS = 200;
-	private static final int TIMEOUT = 2000;
 	private static final int DAY = 86400000;
 	private static final int LEAF = 0;
 
@@ -186,9 +186,7 @@ public class AutomateImpl implements Automate {
 			String source = output.toString(Charset.defaultCharset().toString());
 
 			// Prepare parser
-			DOMParser htmlParser = new DOMParser();
-			htmlParser.parse(new InputSource(new StringReader(source)));
-			Document doc = htmlParser.getDocument();
+			Document doc = this.doParse(source);
 
 			XPath xpath = XPathFactory.newInstance().newXPath();
 			String obtained = strip(xpath.evaluate(signal.getPath(), doc));
@@ -244,10 +242,8 @@ public class AutomateImpl implements Automate {
 			return LogEntity.UNKNOWNHOST.getInstance(signal, ping, ssl, browser.toString(), null, null, null, url.getHost());
 
 		} catch (SAXException sex) {
-			if (LOGGER.isLoggable(Level.FINE)) {
-				LOGGER.log(Level.FINE, "Error with HTML parser: {0}", sex.getMessage());
-			}
-			return LogEntity.HTML.getInstance(signal, ping, ssl, browser.toString(), null, null, null);
+			LOGGER.log(Level.WARNING, "Error with parser: {0}", sex.getMessage());
+			return LogEntity.PARSER.getInstance(signal, ping, ssl, browser.toString(), null, null, null);
 
 		} catch (XPathExpressionException xpex) {
 			LOGGER.log(Level.WARNING, "Error with stored xpath: {0}", xpex.getMessage());
@@ -358,6 +354,12 @@ public class AutomateImpl implements Automate {
 
 	protected Response doGet(WebClient client) throws IOException {
 		return client.get();
+	}
+
+	protected Document doParse(String source) throws SAXException, IOException {
+		DOMParser htmlParser = new DOMParser();
+		htmlParser.parse(new InputSource(new StringReader(source)));
+		return htmlParser.getDocument();
 	}
 
 	protected long getExpirationTimestamp(HttpsURLConnection conn, URL url) throws IOException {

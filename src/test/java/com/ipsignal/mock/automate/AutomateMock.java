@@ -14,6 +14,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.cxf.jaxrs.client.WebClient;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 /*
  * Copyright (C) 2017 Kevin Guignard
@@ -42,12 +44,14 @@ public class AutomateMock extends AutomateImpl {
 	
 	public enum Exception {
 		SOCKET_TIMEOUT_EXCEPTION,
-		IO_EXCEPTION
+		IO_EXCEPTION,
+		SAX_EXCEPTION
 	}
 	
 	private static final String BODY = "<html><head><title>Title</title></head><body><h1>Test</h1><p>lorem ipsum</p></body></html>";
 	public static final Response RESPONSE200 = Response.ok(new ByteArrayInputStream(BODY.getBytes(StandardCharsets.UTF_8))).build();
 	public static final Response RESPONSE404 = Response.status(Status.NOT_FOUND).entity(new ByteArrayInputStream(BODY.getBytes(StandardCharsets.UTF_8))).build();
+	public static final Response RESPONSEHUGE = Response.ok(new ByteArrayInputStream(new byte[MAX_BYTES+1])).build();
 
 	private final int latency;
 	private final int expiration;
@@ -85,6 +89,14 @@ public class AutomateMock extends AutomateImpl {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DATE, this.expiration);
 		return calendar.getTimeInMillis();
+	}
+
+	@Override
+	protected Document doParse(String source) throws SAXException, IOException {
+		if (Exception.SAX_EXCEPTION.equals(exception)) {
+			throw new SAXException();
+		}
+		return super.doParse(source);
 	}
 
 }

@@ -44,10 +44,10 @@ public class LogEntity implements Entity, Comparable<LogEntity> {
 	public static final LogEntity EQUALS = new LogEntity("Content doesn't equal [%s].");
 	public static final LogEntity MATCHES = new LogEntity("Content doesn't match regex [%s].");
 	public static final LogEntity SSL = new LogEntity("Certificate expirates in less than [%d] days.");
-	public static final LogEntity HTTP = new LogEntity("Invalid HTTP code.");
 	public static final LogEntity REACHABILITY = new LogEntity("Host [%s] not reachable.");
 	public static final LogEntity PAGESIZE = new LogEntity("Page length higher than [%d] bytes.");
-	public static final LogEntity HTML = new LogEntity("Invalid HTML page.");
+	public static final LogEntity HTTP = new LogEntity("Invalid HTTP code.");
+	public static final LogEntity PARSER = new LogEntity("Content cannot be parsed.");
 	public static final LogEntity URL = new LogEntity("Invalid URL.");
 	public static final LogEntity XPATH = new LogEntity("Invalid XPath.");
 	public static final LogEntity REGEX = new LogEntity("Invalid regex pattern.");
