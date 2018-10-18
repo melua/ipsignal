@@ -58,7 +58,7 @@ public class TemplateBuilder {
 	public void replace(String original, Object replacement) {
 		Matcher matcher = Pattern.compile(BEGIN_TAG + original + CLOSE_TAG, Pattern.LITERAL).matcher(value);
 		if (matcher.find()) {
-			value = matcher.replaceFirst(replacement != null ? String.valueOf(replacement) : UNSET_TAG);
+			value = matcher.replaceFirst(replacement != null ? Matcher.quoteReplacement(String.valueOf(replacement)) : UNSET_TAG);
 		} else {
 			LOGGER.log(Level.WARNING, "Missing template tag {0}", original);
 		}
