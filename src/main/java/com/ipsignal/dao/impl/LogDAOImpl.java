@@ -1,8 +1,5 @@
 package com.ipsignal.dao.impl;
 
-import java.util.Calendar;
-import java.util.List;
-
 /*
  * Copyright (C) 2017 Kevin Guignard
  *
@@ -24,7 +21,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
-import javax.persistence.TypedQuery;
 
 import com.ipsignal.dao.LogDAO;
 import com.ipsignal.entity.impl.LogEntity;
@@ -32,8 +28,6 @@ import com.ipsignal.entity.impl.LogEntity;
 @Stateless
 public class LogDAOImpl implements LogDAO {
 	
-	private static final int EXPIRATION_HOURS = 2;
-
     @PersistenceContext(unitName = "ipsignal-unit", type = PersistenceContextType.TRANSACTION)
     private EntityManager entityManager;
 
@@ -57,16 +51,4 @@ public class LogDAOImpl implements LogDAO {
     	return entityManager.find(LogEntity.class, id);
     }
 
-	@Override
-	public List<LogEntity> findExpired() {
-		final Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.HOUR, -EXPIRATION_HOURS);
-
-		final TypedQuery<LogEntity> query = entityManager.createNamedQuery("Log.findExpired", LogEntity.class);
-		query.setParameter("min", cal.getTime());
-
-		return query.getResultList();
-	}
-
 }
-

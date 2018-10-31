@@ -52,10 +52,10 @@
 			<name>PurgeSignalDaily</name>
 			<job-class>com.ipsignal.invoker.impl.PurgeSignalInvokerDaily</job-class>
 		</job>
-		<job>
+		<!--<job>
 			<name>PurgeLogDaily</name>
 			<job-class>com.ipsignal.invoker.impl.PurgeLogInvokerDaily</job-class>
-		</job>
+		</job>-->
 		<job>
 			<name>PurgeUserWeekly</name>
 			<job-class>com.ipsignal.invoker.impl.PurgeUserInvokerWeekly</job-class>
@@ -153,14 +153,14 @@
 				<cron-expression>0 52 0 ? * MON-SUN *</cron-expression>
 			</cron>
 		</trigger>
-		<trigger>
+		<!--<trigger>
 			<cron>
 				<name>TriggerPurgeLogDaily</name>
 				<description>Every day</description>
 				<job-name>PurgeLogDaily</job-name>
 				<cron-expression>0 53 0 ? * MON-SUN *</cron-expression>
 			</cron>
-		</trigger>
+		</trigger>-->
 		<trigger>
 			<cron>
 				<name>TriggerPurgeUserWeekly</name>

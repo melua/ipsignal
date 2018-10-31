@@ -1,7 +1,5 @@
 package com.ipsignal.dao;
 
-import java.util.List;
-
 /*
  * Copyright (C) 2017 Kevin Guignard
  *
@@ -32,10 +30,4 @@ import com.ipsignal.entity.impl.LogEntity;
 @Local(LogDAO.class)
 public interface LogDAO extends DAO<LogEntity> {
 	
-	/**
-	 * Retrieve a list of orphan logs to be cleaned
-	 * @return list of logs
-	 */
-	List<LogEntity> findExpired();
-
 }

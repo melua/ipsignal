@@ -24,8 +24,6 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -35,7 +33,6 @@ import com.ipsignal.tool.IdFactory;
 
 @javax.persistence.Entity
 @Table(name = "logs")
-@NamedQueries({ @NamedQuery(name = "Log.findExpired", query = "SELECT a FROM LogEntity a WHERE a.signal IS NULL AND a.access < :min") })
 public class LogEntity implements Entity, Comparable<LogEntity> {
 	
 	public static final LogEntity LATENCY = new LogEntity("Latency higher than [%d] ms.");
