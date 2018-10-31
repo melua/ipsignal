@@ -84,6 +84,11 @@
 		</dependency>
 		<!-- External -->
 		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>3.6</version>
+		</dependency>
+		<dependency>
 			<groupId>net.spy</groupId>
 			<artifactId>spymemcached</artifactId>
 			<version>2.12.3</version>

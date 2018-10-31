@@ -44,6 +44,10 @@ public class Order implements Comparator<String> {
 		attributes.add("certificate");
 		attributes.add("interval");
 		attributes.add("retention");
+		attributes.add("whois");
+		attributes.add("created");
+		attributes.add("updated");
+		attributes.add("expires");
 		attributes.add("http");
 		attributes.add("obtained");
 		attributes.add("source");

@@ -70,7 +70,7 @@ public class SignalMapperTest {
 
 	@Test
 	public void testDtoToEntity1() {
-		SignalDTO dto = new SignalDTO(url, certificate, latency, path, expected, email, browser, null, notify, interval, retention);
+		SignalDTO dto = new SignalDTO(url, certificate, latency, path, expected, email, browser, null, notify, interval, retention, null);
 		
 		SignalEntity entity = mapper.dtoToEntity(dto, null);
 		
@@ -95,7 +95,7 @@ public class SignalMapperTest {
 		UserEntity user = new UserEntity(email, premium);
 		SignalEntity entity = new SignalEntity(user, null, true, url, browser, certificate, latency, path, expected, notify, interval, retention);
 		SignalDTO dto = new SignalDTO(RandomStringUtils.random(60), RandomUtils.nextInt(), RandomUtils.nextInt(), RandomStringUtils.random(60), RandomStringUtils.random(60),
-				RandomStringUtils.random(60), RandomStringUtils.random(60), null, RandomStringUtils.random(60), RandomUtils.nextInt(), RandomUtils.nextInt());
+				RandomStringUtils.random(60), RandomStringUtils.random(60), null, RandomStringUtils.random(60), RandomUtils.nextInt(), RandomUtils.nextInt(), null);
 		
 		entity = mapper.dtoToEntity(dto, entity);
 		

@@ -93,6 +93,10 @@ public class SignalEntity implements Entity, Comparable<SignalEntity> {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastaccess;
 	
+	@ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name = "whois")
+	private WhoisEntity whois;
+	
 	@OneToMany(mappedBy = "signal", fetch=FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<LogEntity> logs;
 	
@@ -226,6 +230,14 @@ public class SignalEntity implements Entity, Comparable<SignalEntity> {
 
 	public void setLastaccess(Date lastaccess) {
 		this.lastaccess = lastaccess;
+	}
+
+	public WhoisEntity getWhois() {
+		return whois;
+	}
+
+	public void setWhois(WhoisEntity whois) {
+		this.whois = whois;
 	}
 
 	public List<LogEntity> getLogs() {

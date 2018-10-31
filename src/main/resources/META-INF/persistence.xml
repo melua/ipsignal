@@ -9,6 +9,7 @@
 		<class>com.ipsignal.entity.impl.SignalEntity</class>
 		<class>com.ipsignal.entity.impl.LogEntity</class>
 		<class>com.ipsignal.entity.impl.UserEntity</class>
+		<class>com.ipsignal.entity.impl.WhoisEntity</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 
 		<properties>

@@ -31,11 +31,13 @@ import org.apache.commons.lang3.time.FastDateFormat;
 
 import com.ipsignal.dto.impl.LogDTO;
 import com.ipsignal.dto.impl.SignalDTO;
+import com.ipsignal.dto.impl.WhoisDTO;
 import com.ipsignal.entity.impl.LogEntity;
 import com.ipsignal.entity.impl.SignalEntity;
 import com.ipsignal.entity.impl.UserEntity;
 import com.ipsignal.mapper.LogMapper;
 import com.ipsignal.mapper.SignalMapper;
+import com.ipsignal.mapper.WhoisMapper;
 import com.ipsignal.tool.TLVParser;
 
 @Stateless
@@ -46,6 +48,8 @@ public class SignalMapperImpl implements SignalMapper {
 
 	@EJB
 	LogMapper mapper;
+	@EJB
+	WhoisMapper wmapper;
 
 	public SignalMapperImpl() {
 		// For injection
@@ -63,7 +67,8 @@ public class SignalMapperImpl implements SignalMapper {
 		}
 		
 		String premium = entity.getUser().getPremium() != null ? FORMATTER.format(entity.getUser().getPremium()) : null;
-		SignalDTO dto = new SignalDTO(entity.getUrl(), entity.getCertificate(), entity.getLatency(), entity.getPath(), entity.getExpected(), entity.getUser().getEmail(), entity.getBrowser(), premium, entity.getNotify(), entity.getInterval(), entity.getRetention());
+		WhoisDTO whois = wmapper.entityToDto(entity.getWhois());
+		SignalDTO dto = new SignalDTO(entity.getUrl(), entity.getCertificate(), entity.getLatency(), entity.getPath(), entity.getExpected(), entity.getUser().getEmail(), entity.getBrowser(), premium, entity.getNotify(), entity.getInterval(), entity.getRetention(), whois);
 		
 		Collections.sort(entity.getLogs(), Collections.reverseOrder());
 

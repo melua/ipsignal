@@ -75,6 +75,8 @@ public class SignalDTO extends Restrictive implements DTO {
 	private Integer retention = 3;
 	
 	private String premium;
+	
+	private WhoisDTO whois;
 
 	private List<LogDTO> logs;
 	
@@ -83,7 +85,7 @@ public class SignalDTO extends Restrictive implements DTO {
 	}
 	
 	public SignalDTO(String url, Integer certificate, Integer latency, String path, String expected, String email, String browser, String premium, String notify,
-			Integer interval, Integer retention) {
+			Integer interval, Integer retention, WhoisDTO whois) {
 		this();
 		this.url = url;
 		this.certificate = certificate;
@@ -96,6 +98,7 @@ public class SignalDTO extends Restrictive implements DTO {
 		this.notify = notify;
 		this.interval = interval;
 		this.retention = retention;
+		this.whois = whois;
 	}
 
 	public String getUrl() {
@@ -184,6 +187,14 @@ public class SignalDTO extends Restrictive implements DTO {
 
 	public void setRetention(Integer retention) {
 		this.retention = retention;
+	}
+	
+	public WhoisDTO getWhois() {
+		return whois;
+	}
+
+	public void setWhois(WhoisDTO whois) {
+		this.whois = whois;
 	}
 
 	public List<LogDTO> getLogs() {
