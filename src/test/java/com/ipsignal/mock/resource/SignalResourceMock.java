@@ -25,13 +25,14 @@ import com.ipsignal.resource.impl.SignalResourceImpl;
 import com.ipsignal.stub.dao.LogDAOStub;
 import com.ipsignal.stub.dao.SignalDAOStub;
 import com.ipsignal.stub.dao.UserDAOStub;
+import com.ipsignal.stub.dao.WhoisDAOStub;
 import com.ipsignal.stub.file.FileManagerStub;
 import com.ipsignal.stub.mem.MemcachedStub;
 
 public class SignalResourceMock extends SignalResourceImpl {
 	
 	public SignalResourceMock() {
-		super(new SignalMapperMock(), new LogMapperImpl(), new SignalDAOStub(), new UserDAOStub(), new LogDAOStub(), new MailManagerMock(), new AutomateMock(120, 3, AutomateMock.RESPONSE200, null), new MemcachedStub(), new FileManagerStub());
+		super(new SignalMapperMock(), new LogMapperImpl(), new SignalDAOStub(), new WhoisDAOStub(), new UserDAOStub(), new LogDAOStub(), new MailManagerMock(), new AutomateMock(120, 3, AutomateMock.RESPONSE200, null), new MemcachedStub(), new FileManagerStub());
 	}
 
 }

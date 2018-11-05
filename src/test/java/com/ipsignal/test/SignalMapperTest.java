@@ -93,7 +93,7 @@ public class SignalMapperTest {
 	@Test
 	public void testDtoToEntity2() {
 		UserEntity user = new UserEntity(email, premium);
-		SignalEntity entity = new SignalEntity(user, null, true, url, browser, certificate, latency, path, expected, notify, interval, retention);
+		SignalEntity entity = new SignalEntity(user, null, true, url, browser, certificate, latency, path, expected, notify, interval, retention, null);
 		SignalDTO dto = new SignalDTO(RandomStringUtils.random(60), RandomUtils.nextInt(), RandomUtils.nextInt(), RandomStringUtils.random(60), RandomStringUtils.random(60),
 				RandomStringUtils.random(60), RandomStringUtils.random(60), null, RandomStringUtils.random(60), RandomUtils.nextInt(), RandomUtils.nextInt(), null);
 		
@@ -116,7 +116,7 @@ public class SignalMapperTest {
 	@Test
 	public void testEntityToDto() {
 		UserEntity user = new UserEntity(email, premium);
-		SignalEntity entity = new SignalEntity(user, null, true, url, browser, certificate, latency, path, expected, notify, interval, retention);
+		SignalEntity entity = new SignalEntity(user, null, true, url, browser, certificate, latency, path, expected, notify, interval, retention, null);
 		
 		SignalDTO dto = mapper.entityToDto(entity);
 		
@@ -137,7 +137,7 @@ public class SignalMapperTest {
 	@Test
 	public void testBackupEntity() {
 		UserEntity user = new UserEntity(email, premium);
-		SignalEntity entity = new SignalEntity(user, null, true, url, browser, certificate, latency, path, expected, notify, interval, retention);
+		SignalEntity entity = new SignalEntity(user, null, true, url, browser, certificate, latency, path, expected, notify, interval, retention, null);
 		
 		SignalEntity backup = mapper.backupEntity(entity);
 		
@@ -160,8 +160,8 @@ public class SignalMapperTest {
 	public void testRestoreEntity() {
 		UserEntity user = new UserEntity(email, premium);
 		SignalEntity child = new SignalEntity(new UserEntity(RandomStringUtils.random(60), null), null, false, RandomStringUtils.random(60), RandomStringUtils.random(60),
-				RandomUtils.nextInt(),RandomUtils.nextInt(), RandomStringUtils.random(60), RandomStringUtils.random(60), RandomStringUtils.random(60), RandomUtils.nextInt(), RandomUtils.nextInt());
-		SignalEntity parent = new SignalEntity(user, null, true, url, browser, certificate, latency, path, expected, notify, interval, retention);
+				RandomUtils.nextInt(),RandomUtils.nextInt(), RandomStringUtils.random(60), RandomStringUtils.random(60), RandomStringUtils.random(60), RandomUtils.nextInt(), RandomUtils.nextInt(), null);
+		SignalEntity parent = new SignalEntity(user, null, true, url, browser, certificate, latency, path, expected, notify, interval, retention, null);
 		
 		mapper.restoreEntity(child, parent);
 		

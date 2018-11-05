@@ -38,12 +38,12 @@ public class SignalDAOStub implements SignalDAO {
 	public static final SignalEntity EXPIRED;
 
 	static {
-		FIRST = new SignalEntity(UserDAOStub.STANDARD, null, true, "http://example.com", "FIREFOX_45", 7, 15, "//*", "abc", null, 3600, 3);
-		SECOND = new SignalEntity(UserDAOStub.PREMIUM, null, true, "http://example.com", "FIREFOX_45", 7, 15, "//*", "abc", null, 3600, 3);
-		THIRD = new SignalEntity(UserDAOStub.STANDARD, null, true, "http://example.com", "FIREFOX_45", 7, 15, "//*", "abc", null, 3600, 3);
-		FOURTH = new SignalEntity(UserDAOStub.STANDARD, null, true, "http://example.com", "FIREFOX_45", 7, 15, "//*", "abc", null, 3600, 3);
-		FIFTH = new SignalEntity(UserDAOStub.STANDARD, null, true, "http://example.com", "FIREFOX_45", 7, 15, "//*", "abc", null, 3600, 3);
-		EXPIRED = new SignalEntity(UserDAOStub.STANDARD, null, true, "http://example.com", "FIREFOX_45", 7, 15, "//*", "abc", null, 3600, 3);
+		FIRST = new SignalEntity(UserDAOStub.STANDARD, null, true, "http://example.com", "FIREFOX_45", 7, 15, "//*", "abc", null, 3600, 3, null);
+		SECOND = new SignalEntity(UserDAOStub.PREMIUM, null, true, "http://example.com", "FIREFOX_45", 7, 15, "//*", "abc", null, 3600, 3, null);
+		THIRD = new SignalEntity(UserDAOStub.STANDARD, null, true, "http://example.com", "FIREFOX_45", 7, 15, "//*", "abc", null, 3600, 3, null);
+		FOURTH = new SignalEntity(UserDAOStub.STANDARD, null, true, "http://example.com", "FIREFOX_45", 7, 15, "//*", "abc", null, 3600, 3, null);
+		FIFTH = new SignalEntity(UserDAOStub.STANDARD, null, true, "http://example.com", "FIREFOX_45", 7, 15, "//*", "abc", null, 3600, 3, null);
+		EXPIRED = new SignalEntity(UserDAOStub.STANDARD, null, true, "http://example.com", "FIREFOX_45", 7, 15, "//*", "abc", null, 3600, 3, null);
 		EXPIRED.setLastaccess(new Date(1514764800));
 	}
 	
@@ -92,7 +92,7 @@ public class SignalDAOStub implements SignalDAO {
 	public List<SignalEntity> findByInterval(Integer interval) {
 		System.out.println("Searching signal for interval " + interval + " in database");
 		List<SignalEntity> result = new ArrayList<>();
-		result.add(new SignalEntity(UserDAOStub.STANDARD, null, true, "http://example.com", "FIREFOX_45", 7, 15, "//*", "abc", null, interval, 3));
+		result.add(new SignalEntity(UserDAOStub.STANDARD, null, true, "http://example.com", "FIREFOX_45", 7, 15, "//*", "abc", null, interval, 3, null));
 		return result;
 	}
 

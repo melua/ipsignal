@@ -1,6 +1,5 @@
 package com.ipsignal.stub.dao;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,21 +13,17 @@ public class LogDAOStub implements LogDAO {
 	public static final LogEntity FIRST;
 	public static final LogEntity SECOND;
 	public static final LogEntity THIRD;
-	public static final LogEntity EXPIRED;
 
 	static {
 		FIRST = LogEntity.EQUALS.getInstance(SignalDAOStub.THIRD, 15, 6, "FIREFOX_45", 200, "xyz", "<html>xyz</html>", "abc");
 		SECOND = LogEntity.EQUALS.getInstance(SignalDAOStub.THIRD, 15, 6, "FIREFOX_45", 200, "xyz", "<html>xyz</html>", "abc");
 		THIRD = LogEntity.EQUALS.getInstance(SignalDAOStub.THIRD, 15, 6, "FIREFOX_45", 200, "xyz", "<html>xyz</html>", "abc");
-		EXPIRED = LogEntity.EQUALS.getInstance(SignalDAOStub.THIRD, 15, 6, "FIREFOX_45", 200, "xyz", "<html>xyz</html>", "abc");
-		EXPIRED.setAccess(new Date(1514764800));
 	}
 	
 	public LogDAOStub() {
 		database.put(FIRST.getId(), FIRST);
 		database.put(SECOND.getId(), SECOND);
 		database.put(THIRD.getId(), THIRD);
-		database.put(EXPIRED.getId(), EXPIRED);
 	}
 
 	@Override

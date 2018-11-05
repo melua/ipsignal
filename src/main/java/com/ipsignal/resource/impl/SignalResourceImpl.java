@@ -30,18 +30,21 @@ import com.ipsignal.automate.Automate;
 import com.ipsignal.dao.LogDAO;
 import com.ipsignal.dao.SignalDAO;
 import com.ipsignal.dao.UserDAO;
+import com.ipsignal.dao.WhoisDAO;
 import com.ipsignal.dto.Restrictive.Constraint;
 import com.ipsignal.dto.impl.GenericDTO;
 import com.ipsignal.dto.impl.SignalDTO;
 import com.ipsignal.entity.impl.LogEntity;
 import com.ipsignal.entity.impl.SignalEntity;
 import com.ipsignal.entity.impl.UserEntity;
+import com.ipsignal.entity.impl.WhoisEntity;
 import com.ipsignal.file.FileManager;
 import com.ipsignal.mail.MailManager;
 import com.ipsignal.mapper.LogMapper;
 import com.ipsignal.mapper.SignalMapper;
 import com.ipsignal.mem.Memcached;
 import com.ipsignal.resource.SignalResource;
+import com.ipsignal.tool.DomainParser;
 import com.ipsignal.tool.TemplateBuilder;
 
 @Stateless
@@ -53,6 +56,8 @@ public class SignalResourceImpl implements SignalResource {
 	private LogMapper logmap;
 	@EJB
 	private SignalDAO dao;
+	@EJB
+	private WhoisDAO wdao;
 	@EJB
 	private UserDAO user;
 	@EJB
@@ -70,11 +75,12 @@ public class SignalResourceImpl implements SignalResource {
 		// For injection
 	}
 
-	protected SignalResourceImpl(SignalMapper mapper, LogMapper logmap, SignalDAO dao, UserDAO user, LogDAO log, MailManager mailer, Automate automate, Memcached mem, FileManager filer) {
+	protected SignalResourceImpl(SignalMapper mapper, LogMapper logmap, SignalDAO dao, WhoisDAO wdao, UserDAO user, LogDAO log, MailManager mailer, Automate automate, Memcached mem, FileManager filer) {
 		// For tests
 		this.mapper = mapper;
 		this.logmap = logmap;
 		this.dao = dao;
+		this.wdao = wdao;
 		this.user = user;
 		this.log = log;
 		this.mailer = mailer;
@@ -158,6 +164,15 @@ public class SignalResourceImpl implements SignalResource {
 			entity.setActive(true);
 			// Run automate
 			automate.executeAsync(entity);
+
+			// Set whois
+			String domain = DomainParser.getTopPrivateDomain(entity.getUrl());
+			WhoisEntity whois = wdao.findByDomain(domain);
+			if (whois == null) {
+				whois = new WhoisEntity(domain);
+				wdao.add(whois);
+			}
+			entity.setWhois(whois);
 		}
 
 		// Update entity

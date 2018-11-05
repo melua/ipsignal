@@ -69,7 +69,12 @@ public class WhoisEntity implements Entity {
 	public WhoisEntity() {
 		// for manager
 		this.id = IdFactory.generateId(HEXID_LENGTH);
-		this.access = new Date();
+		//this.access = new Date();
+	}
+
+	public WhoisEntity(String domain) {
+		this();
+		this.domain = domain;
 	}
 	
 	public WhoisEntity(String domain, Date created, Date updated, Date expires) {

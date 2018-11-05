@@ -68,7 +68,7 @@ public class LogMapperTest {
 	@Test
 	public void testEntityToDto() {
 		SignalEntity signal = new SignalEntity(new UserEntity(RandomStringUtils.random(60), null), null, false, RandomStringUtils.random(60), RandomStringUtils.random(60),
-				RandomUtils.nextInt(),RandomUtils.nextInt(), RandomStringUtils.random(60), RandomStringUtils.random(60), RandomStringUtils.random(60), RandomUtils.nextInt(), RandomUtils.nextInt());
+				RandomUtils.nextInt(),RandomUtils.nextInt(), RandomStringUtils.random(60), RandomStringUtils.random(60), RandomStringUtils.random(60), RandomUtils.nextInt(), RandomUtils.nextInt(), null);
 		LogEntity entity = LogEntity.EQUALS.getInstance(signal, latency, certificate, browser, http, obtained, source, arg);
 		
 		LogDTO dto = mapper.entityToDto(entity);

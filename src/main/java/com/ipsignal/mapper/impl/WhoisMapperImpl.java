@@ -38,9 +38,9 @@ public class WhoisMapperImpl implements WhoisMapper {
 			return null;
 		}
 		
-		String created = FORMATTER.format(entity.getCreated());
-		String updated = FORMATTER.format(entity.getUpdated());
-		String expires = FORMATTER.format(entity.getExpires());
+		String created = entity.getCreated() != null ? FORMATTER.format(entity.getCreated()) : null;
+		String updated = entity.getUpdated() != null ? FORMATTER.format(entity.getUpdated()) : null;
+		String expires = entity.getExpires() != null ? FORMATTER.format(entity.getExpires()) : null;
 		return new WhoisDTO(created, updated, expires);
 	}
 

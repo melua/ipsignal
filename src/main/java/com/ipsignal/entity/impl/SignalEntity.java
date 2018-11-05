@@ -112,7 +112,7 @@ public class SignalEntity implements Entity, Comparable<SignalEntity> {
 	}
 
 	public SignalEntity(UserEntity user, SignalEntity parent, Boolean active, String url, String browser, Integer certificate, Integer latency, String path, String expected,
-			String notify, Integer interval, Integer retention) {
+			String notify, Integer interval, Integer retention, WhoisEntity whois) {
 		this();
 		this.user = user;
 		this.parent = parent;
@@ -126,6 +126,7 @@ public class SignalEntity implements Entity, Comparable<SignalEntity> {
 		this.notify = notify;
 		this.interval = interval;
 		this.retention = retention;
+		this.whois = whois;
 	}
 
 	public String getId() {

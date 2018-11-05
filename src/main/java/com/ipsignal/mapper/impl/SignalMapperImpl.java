@@ -67,7 +67,7 @@ public class SignalMapperImpl implements SignalMapper {
 		}
 		
 		String premium = entity.getUser().getPremium() != null ? FORMATTER.format(entity.getUser().getPremium()) : null;
-		WhoisDTO whois = wmapper.entityToDto(entity.getWhois());
+		WhoisDTO whois = entity.getWhois() != null && entity.getWhois().getAccess() != null ? wmapper.entityToDto(entity.getWhois()) : null;
 		SignalDTO dto = new SignalDTO(entity.getUrl(), entity.getCertificate(), entity.getLatency(), entity.getPath(), entity.getExpected(), entity.getUser().getEmail(), entity.getBrowser(), premium, entity.getNotify(), entity.getInterval(), entity.getRetention(), whois);
 		
 		Collections.sort(entity.getLogs(), Collections.reverseOrder());
@@ -93,7 +93,7 @@ public class SignalMapperImpl implements SignalMapper {
 		}
 
 		if (entity == null) {
-			return new SignalEntity(new UserEntity(dto.getEmail(), null), null, false, dto.getUrl(), dto.getBrowser(), dto.getCertificate(), dto.getLatency(), dto.getPath(), dto.getExpected(), dto.getNotify(), dto.getInterval(), dto.getRetention());
+			return new SignalEntity(new UserEntity(dto.getEmail(), null), null, false, dto.getUrl(), dto.getBrowser(), dto.getCertificate(), dto.getLatency(), dto.getPath(), dto.getExpected(), dto.getNotify(), dto.getInterval(), dto.getRetention(), null);
 		} else {
 			/*
 			 * CAN'T PATCH
@@ -132,7 +132,7 @@ public class SignalMapperImpl implements SignalMapper {
 	@Override
 	public SignalEntity backupEntity(SignalEntity entity) {
 		return new SignalEntity(entity.getUser(), entity, false, entity.getUrl(), entity.getBrowser(), entity.getCertificate(), entity.getLatency(), entity.getPath(),entity.getExpected(),
-				entity.getNotify(), entity.getInterval(), entity.getRetention());
+				entity.getNotify(), entity.getInterval(), entity.getRetention(), entity.getWhois());
 	}
 	
 	@Override
