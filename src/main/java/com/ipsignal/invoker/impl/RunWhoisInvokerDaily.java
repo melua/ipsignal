@@ -1,6 +1,4 @@
-package com.ipsignal.dao;
-
-import java.util.List;
+package com.ipsignal.invoker.impl;
 
 /*
  * Copyright (C) 2017 Kevin Guignard
@@ -19,37 +17,21 @@ import java.util.List;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import javax.ejb.Local;
+import org.quartz.JobDataMap;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
-import com.ipsignal.entity.impl.WhoisEntity;
+import com.ipsignal.invoker.RunWhoisInvoker;
 
-/**
- * Repository to manipulate whois entity
- * @author Kevin Guignard
- * @see DAO
- * @see com.ipsignal.entity.impl.WhoisEntity
- */
-@Local(WhoisDAO.class)
-public interface WhoisDAO extends DAO<WhoisEntity> {
+public class RunWhoisInvokerDaily extends RunWhoisInvoker {
 	
-	/**
-	 * Retrieve a whois by domain
-	 * @param domain to search for
-	 * @return WhoisEntity
-	 */
-	WhoisEntity findByDomain(String domain);
-	
-	/**
-	 * Retrieve a list of whois
-	 * waiting to be sets
-	 * @return list of WhoisEntity
-	 */
-	List<WhoisEntity> findWaiting();
-	
-	/**
-	 * Retrieve expired whois
-	 * @return list of whois
-	 */
-	List<WhoisEntity> findExpired();
+	@Override
+	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+		JobDataMap dataMap = jobExecutionContext.getMergedJobDataMap();
+		dataMap.put(INITIAL_CONTEXT_FACTORY, INITIAL_CONTEXT_VALUE);
+		dataMap.put(EJB_JNDI_NAME_KEY, EJB_JNDI_NAME_VALUE);
+		dataMap.put(EJB_METHOD_KEY, EJB_METHOD_VALUE);
+		super.execute(jobExecutionContext);
+	}
 
 }

@@ -1,4 +1,4 @@
-package com.ipsignal.mock.job;
+package com.ipsignal.job;
 
 /*
  * Copyright (C) 2017 Kevin Guignard
@@ -17,14 +17,14 @@ package com.ipsignal.mock.job;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.ipsignal.job.impl.PurgePremiumJobImpl;
-import com.ipsignal.mock.mail.MailManagerMock;
-import com.ipsignal.stub.dao.UserDAOStub;
+import javax.ejb.Local;
 
-public class PurgePremiumJobMock extends PurgePremiumJobImpl {
+@Local(UpdateWhoisJob.class)
+public interface UpdateWhoisJob {
 	
-	public PurgePremiumJobMock() {
-		super(new UserDAOStub(), new MailManagerMock());
-	}
+	/**
+	 * Execute whois
+	 */
+	void execute();
 
 }

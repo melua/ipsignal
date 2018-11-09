@@ -1,4 +1,4 @@
-package com.ipsignal.mock.job;
+package com.ipsignal.invoker;
 
 /*
  * Copyright (C) 2017 Kevin Guignard
@@ -17,14 +17,13 @@ package com.ipsignal.mock.job;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.ipsignal.job.impl.PurgeSignalJobImpl;
-import com.ipsignal.stub.dao.SignalDAOStub;
-import com.ipsignal.stub.dao.UserDAOStub;
+import org.quartz.Job;
+import org.quartz.jobs.ee.ejb.EJB3InvokerJob;
 
-public class PurgeSignalJobMock extends PurgeSignalJobImpl {
+public abstract class UpdateWhoisInvoker extends EJB3InvokerJob implements Job {
 	
-	public PurgeSignalJobMock() {
-		super(new SignalDAOStub(), new UserDAOStub());
-	}
-
+	protected static final String INITIAL_CONTEXT_VALUE = "org.apache.openejb.client.LocalInitialContextFactory";
+	protected static final String EJB_JNDI_NAME_VALUE = "UpdateWhoisJobImplLocal";
+	protected static final String EJB_METHOD_VALUE = "execute";
+	
 }

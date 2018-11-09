@@ -44,11 +44,6 @@ public class PurgeUserJobImpl implements PurgeUserJob {
 		// For injection
 	}
 
-	protected PurgeUserJobImpl(UserDAO users) {
-		// For tests
-		this.users = users;
-	}
-
 	@Override
 	public void execute() {
 		final String hexid = IdFactory.generateId(HEXID_LENGTH);

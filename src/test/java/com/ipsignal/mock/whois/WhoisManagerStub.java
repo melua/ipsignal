@@ -1,6 +1,8 @@
-package com.ipsignal.dao;
+package com.ipsignal.mock.whois;
 
-import java.util.List;
+import java.util.Calendar;
+
+import com.ipsignal.entity.impl.WhoisEntity;
 
 /*
  * Copyright (C) 2017 Kevin Guignard
@@ -19,37 +21,19 @@ import java.util.List;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import javax.ejb.Local;
+import com.ipsignal.whois.WhoisManager;
 
-import com.ipsignal.entity.impl.WhoisEntity;
+public class WhoisManagerStub implements WhoisManager {
 
-/**
- * Repository to manipulate whois entity
- * @author Kevin Guignard
- * @see DAO
- * @see com.ipsignal.entity.impl.WhoisEntity
- */
-@Local(WhoisDAO.class)
-public interface WhoisDAO extends DAO<WhoisEntity> {
-	
-	/**
-	 * Retrieve a whois by domain
-	 * @param domain to search for
-	 * @return WhoisEntity
-	 */
-	WhoisEntity findByDomain(String domain);
-	
-	/**
-	 * Retrieve a list of whois
-	 * waiting to be sets
-	 * @return list of WhoisEntity
-	 */
-	List<WhoisEntity> findWaiting();
-	
-	/**
-	 * Retrieve expired whois
-	 * @return list of whois
-	 */
-	List<WhoisEntity> findExpired();
+	@Override
+	public void execute(WhoisEntity whois) {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.YEAR, -10);
+		whois.setCreated(cal.getTime());
+		cal.add(Calendar.YEAR, 9);
+		whois.setUpdated(cal.getTime());
+		cal.add(Calendar.YEAR, 2);
+		whois.setExpires(cal.getTime());
+	}
 
 }

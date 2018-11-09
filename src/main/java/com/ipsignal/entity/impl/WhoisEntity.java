@@ -35,7 +35,9 @@ import com.ipsignal.tool.IdFactory;
 
 @javax.persistence.Entity
 @Table(name = "whois")
-@NamedQueries({ @NamedQuery(name = "Whois.findByDomain", query = "SELECT a FROM WhoisEntity a WHERE a.domain = :domain") })
+@NamedQueries({ @NamedQuery(name = "Whois.findByDomain", query = "SELECT a FROM WhoisEntity a WHERE a.domain = :domain"),
+				@NamedQuery(name = "Whois.findWaiting", query = "SELECT a FROM WhoisEntity a WHERE a.access IS NULL"),
+				@NamedQuery(name = "Whois.findExpired", query = "SELECT a FROM WhoisEntity a WHERE a.expires < :expires AND a.access < :access")})
 public class WhoisEntity implements Entity {
 	
 	private static final int[] HEXID_LENGTH = {8,8};

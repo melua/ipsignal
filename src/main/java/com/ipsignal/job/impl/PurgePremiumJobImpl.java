@@ -48,12 +48,6 @@ public class PurgePremiumJobImpl implements PurgePremiumJob {
 		// For injection
 	}
 
-	protected PurgePremiumJobImpl(UserDAO users, MailManager mailer) {
-		// For tests
-		this.users = users;
-		this.mailer = mailer;
-	}
-
 	@Override
 	public void execute() {
 		final String hexid = IdFactory.generateId(HEXID_LENGTH);

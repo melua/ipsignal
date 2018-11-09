@@ -48,12 +48,6 @@ public class PurgeSignalJobImpl implements PurgeSignalJob {
 		// For injection
 	}
 
-	protected PurgeSignalJobImpl(SignalDAO signals, UserDAO users) {
-		// For tests
-		this.signals = signals;
-		this.users = users;
-	}
-
 	@Override
 	public void execute() {
 		final String hexid = IdFactory.generateId(HEXID_LENGTH);

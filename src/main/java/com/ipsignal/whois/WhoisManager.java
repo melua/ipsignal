@@ -1,4 +1,8 @@
-package com.ipsignal.mock.job;
+package com.ipsignal.whois;
+
+import javax.ejb.Local;
+
+import com.ipsignal.entity.impl.WhoisEntity;
 
 /*
  * Copyright (C) 2017 Kevin Guignard
@@ -17,14 +21,12 @@ package com.ipsignal.mock.job;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.ipsignal.job.impl.NotifyPremiumJobImpl;
-import com.ipsignal.mock.mail.MailManagerMock;
-import com.ipsignal.stub.dao.UserDAOStub;
-
-public class NotifyPremiumJobMock extends NotifyPremiumJobImpl {
+@Local(WhoisManager.class)
+public interface WhoisManager {
 	
-	public NotifyPremiumJobMock() {
-		super(new UserDAOStub(), new MailManagerMock());
-	}
-
+	/**
+	 * Execute a whois
+	 * @param whois to resolve
+	 */
+	void execute(WhoisEntity whois);
 }

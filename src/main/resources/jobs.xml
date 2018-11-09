@@ -52,10 +52,14 @@
 			<name>PurgeSignalDaily</name>
 			<job-class>com.ipsignal.invoker.impl.PurgeSignalInvokerDaily</job-class>
 		</job>
-		<!--<job>
-			<name>PurgeLogDaily</name>
-			<job-class>com.ipsignal.invoker.impl.PurgeLogInvokerDaily</job-class>
-		</job>-->
+		<job>
+			<name>RunWhoisDaily</name>
+			<job-class>com.ipsignal.invoker.impl.RunWhoisInvokerDaily</job-class>
+		</job>
+		<job>
+			<name>UpdateWhoisDaily</name>
+			<job-class>com.ipsignal.invoker.impl.UpdateWhoisInvokerDaily</job-class>
+		</job>
 		<job>
 			<name>PurgeUserWeekly</name>
 			<job-class>com.ipsignal.invoker.impl.PurgeUserInvokerWeekly</job-class>
@@ -153,14 +157,14 @@
 				<cron-expression>0 52 0 ? * MON-SUN *</cron-expression>
 			</cron>
 		</trigger>
-		<!--<trigger>
+		<trigger>
 			<cron>
-				<name>TriggerPurgeLogDaily</name>
+				<name>TriggerRunWhoisDaily</name>
 				<description>Every day</description>
-				<job-name>PurgeLogDaily</job-name>
+				<job-name>RunWhoisDaily</job-name>
 				<cron-expression>0 53 0 ? * MON-SUN *</cron-expression>
 			</cron>
-		</trigger>-->
+		</trigger>
 		<trigger>
 			<cron>
 				<name>TriggerPurgeUserWeekly</name>
@@ -207,6 +211,14 @@
 				<description>Every day</description>
 				<job-name>PurgePremiumDaily</job-name>
 				<cron-expression>0 59 0 ? * MON-SUN *</cron-expression>
+			</cron>
+		</trigger>
+		<trigger>
+			<cron>
+				<name>TriggerUpdateWhoisDaily</name>
+				<description>Every day</description>
+				<job-name>UpdateWhoisDaily</job-name>
+				<cron-expression>0 0 1 ? * MON-SUN *</cron-expression>
 			</cron>
 		</trigger>
 	</schedule>

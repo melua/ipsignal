@@ -1,6 +1,4 @@
-package com.ipsignal.mock.job;
-
-import javax.ws.rs.core.Response;
+package com.ipsignal.invoker;
 
 /*
  * Copyright (C) 2017 Kevin Guignard
@@ -19,16 +17,13 @@ import javax.ws.rs.core.Response;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.ipsignal.job.impl.RunSignalJobImpl;
-import com.ipsignal.mock.automate.AutomateMock;
-import com.ipsignal.mock.mail.MailManagerMock;
-import com.ipsignal.stub.dao.LogDAOStub;
-import com.ipsignal.stub.dao.SignalDAOStub;
+import org.quartz.Job;
+import org.quartz.jobs.ee.ejb.EJB3InvokerJob;
 
-public class RunSignalJobMock extends RunSignalJobImpl {
+public abstract class RunWhoisInvoker extends EJB3InvokerJob implements Job {
 	
-	public RunSignalJobMock() {
-		super(new SignalDAOStub(), new LogDAOStub(), new MailManagerMock(), new AutomateMock(120, 3, Response.ok().build(), null));
-	}
-
+	protected static final String INITIAL_CONTEXT_VALUE = "org.apache.openejb.client.LocalInitialContextFactory";
+	protected static final String EJB_JNDI_NAME_VALUE = "RunWhoisJobImplLocal";
+	protected static final String EJB_METHOD_VALUE = "execute";
+	
 }

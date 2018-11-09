@@ -1,5 +1,6 @@
 package com.ipsignal.dao.impl;
 
+import java.util.Calendar;
 import java.util.List;
 
 /*
@@ -31,6 +32,9 @@ import com.ipsignal.entity.impl.WhoisEntity;
 @Stateless
 public class WhoisDAOImpl implements WhoisDAO {
 	
+	private static final int EXPIRES_SOON_DAYS = 180;
+	private static final int ACCESS_DELAY_DAYS = 31;
+	
 	@PersistenceContext(unitName = "ipsignal-unit", type = PersistenceContextType.TRANSACTION)
     private EntityManager entityManager;
 
@@ -61,6 +65,23 @@ public class WhoisDAOImpl implements WhoisDAO {
 
 		final List<WhoisEntity> result = query.getResultList();
 		return result.isEmpty() ? null : result.get(0);
+	}
+
+	@Override
+	public List<WhoisEntity> findWaiting() {
+		final TypedQuery<WhoisEntity> query = entityManager.createNamedQuery("Whois.findWaiting", WhoisEntity.class);
+		return query.getResultList();
+	}
+
+	@Override
+	public List<WhoisEntity> findExpired() {
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, EXPIRES_SOON_DAYS);
+		final TypedQuery<WhoisEntity> query = entityManager.createNamedQuery("Whois.findExpired", WhoisEntity.class);
+		query.setParameter("expires", cal.getTime());
+		cal.add(Calendar.DATE, - (EXPIRES_SOON_DAYS + ACCESS_DELAY_DAYS));
+		query.setParameter("access", cal.getTime());
+		return query.getResultList();
 	}
 
 }

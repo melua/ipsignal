@@ -62,14 +62,6 @@ public class RunSignalJobImpl implements RunSignalJob {
 		// For injection
 	}
 
-	protected RunSignalJobImpl(SignalDAO signals, LogDAO logs, MailManager mailer, Automate automate) {
-		// For tests
-		this.signals = signals;
-		this.logs = logs;
-		this.mailer = mailer;
-		this.automate = automate;
-	}
-
 	@Override
 	public void execute(Integer interval) {
 		final String hexid = IdFactory.generateId(HEXID_LENGTH);

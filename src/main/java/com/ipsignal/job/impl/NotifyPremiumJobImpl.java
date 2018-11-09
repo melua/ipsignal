@@ -47,12 +47,6 @@ public class NotifyPremiumJobImpl implements NotifyPremiumJob {
 		// For injection
 	}
 
-	protected NotifyPremiumJobImpl(UserDAO users, MailManager mailer) {
-		// For tests
-		this.users = users;
-		this.mailer = mailer;
-	}
-
 	@Override
 	public void execute(Integer days) {
 		final String hexid = IdFactory.generateId(HEXID_LENGTH);

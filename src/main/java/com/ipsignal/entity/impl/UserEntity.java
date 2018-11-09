@@ -40,7 +40,7 @@ import com.ipsignal.tool.IdFactory;
 @NamedQueries({ @NamedQuery(name = "User.findByEmail", query = "SELECT a FROM UserEntity a WHERE a.email LIKE :email"),
 				@NamedQuery(name = "User.findByPremium", query = "SELECT a FROM UserEntity a WHERE a.premium = :date"),
 				@NamedQuery(name = "User.findAlone", query = "SELECT a FROM UserEntity a WHERE a.signals IS EMPTY AND a.premium IS NULL"),
-				@NamedQuery(name = "User.findExpired", query = "SELECT a FROM UserEntity a WHERE a.premium IS NOT NULL AND a.premium < :min") })
+				@NamedQuery(name = "User.findExpired", query = "SELECT a FROM UserEntity a WHERE a.premium < :min") })
 public class UserEntity implements Entity {
 
 	private static final int HEXID_LENGTH = 16;

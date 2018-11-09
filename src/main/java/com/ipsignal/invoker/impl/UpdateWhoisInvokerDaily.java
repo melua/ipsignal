@@ -1,4 +1,4 @@
-package com.ipsignal.mock.job;
+package com.ipsignal.invoker.impl;
 
 /*
  * Copyright (C) 2017 Kevin Guignard
@@ -17,13 +17,21 @@ package com.ipsignal.mock.job;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import com.ipsignal.job.impl.PurgeUserJobImpl;
-import com.ipsignal.stub.dao.UserDAOStub;
+import org.quartz.JobDataMap;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
-public class PurgeUserJobMock extends PurgeUserJobImpl {
+import com.ipsignal.invoker.UpdateWhoisInvoker;
+
+public class UpdateWhoisInvokerDaily extends UpdateWhoisInvoker {
 	
-	public PurgeUserJobMock() {
-		super(new UserDAOStub());
+	@Override
+	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+		JobDataMap dataMap = jobExecutionContext.getMergedJobDataMap();
+		dataMap.put(INITIAL_CONTEXT_FACTORY, INITIAL_CONTEXT_VALUE);
+		dataMap.put(EJB_JNDI_NAME_KEY, EJB_JNDI_NAME_VALUE);
+		dataMap.put(EJB_METHOD_KEY, EJB_METHOD_VALUE);
+		super.execute(jobExecutionContext);
 	}
 
 }

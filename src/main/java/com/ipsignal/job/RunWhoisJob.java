@@ -1,6 +1,4 @@
-package com.ipsignal.dao;
-
-import java.util.List;
+package com.ipsignal.job;
 
 /*
  * Copyright (C) 2017 Kevin Guignard
@@ -21,35 +19,12 @@ import java.util.List;
 
 import javax.ejb.Local;
 
-import com.ipsignal.entity.impl.WhoisEntity;
-
-/**
- * Repository to manipulate whois entity
- * @author Kevin Guignard
- * @see DAO
- * @see com.ipsignal.entity.impl.WhoisEntity
- */
-@Local(WhoisDAO.class)
-public interface WhoisDAO extends DAO<WhoisEntity> {
+@Local(RunWhoisJob.class)
+public interface RunWhoisJob {
 	
 	/**
-	 * Retrieve a whois by domain
-	 * @param domain to search for
-	 * @return WhoisEntity
+	 * Execute whois
 	 */
-	WhoisEntity findByDomain(String domain);
-	
-	/**
-	 * Retrieve a list of whois
-	 * waiting to be sets
-	 * @return list of WhoisEntity
-	 */
-	List<WhoisEntity> findWaiting();
-	
-	/**
-	 * Retrieve expired whois
-	 * @return list of whois
-	 */
-	List<WhoisEntity> findExpired();
+	void execute();
 
 }
