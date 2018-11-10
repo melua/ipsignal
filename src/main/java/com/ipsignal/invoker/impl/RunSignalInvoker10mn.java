@@ -17,22 +17,13 @@ package com.ipsignal.invoker.impl;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.quartz.JobDataMap;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-
 import com.ipsignal.invoker.RunSignalInvoker;
 
 public class RunSignalInvoker10mn extends RunSignalInvoker {
 	
 	@Override
-	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-		JobDataMap dataMap = jobExecutionContext.getMergedJobDataMap();
-		dataMap.put(INITIAL_CONTEXT_FACTORY, INITIAL_CONTEXT_VALUE);
-		dataMap.put(EJB_JNDI_NAME_KEY, EJB_JNDI_NAME_VALUE);
-		dataMap.put(EJB_METHOD_KEY, EJB_METHOD_VALUE);
-		dataMap.put(EJB_ARGS_KEY, new Object[]{10});
-		super.execute(jobExecutionContext);
+	protected Object[] getArgs() {
+		return new Object[]{10};
 	}
 
 }

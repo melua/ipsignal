@@ -18,12 +18,29 @@ package com.ipsignal.invoker;
  */
 
 import org.quartz.Job;
+import org.quartz.JobDataMap;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 import org.quartz.jobs.ee.ejb.EJB3InvokerJob;
 
-public abstract class PurgeLogInvoker extends EJB3InvokerJob implements Job {
+public abstract class Invoker extends EJB3InvokerJob implements Job {
 	
-	protected static final String INITIAL_CONTEXT_VALUE = "org.apache.openejb.client.LocalInitialContextFactory";
-	protected static final String EJB_JNDI_NAME_VALUE = "PurgeLogJobImplLocal";
-	protected static final String EJB_METHOD_VALUE = "execute";
+	@Override
+	public final void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+		JobDataMap dataMap = jobExecutionContext.getMergedJobDataMap();
+		dataMap.put(INITIAL_CONTEXT_FACTORY, "org.apache.openejb.client.LocalInitialContextFactory");
+		dataMap.put(EJB_JNDI_NAME_KEY, getJndiName());
+		dataMap.put(EJB_METHOD_KEY, "execute");
+		if (getArgs() != null) {
+			dataMap.put(EJB_ARGS_KEY, getArgs());	
+		}
+		super.execute(jobExecutionContext);
+	}
+	
+	protected Object[] getArgs() {
+		return null;
+	}
+	
+	protected abstract String getJndiName();
 	
 }

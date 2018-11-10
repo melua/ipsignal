@@ -79,7 +79,11 @@ public class MailManagerImpl implements MailManager {
 		String unsubscribe = Config.SERVICE_URL + NOTIFY_UNSUBSCRIBE_PATH + entity.getId();
 		TemplateBuilder body = new TemplateBuilder(Config.MAIL_ALERT_NOTIFICATION);
 		body.formatLog(log);
-		body.formatLink(entity.getId(), log.getId());
+		if (log.getSource() != null) {
+			body.formatLink(entity.getId(), log.getId());
+		} else {
+			body.formatLink(entity.getId());
+		}
 		body.formatUnsubscribe(unsubscribe);
 		send("Beacon alert: " + log.getDetail(), body.toString(), ALERT, entity.getUser().getEmail(), unsubscribe);
 	}

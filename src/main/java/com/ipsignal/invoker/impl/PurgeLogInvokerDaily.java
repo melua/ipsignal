@@ -17,21 +17,13 @@ package com.ipsignal.invoker.impl;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.quartz.JobDataMap;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import com.ipsignal.invoker.Invoker;
 
-import com.ipsignal.invoker.PurgeLogInvoker;
-
-public class PurgeLogInvokerDaily extends PurgeLogInvoker {
+public class PurgeLogInvokerDaily extends Invoker {
 	
 	@Override
-	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-		JobDataMap dataMap = jobExecutionContext.getMergedJobDataMap();
-		dataMap.put(INITIAL_CONTEXT_FACTORY, INITIAL_CONTEXT_VALUE);
-		dataMap.put(EJB_JNDI_NAME_KEY, EJB_JNDI_NAME_VALUE);
-		dataMap.put(EJB_METHOD_KEY, EJB_METHOD_VALUE);
-		super.execute(jobExecutionContext);
+	protected String getJndiName() {
+		return "PurgeLogJobImplLocal";
 	}
 
 }

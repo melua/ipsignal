@@ -17,13 +17,16 @@ package com.ipsignal.invoker;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.quartz.Job;
-import org.quartz.jobs.ee.ejb.EJB3InvokerJob;
+import com.ipsignal.invoker.Invoker;
 
-public abstract class RunSignalInvoker extends EJB3InvokerJob implements Job {
+public abstract class RunSignalInvoker extends Invoker {
 	
-	protected static final String INITIAL_CONTEXT_VALUE = "org.apache.openejb.client.LocalInitialContextFactory";
-	protected static final String EJB_JNDI_NAME_VALUE = "RunSignalJobImplLocal";
-	protected static final String EJB_METHOD_VALUE = "execute";
-	
+	@Override
+	protected final String getJndiName() {
+		return "RunSignalJobImplLocal";
+	}
+
+	@Override
+	protected abstract Object[] getArgs();
+
 }
