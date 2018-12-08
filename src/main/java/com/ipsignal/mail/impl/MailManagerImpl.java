@@ -21,7 +21,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Properties;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.mail.Message;
@@ -38,6 +37,9 @@ import com.ipsignal.entity.impl.UserEntity;
 import com.ipsignal.mail.MailManager;
 import com.ipsignal.tool.TemplateBuilder;
 
+import lombok.extern.java.Log;
+
+@Log
 @Stateless
 public class MailManagerImpl implements MailManager {
 
@@ -48,8 +50,6 @@ public class MailManagerImpl implements MailManager {
 	public static final String NOTIFY_UNSUBSCRIBE_PATH = "/unsub/notif/";
 	public static final String CERTIFICATE_UNSUBSCRIBE_PATH = "/unsub/certif/";
 
-	private static final Logger LOGGER = Logger.getLogger(MailManagerImpl.class.getName());
-	
 	@Override
 	public Boolean sendSignalCreation(final SignalEntity entity) {
 		TemplateBuilder body = new TemplateBuilder(Config.MAIL_CRUD_CREATE);

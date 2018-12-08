@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -13,6 +12,8 @@ import com.ipsignal.Config;
 import com.ipsignal.dto.impl.SignalDTO;
 import com.ipsignal.file.FileManager;
 import com.ipsignal.mapper.SignalMapper;
+
+import lombok.extern.java.Log;
 
 /*
  * Copyright (C) 2015  Kevin Guignard
@@ -31,10 +32,9 @@ import com.ipsignal.mapper.SignalMapper;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+@Log
 @Stateless
 public class FileManagerImpl implements FileManager {
-	
-	private static final Logger LOGGER = Logger.getLogger(FileManagerImpl.class.getName());
 	
 	@EJB
 	private SignalMapper mapper;

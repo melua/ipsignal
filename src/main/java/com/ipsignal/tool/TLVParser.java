@@ -25,11 +25,12 @@ import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import lombok.extern.java.Log;
+
+@Log
 public class TLVParser {
 	
-	private static final Logger LOGGER = Logger.getLogger(TLVParser.class.getName());
 	private static final Charset CHARSET = StandardCharsets.UTF_8;
 	public static final byte EXTENTED_BYTES = 0x00;
 

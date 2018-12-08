@@ -23,6 +23,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.ipsignal.dto.DTO;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class LogDTO implements DTO {
@@ -36,83 +45,4 @@ public class LogDTO implements DTO {
 	private String detail;
 	private String source;
 	
-	public LogDTO() {
-		// for the marshaller
-	}
-	
-	public LogDTO(String access, Integer latency, Integer certificate, String browser, Integer http, String obtained, String detail, String source) {
-		this.access = access;
-		this.latency = latency;
-		this.certificate = certificate;
-		this.browser = browser;
-		this.http = http;
-		this.obtained = obtained;
-		this.detail = detail;
-		this.source = source;
-	}
-	
-	public String getAccess() {
-		return access;
-	}
-
-	public void setAccess(String access) {
-		this.access = access;
-	}
-
-	public Integer getLatency() {
-		return latency;
-	}
-
-	public void setLatency(Integer latency) {
-		this.latency = latency;
-	}
-
-	public Integer getCertificate() {
-		return certificate;
-	}
-
-	public void setCertificate(Integer certificate) {
-		this.certificate = certificate;
-	}
-	
-	public String getBrowser() {
-		return browser;
-	}
-
-	public void setBrowser(String browser) {
-		this.browser = browser;
-	}
-
-	public Integer getHttp() {
-		return http;
-	}
-
-	public void setHttp(Integer http) {
-		this.http = http;
-	}
-
-	public String getObtained() {
-		return obtained;
-	}
-
-	public void setObtained(String obtained) {
-		this.obtained = obtained;
-	}
-
-	public String getDetail() {
-		return detail;
-	}
-
-	public void setDetail(String detail) {
-		this.detail = detail;
-	}
-
-	public String getSource() {
-		return source;
-	}
-
-	public void setSource(String source) {
-		this.source = source;
-	}
-
 }

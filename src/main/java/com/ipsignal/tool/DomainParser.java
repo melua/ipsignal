@@ -3,9 +3,10 @@ package com.ipsignal.tool;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.google.common.net.InternetDomainName;
+
+import lombok.extern.java.Log;
 
 /*
  * Copyright (C) 2017 Kevin Guignard
@@ -24,14 +25,15 @@ import com.google.common.net.InternetDomainName;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+@Log
 public class DomainParser {
-	
-	private static final Logger LOGGER = Logger.getLogger(DomainParser.class.getName());
 	
 	public static String getTopPrivateDomain(String url) {
 		String result = null;
 		try {
+			//TODO do not use Guava
 			result = InternetDomainName.from(new URI(url).getHost()).topPrivateDomain().toString();
+			return "localhost.localdomain";
 		} catch (URISyntaxException ex) {
 			LOGGER.log(Level.WARNING, "Invalid url {0} while resolving top private domain", url);
 		}

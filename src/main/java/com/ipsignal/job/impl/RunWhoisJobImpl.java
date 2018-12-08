@@ -4,7 +4,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -16,12 +15,14 @@ import com.ipsignal.job.RunWhoisJob;
 import com.ipsignal.tool.IdFactory;
 import com.ipsignal.whois.WhoisManager;
 
+import lombok.extern.java.Log;
+
+@Log
 @Stateless
 public class RunWhoisJobImpl implements RunWhoisJob {
 	
 	private static final int HEXID_LENGTH = 16;
-	private static final Logger LOGGER = Logger.getLogger(RunWhoisJobImpl.class.getName());
-	
+
 	@EJB
 	private WhoisDAO dao;
 	@EJB

@@ -68,7 +68,7 @@ public class SignalMapperImpl implements SignalMapper {
 		
 		String premium = entity.getUser().getPremium() != null ? FORMATTER.format(entity.getUser().getPremium()) : null;
 		WhoisDTO whois = entity.getWhois() != null && entity.getWhois().getAccess() != null ? wmapper.entityToDto(entity.getWhois()) : null;
-		SignalDTO dto = new SignalDTO(entity.getUrl(), entity.getCertificate(), entity.getLatency(), entity.getPath(), entity.getExpected(), entity.getUser().getEmail(), entity.getBrowser(), premium, entity.getNotify(), entity.getInterval(), entity.getRetention(), whois);
+		SignalDTO dto = new SignalDTO(entity.getUrl(), entity.getCertificate(), entity.getLatency(), entity.getPath(), entity.getExpected(), entity.getUser().getEmail(), entity.getBrowser(), entity.getNotify(), entity.getInterval(), entity.getRetention(), premium, whois, null);
 		
 		Collections.sort(entity.getLogs(), Collections.reverseOrder());
 

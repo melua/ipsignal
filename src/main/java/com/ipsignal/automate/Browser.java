@@ -22,6 +22,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import lombok.Getter;
+
+@Getter
 public enum Browser {
 
 	FIREFOX_45("Mozilla/5.0 (Windows NT 6.1; rv:45.0) Gecko/20100101 Firefox/45.0"),
@@ -40,10 +43,6 @@ public enum Browser {
 		this.userAgent = userAgent;
 	}
 
-	public String getUserAgent() {
-		return this.userAgent;
-	}
-	
 	public static Browser random() {
 		return VALUES.get(RANDOM.nextInt(SIZE));
 	}

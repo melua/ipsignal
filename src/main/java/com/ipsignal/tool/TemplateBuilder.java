@@ -3,7 +3,6 @@ package com.ipsignal.tool;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,9 +28,10 @@ import com.ipsignal.Config;
 import com.ipsignal.entity.impl.LogEntity;
 import com.ipsignal.entity.impl.SignalEntity;
 
-public class TemplateBuilder {
+import lombok.extern.java.Log;
 
-	private static final Logger LOGGER = Logger.getLogger(TemplateBuilder.class.getName());
+@Log
+public class TemplateBuilder {
 
 	private static final String LINK_SEPARATOR = "/";
 	public static final String BEGIN_TAG = "{";

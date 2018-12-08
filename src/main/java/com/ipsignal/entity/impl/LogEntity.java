@@ -31,8 +31,13 @@ import javax.persistence.TemporalType;
 import com.ipsignal.entity.Entity;
 import com.ipsignal.tool.IdFactory;
 
-@javax.persistence.Entity
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Table(name = "logs")
+@javax.persistence.Entity
 public class LogEntity implements Entity, Comparable<LogEntity> {
 	
 	public static final LogEntity LATENCY = new LogEntity("Latency higher than [%d] ms.");
@@ -110,86 +115,6 @@ public class LogEntity implements Entity, Comparable<LogEntity> {
 	
 	public LogEntity getInstance(SignalEntity signal, Integer latency, Integer certificate, String browser, Integer http, String obtained, String source, Object... args) {
 		return new LogEntity(signal, latency, certificate, browser, http, obtained, String.format(this.getDetail(), args), source);
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public SignalEntity getSignal() {
-		return signal;
-	}
-
-	public void setSignal(SignalEntity signal) {
-		this.signal = signal;
-	}
-
-	public Integer getLatency() {
-		return latency;
-	}
-
-	public void setLatency(Integer latency) {
-		this.latency = latency;
-	}
-	
-	public Integer getCertificate() {
-		return certificate;
-	}
-
-	public void setCertificate(Integer certificate) {
-		this.certificate = certificate;
-	}
-	
-	public String getBrowser() {
-		return browser;
-	}
-
-	public void setBrowser(String browser) {
-		this.browser = browser;
-	}
-
-	public Integer getHttp() {
-		return http;
-	}
-
-	public void setHttp(Integer http) {
-		this.http = http;
-	}
-
-	public String getObtained() {
-		return obtained;
-	}
-
-	public void setObtained(String obtained) {
-		this.obtained = obtained;
-	}
-	
-	public String getDetail() {
-		return detail;
-	}
-
-	public void setDetail(String detail) {
-		this.detail = detail;
-	}
-
-	public String getSource() {
-		return source;
-	}
-
-	public void setSource(String source) {
-		this.source = source;
-	}
-
-	public Date getAccess() {
-		return access;
-	}
-
-	public void setAccess(Date access) {
-		this.access = access;
 	}
 
 	@Override

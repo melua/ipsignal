@@ -20,7 +20,6 @@ package com.ipsignal.job.impl;
 import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -31,11 +30,13 @@ import com.ipsignal.entity.impl.UserEntity;
 import com.ipsignal.job.PurgeUserJob;
 import com.ipsignal.tool.IdFactory;
 
+import lombok.extern.java.Log;
+
+@Log
 @Stateless
 public class PurgeUserJobImpl implements PurgeUserJob {
 	
 	private static final int HEXID_LENGTH = 16;
-	private static final Logger LOGGER = Logger.getLogger(PurgeUserJobImpl.class.getName());
 	
 	@EJB
 	private UserDAO users;

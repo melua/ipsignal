@@ -37,8 +37,13 @@ import javax.persistence.TemporalType;
 import com.ipsignal.entity.Entity;
 import com.ipsignal.tool.IdFactory;
 
-@javax.persistence.Entity
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Table(name = "signals")
+@javax.persistence.Entity
 @NamedQueries({ @NamedQuery(name = "Signal.findByEmailAndUrlAndPath", query = "SELECT a FROM SignalEntity a WHERE a.user.email LIKE :email AND a.url LIKE :url AND a.path LIKE :path"),
 	@NamedQuery(name = "Signal.findByInterval", query = "SELECT a FROM SignalEntity a WHERE a.interval = :interval AND a.active = true"),
 	@NamedQuery(name = "Signal.findExpired", query = "SELECT a FROM SignalEntity a WHERE a.lastaccess < :min"),
@@ -127,142 +132,6 @@ public class SignalEntity implements Entity, Comparable<SignalEntity> {
 		this.interval = interval;
 		this.retention = retention;
 		this.whois = whois;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public Boolean getActive() {
-		return active;
-	}
-
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-	
-	public String getBrowser() {
-		return browser;
-	}
-
-	public void setBrowser(String browser) {
-		this.browser = browser;
-	}
-
-	public Integer getCertificate() {
-		return certificate;
-	}
-
-	public void setCertificate(Integer certificate) {
-		this.certificate = certificate;
-	}
-	
-	public Integer getLatency() {
-		return latency;
-	}
-
-	public void setLatency(Integer latency) {
-		this.latency = latency;
-	}
-
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
-	}
-
-	public String getExpected() {
-		return expected;
-	}
-
-	public void setExpected(String expected) {
-		this.expected = expected;
-	}
-
-	public UserEntity getUser() {
-		return user;
-	}
-
-	public void setUser(UserEntity user) {
-		this.user = user;
-	}
-
-	public String getNotify() {
-		return notify;
-	}
-
-	public void setNotify(String notify) {
-		this.notify = notify;
-	}
-
-	public Integer getInterval() {
-		return interval;
-	}
-
-	public void setInterval(Integer interval) {
-		this.interval = interval;
-	}
-
-	public Integer getRetention() {
-		return retention;
-	}
-
-	public void setRetention(Integer retention) {
-		this.retention = retention;
-	}
-
-	public Date getLastaccess() {
-		return lastaccess;
-	}
-
-	public void setLastaccess(Date lastaccess) {
-		this.lastaccess = lastaccess;
-	}
-
-	public WhoisEntity getWhois() {
-		return whois;
-	}
-
-	public void setWhois(WhoisEntity whois) {
-		this.whois = whois;
-	}
-
-	public List<LogEntity> getLogs() {
-		return logs;
-	}
-
-	public void setLogs(List<LogEntity> logs) {
-		this.logs = logs;
-	}
-
-	public SignalEntity getParent() {
-		return parent;
-	}
-
-	public void setParent(SignalEntity parent) {
-		this.parent = parent;
-	}
-
-	public List<SignalEntity> getChildren() {
-		return children;
-	}
-
-	public void setChildren(List<SignalEntity> children) {
-		this.children = children;
 	}
 
 	@Override

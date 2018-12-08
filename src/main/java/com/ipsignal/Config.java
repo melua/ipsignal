@@ -22,14 +22,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Properties;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.apache.cxf.helpers.IOUtils;
 
+import lombok.extern.java.Log;
+
+@Log
 public final class Config
 {
-	private static final Logger LOGGER = Logger.getLogger(Config.class.getName());
-
 	private static final Properties PROPS;
 	private static final Properties MAVEN;
 

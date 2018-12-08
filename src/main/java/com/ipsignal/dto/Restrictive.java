@@ -21,7 +21,6 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -44,6 +43,9 @@ import com.ipsignal.annotation.Xpath;
 import com.ipsignal.automate.Browser;
 import com.ipsignal.dto.impl.GenericDTO;
 
+import lombok.extern.java.Log;
+
+@Log
 public abstract class Restrictive {
 
 	public static final String REGEX_SEPARATOR = "/";
@@ -52,8 +54,6 @@ public abstract class Restrictive {
 		SIZE, NOTNULL, EMAIL, URL, RESERVED, PREMIUM, REGEXP, XPATH, BROWSER
 	}
 	
-	private static final Logger LOGGER = Logger.getLogger(Restrictive.class.getName());
-
 	public GenericDTO checkConstraints(Constraint... types) {
 
 		for (Field field : this.getClass().getDeclaredFields()) {

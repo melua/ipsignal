@@ -33,8 +33,13 @@ import javax.persistence.TemporalType;
 import com.ipsignal.entity.Entity;
 import com.ipsignal.tool.IdFactory;
 
-@javax.persistence.Entity
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Table(name = "whois")
+@javax.persistence.Entity
 @NamedQueries({ @NamedQuery(name = "Whois.findByDomain", query = "SELECT a FROM WhoisEntity a WHERE a.domain = :domain"),
 				@NamedQuery(name = "Whois.findWaiting", query = "SELECT a FROM WhoisEntity a WHERE a.access IS NULL"),
 				@NamedQuery(name = "Whois.findExpired", query = "SELECT a FROM WhoisEntity a WHERE a.expires < :expires AND a.access < :access")})
@@ -87,60 +92,4 @@ public class WhoisEntity implements Entity {
 		this.expires = expires;
 	}
 	
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getDomain() {
-		return domain;
-	}
-
-	public void setDomain(String domain) {
-		this.domain = domain;
-	}
-
-	public Date getCreated() {
-		return created;
-	}
-
-	public void setCreated(Date created) {
-		this.created = created;
-	}
-
-	public Date getUpdated() {
-		return updated;
-	}
-
-	public void setUpdated(Date updated) {
-		this.updated = updated;
-	}
-
-	public Date getExpires() {
-		return expires;
-	}
-
-	public void setExpires(Date expires) {
-		this.expires = expires;
-	}
-
-	public Date getAccess() {
-		return access;
-	}
-
-	public void setAccess(Date access) {
-		this.access = access;
-	}
-	
-	public List<SignalEntity> getSignals() {
-		return signals;
-	}
-
-	public void setSignals(List<SignalEntity> signal) {
-		this.signals = signal;
-	}
-
 }

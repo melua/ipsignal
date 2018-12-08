@@ -28,7 +28,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -43,11 +42,13 @@ import com.ipsignal.job.RunSignalJob;
 import com.ipsignal.mail.MailManager;
 import com.ipsignal.tool.IdFactory;
 
+import lombok.extern.java.Log;
+
+@Log
 @Stateless
 public class RunSignalJobImpl implements RunSignalJob {
 	
 	private static final int HEXID_LENGTH = 16;
-	private static final Logger LOGGER = Logger.getLogger(RunSignalJobImpl.class.getName());
 	
 	@EJB
 	private SignalDAO signals;

@@ -35,8 +35,13 @@ import javax.persistence.TemporalType;
 import com.ipsignal.entity.Entity;
 import com.ipsignal.tool.IdFactory;
 
-@javax.persistence.Entity
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Table(name = "users")
+@javax.persistence.Entity
 @NamedQueries({ @NamedQuery(name = "User.findByEmail", query = "SELECT a FROM UserEntity a WHERE a.email LIKE :email"),
 				@NamedQuery(name = "User.findByPremium", query = "SELECT a FROM UserEntity a WHERE a.premium = :date"),
 				@NamedQuery(name = "User.findAlone", query = "SELECT a FROM UserEntity a WHERE a.signals IS EMPTY AND a.premium IS NULL"),
@@ -71,36 +76,4 @@ public class UserEntity implements Entity {
 		this.premium = premium;
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public Date getPremium() {
-		return premium;
-	}
-
-	public void setPremium(Date premium) {
-		this.premium = premium;
-	}
-
-	public List<SignalEntity> getSignals() {
-		return signals;
-	}
-
-	public void setSignals(List<SignalEntity> signals) {
-		this.signals = signals;
-	}
-	
 }

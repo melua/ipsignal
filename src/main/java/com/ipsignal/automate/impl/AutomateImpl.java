@@ -35,7 +35,6 @@ import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Calendar;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -66,10 +65,12 @@ import com.ipsignal.entity.impl.SignalEntity;
 import com.ipsignal.mail.MailManager;
 import com.ipsignal.mem.Memcached;
 
+import lombok.Cleanup;
+import lombok.extern.java.Log;
+
+@Log
 @Stateless
 public class AutomateImpl implements Automate {
-
-	private static final Logger LOGGER = Logger.getLogger(AutomateImpl.class.getName());
 
 	public static final int TIMEOUT = 2000;
 	public static final int MAX_BYTES = 2097152;
@@ -114,11 +115,15 @@ public class AutomateImpl implements Automate {
 		Browser browser = null;
 
 		// Connections
-		Socket soc = null;
+		@Cleanup("disconnect")
 		HttpsURLConnection conn = null;
+		@Cleanup
 		WebClient client = null;
 
 		try {
+
+			@Cleanup
+			Socket soc = null;
 
 			if (signal.getBrowser() != null) {
 				browser = Browser.valueOf(signal.getBrowser());
@@ -267,20 +272,6 @@ public class AutomateImpl implements Automate {
 			LOGGER.log(Level.WARNING, "Error with I/O: {0}", ioex.getMessage());
 			return LogEntity.REACHABILITY.getInstance(signal, ping, ssl, browser.toString(), null, null, null, inetAddress.getHostAddress());
 
-		} finally {
-			if (soc != null) {
-				try {
-					soc.close();
-				} catch (IOException ioex) {
-					LOGGER.log(Level.WARNING, "Error while closing socket: {0}", ioex.getMessage());
-				}
-			}
-			if (conn != null) {
-		        conn.disconnect();
-			}
-			if (client != null) {
-				client.close();
-			}
 		}
 
 		// All is fine

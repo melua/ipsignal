@@ -20,7 +20,6 @@ package com.ipsignal.job.impl;
 import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -32,11 +31,13 @@ import com.ipsignal.job.NotifyPremiumJob;
 import com.ipsignal.mail.MailManager;
 import com.ipsignal.tool.IdFactory;
 
+import lombok.extern.java.Log;
+
+@Log
 @Stateless
 public class NotifyPremiumJobImpl implements NotifyPremiumJob {
 
 	private static final int HEXID_LENGTH = 16;
-	private static final Logger LOGGER = Logger.getLogger(NotifyPremiumJobImpl.class.getName());
 
 	@EJB
 	private UserDAO users;

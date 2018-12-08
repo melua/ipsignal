@@ -23,6 +23,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.ipsignal.dto.DTO;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WhoisDTO implements DTO {
@@ -31,38 +40,4 @@ public class WhoisDTO implements DTO {
 	private String updated;
 	private String expires;
 	
-	public WhoisDTO() {
-		// for the marshaller
-	}
-	
-	public WhoisDTO(String created, String updated, String expires) {
-		this.created = created;
-		this.updated = updated;
-		this.expires = expires;
-	}
-
-	public String getCreated() {
-		return created;
-	}
-
-	public void setCreated(String created) {
-		this.created = created;
-	}
-
-	public String getUpdated() {
-		return updated;
-	}
-
-	public void setUpdated(String updated) {
-		this.updated = updated;
-	}
-
-	public String getExpires() {
-		return expires;
-	}
-
-	public void setExpires(String expires) {
-		this.expires = expires;
-	}
-
 }

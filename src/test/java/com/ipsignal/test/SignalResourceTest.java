@@ -57,7 +57,7 @@ public class SignalResourceTest {
 	
 	@Test
 	public void testCreate1() {
-		SignalDTO dto = new SignalDTO(url, certificate, latency, path, expected, email, browser, null, notify, interval, retention, null);
+		SignalDTO dto = new SignalDTO(url, certificate, latency, path, expected, email, browser, notify, interval, retention, null, null, null);
 		
 		Response response = resource.create(dto);
 		
@@ -85,7 +85,7 @@ public class SignalResourceTest {
 	@Test
 	public void testCreate2() {
 		
-		SignalDTO dto = new SignalDTO(url, certificate, latency, path, expected, email, browser, null, notify, interval, retention, null);
+		SignalDTO dto = new SignalDTO(url, certificate, latency, path, expected, email, browser, notify, interval, retention, null, null, null);
 		
 		byte[] data = mapper.DtoToTlv(dto);
 		
@@ -164,7 +164,7 @@ public class SignalResourceTest {
 	
 	@Test
 	public void testUpdateById() {
-		SignalDTO dto = new SignalDTO(url, certificate, latency, path, expected, email, browser, null, notify, interval, retention, null);
+		SignalDTO dto = new SignalDTO(url, certificate, latency, path, expected, email, browser, notify, interval, retention, null, null, null);
 		
 		Response response = resource.updateById(SignalDAOStub.SECOND.getId(), dto);
 		

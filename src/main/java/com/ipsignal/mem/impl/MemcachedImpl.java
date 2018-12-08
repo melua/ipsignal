@@ -19,20 +19,20 @@ package com.ipsignal.mem.impl;
 
 import java.net.InetSocketAddress;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.ejb.Stateful;
 
 import com.ipsignal.Config;
 import com.ipsignal.mem.Memcached;
 
+import lombok.extern.java.Log;
 import net.spy.memcached.MemcachedClient;
 import net.spy.memcached.transcoders.SerializingTranscoder;
 
+@Log
 @Stateful
 public class MemcachedImpl implements Memcached {
 
-	private static final Logger LOGGER = Logger.getLogger(Memcached.class.getName());
 	private static final String KEYBASE = Config.SERVICE_URL.getHost().concat("/");
 
 	private MemcachedClient client;

@@ -18,6 +18,15 @@ import com.ipsignal.annotation.Xpath;
 import com.ipsignal.dto.DTO;
 import com.ipsignal.dto.Restrictive;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SignalDTO extends Restrictive implements DTO {
@@ -79,130 +88,5 @@ public class SignalDTO extends Restrictive implements DTO {
 	private WhoisDTO whois;
 
 	private List<LogDTO> logs;
-	
-	public SignalDTO() {
-		// for the marshaller
-	}
-	
-	public SignalDTO(String url, Integer certificate, Integer latency, String path, String expected, String email, String browser, String premium, String notify,
-			Integer interval, Integer retention, WhoisDTO whois) {
-		this();
-		this.url = url;
-		this.certificate = certificate;
-		this.latency = latency;
-		this.path = path;
-		this.expected = expected;
-		this.email = email;
-		this.browser = browser;
-		this.premium = premium;
-		this.notify = notify;
-		this.interval = interval;
-		this.retention = retention;
-		this.whois = whois;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-	
-	public Integer getCertificate() {
-		return certificate;
-	}
-
-	public void setCertificate(Integer certificate) {
-		this.certificate = certificate;
-	}
-	
-	public Integer getLatency() {
-		return latency;
-	}
-
-	public void setLatency(Integer latency) {
-		this.latency = latency;
-	}
-
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
-	}
-
-	public String getExpected() {
-		return expected;
-	}
-
-	public void setExpected(String expected) {
-		this.expected = expected;
-	}
-	
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
-	public String getBrowser() {
-		return browser;
-	}
-
-	public void setBrowser(String browser) {
-		this.browser = browser;
-	}
-
-	public String getPremium() {
-		return premium;
-	}
-
-	public void setPremium(String premium) {
-		this.premium = premium;
-	}
-
-	public String getNotify() {
-		return notify;
-	}
-
-	public void setNotify(String notify) {
-		this.notify = notify;
-	}
-
-	public Integer getInterval() {
-		return interval;
-	}
-
-	public void setInterval(Integer interval) {
-		this.interval = interval;
-	}
-
-	public Integer getRetention() {
-		return retention;
-	}
-
-	public void setRetention(Integer retention) {
-		this.retention = retention;
-	}
-	
-	public WhoisDTO getWhois() {
-		return whois;
-	}
-
-	public void setWhois(WhoisDTO whois) {
-		this.whois = whois;
-	}
-
-	public List<LogDTO> getLogs() {
-		return logs;
-	}
-
-	public void setLogs(List<LogDTO> logs) {
-		this.logs = logs;
-	}
 
 }
