@@ -114,16 +114,7 @@ public class AutomateImpl implements Automate {
 		// Browser
 		Browser browser = null;
 
-		// Connections
-		@Cleanup("disconnect")
-		HttpsURLConnection conn = null;
-		@Cleanup
-		WebClient client = null;
-
 		try {
-
-			@Cleanup
-			Socket soc = null;
 
 			if (signal.getBrowser() != null) {
 				browser = Browser.valueOf(signal.getBrowser());
@@ -135,8 +126,10 @@ public class AutomateImpl implements Automate {
 			inetAddress = InetAddress.getByName(url.getHost());
 			boolean isHttps = "https".equals(url.getProtocol()) ? true : false;
 
+			@Cleanup
+			Socket soc = new Socket();
+
 			// First we ping
-			soc = new Socket();
 			long start = Calendar.getInstance().getTimeInMillis();
 			this.doConnect(soc, new InetSocketAddress(inetAddress, isHttps ? 443 : 80), TIMEOUT);
 			long end = Calendar.getInstance().getTimeInMillis();
@@ -144,16 +137,19 @@ public class AutomateImpl implements Automate {
 			
 			// Then we get SSL/TLS certificate
 			if (isHttps && signal.getCertificate() != null) {
+				@Cleanup("disconnect")
+				HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
 		        long expiration = this.getExpirationTimestamp(conn, url);
 		        long now = Calendar.getInstance().getTimeInMillis();
 		        ssl = (int) ((expiration - now) / DAY);
 			}
 	        
-	        // after we get the page
-			client = WebClient.create(signal.getUrl())
+			@Cleanup
+			WebClient client = WebClient.create(signal.getUrl())
 					.replaceHeader(HttpHeaders.USER_AGENT, browser.getUserAgent())
 					.accept(MediaType.TEXT_HTML, MediaType.APPLICATION_XHTML_XML, MediaType.APPLICATION_XML);
 			
+	        // after we get the page
 			Response response = this.doGet(client);
 			int status = response.getStatus();
 
@@ -354,7 +350,6 @@ public class AutomateImpl implements Automate {
 	}
 
 	protected long getExpirationTimestamp(HttpsURLConnection conn, URL url) throws IOException {
-		conn = (HttpsURLConnection) url.openConnection();
 		conn.connect();
         Certificate[] chain = conn.getServerCertificates();
         X509Certificate cert = (X509Certificate) chain[LEAF];
