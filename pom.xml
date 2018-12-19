@@ -124,6 +124,11 @@
 			<artifactId>commons-validator</artifactId>
 			<version>1.5.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.melua</groupId>
+			<artifactId>minitlv</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 		<!-- Tests -->
 		<dependency>
 			<groupId>junit</groupId>
