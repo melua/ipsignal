@@ -1,5 +1,6 @@
 package com.ipsignal.mapper.impl;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 
 /*
@@ -23,6 +24,7 @@ import java.text.Format;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.logging.Level;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -40,6 +42,9 @@ import com.ipsignal.mapper.LogMapper;
 import com.ipsignal.mapper.SignalMapper;
 import com.ipsignal.mapper.WhoisMapper;
 
+import lombok.extern.java.Log;
+
+@Log
 @Stateless
 public class SignalMapperImpl implements SignalMapper {
 	
@@ -149,15 +154,31 @@ public class SignalMapperImpl implements SignalMapper {
 	@Override
 	public SignalDTO tlvToDto(byte[] tlv) {
 		SignalDTO dto = new SignalDTO();
-		String browser = MiniTLV.parse(tlv, SignalDTO.T_BROWSER);
-		String certificate = MiniTLV.parse(tlv, SignalDTO.T_CERTIFICATE);
-		String email = MiniTLV.parse(tlv, SignalDTO.T_EMAIL);
-		String expected = MiniTLV.parse(tlv, SignalDTO.T_EXPECTED);
-		String interval = MiniTLV.parse(tlv, SignalDTO.T_INTERVAL);
-		String latency = MiniTLV.parse(tlv, SignalDTO.T_LATENCY);
-		String notify = MiniTLV.parse(tlv, SignalDTO.T_NOTIFY);
-		String path = MiniTLV.parse(tlv, SignalDTO.T_PATH);
-		String url = MiniTLV.parse(tlv, SignalDTO.T_URL);
+
+		String browser = null;
+		String certificate = null;
+		String email = null;
+		String expected = null;
+		String interval = null;
+		String latency = null;
+		String notify = null;
+		String path = null;
+		String url = null;
+
+		try {
+			browser = MiniTLV.parse(tlv, SignalDTO.T_BROWSER);
+			certificate = MiniTLV.parse(tlv, SignalDTO.T_CERTIFICATE);
+			email = MiniTLV.parse(tlv, SignalDTO.T_EMAIL);
+			expected = MiniTLV.parse(tlv, SignalDTO.T_EXPECTED);
+			interval = MiniTLV.parse(tlv, SignalDTO.T_INTERVAL);
+			latency = MiniTLV.parse(tlv, SignalDTO.T_LATENCY);
+			notify = MiniTLV.parse(tlv, SignalDTO.T_NOTIFY);
+			path = MiniTLV.parse(tlv, SignalDTO.T_PATH);
+			url = MiniTLV.parse(tlv, SignalDTO.T_URL);
+
+		} catch (IOException ioex) {
+			LOGGER.log(Level.WARNING, "Error while parsing TLV: {0}", ioex.getMessage());
+		}
 	
 		if (browser != null) {
 			dto.setBrowser(browser);
