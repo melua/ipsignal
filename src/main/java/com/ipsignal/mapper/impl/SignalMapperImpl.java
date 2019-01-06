@@ -1,7 +1,6 @@
 package com.ipsignal.mapper.impl;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 
 /*
  * Copyright (C) 2017 Kevin Guignard
@@ -23,7 +22,10 @@ import java.nio.ByteBuffer;
 import java.text.Format;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import javax.ejb.EJB;
@@ -49,7 +51,7 @@ import lombok.extern.java.Log;
 public class SignalMapperImpl implements SignalMapper {
 	
 	private static final Format FORMATTER = FastDateFormat.getInstance("yyyy-MM-dd");
-	private static final int BUFFER_MAX = 4096;
+	private static final int BUFFER_SIZE = 4096;
 
 	@EJB
 	LogMapper mapper;
@@ -155,57 +157,44 @@ public class SignalMapperImpl implements SignalMapper {
 	public SignalDTO tlvToDto(byte[] tlv) {
 		SignalDTO dto = new SignalDTO();
 
-		String browser = null;
-		String certificate = null;
-		String email = null;
-		String expected = null;
-		String interval = null;
-		String latency = null;
-		String notify = null;
-		String path = null;
-		String url = null;
-
 		try {
-			browser = MiniTLV.parse(tlv, SignalDTO.T_BROWSER);
-			certificate = MiniTLV.parse(tlv, SignalDTO.T_CERTIFICATE);
-			email = MiniTLV.parse(tlv, SignalDTO.T_EMAIL);
-			expected = MiniTLV.parse(tlv, SignalDTO.T_EXPECTED);
-			interval = MiniTLV.parse(tlv, SignalDTO.T_INTERVAL);
-			latency = MiniTLV.parse(tlv, SignalDTO.T_LATENCY);
-			notify = MiniTLV.parse(tlv, SignalDTO.T_NOTIFY);
-			path = MiniTLV.parse(tlv, SignalDTO.T_PATH);
-			url = MiniTLV.parse(tlv, SignalDTO.T_URL);
+
+			Map<Integer, String> map = MiniTLV.parseAll(tlv);
+			for (Entry<Integer, String> entry : map.entrySet()) {
+				switch(entry.getKey()) {
+					case (int) SignalDTO.T_BROWSER:
+						dto.setBrowser(entry.getValue());
+						break;
+					case (int) SignalDTO.T_CERTIFICATE:
+						dto.setCertificate(Integer.valueOf(entry.getValue()));
+						break;
+					case (int) SignalDTO.T_EMAIL:
+						dto.setEmail(entry.getValue());
+						break;
+					case (int) SignalDTO.T_EXPECTED:
+						dto.setExpected(entry.getValue());
+						break;
+					case (int) SignalDTO.T_INTERVAL:
+						dto.setInterval(Integer.valueOf(entry.getValue()));
+						break;
+					case (int) SignalDTO.T_LATENCY:
+						dto.setLatency(Integer.valueOf(entry.getValue()));
+						break;
+					case (int) SignalDTO.T_NOTIFY:
+						dto.setNotify(entry.getValue());
+						break;
+					case (int) SignalDTO.T_PATH:
+						dto.setPath(entry.getValue());
+						break;
+					case (int) SignalDTO.T_URL:
+						dto.setUrl(entry.getValue());
+						break;
+					default:
+				}
+			}
 
 		} catch (IOException ioex) {
 			LOGGER.log(Level.WARNING, "Error while parsing TLV: {0}", ioex.getMessage());
-		}
-	
-		if (browser != null) {
-			dto.setBrowser(browser);
-		}
-		if (certificate != null) {
-			dto.setCertificate(Integer.valueOf(certificate));
-		}
-		if (email != null) {
-			dto.setEmail(email);
-		}
-		if (expected != null) {
-			dto.setExpected(expected);
-		}
-		if (interval != null) {
-			dto.setInterval(Integer.valueOf(interval));
-		}
-		if (latency != null) {
-			dto.setLatency(Integer.valueOf(latency));
-		}
-		if (notify != null) {
-			dto.setNotify(notify);
-		}
-		if (path != null) {
-			dto.setPath(path);
-		}
-		if (url != null) {
-			dto.setUrl(url);
 		}
 
 		return dto;
@@ -213,49 +202,18 @@ public class SignalMapperImpl implements SignalMapper {
 
 	@Override
 	public byte[] DtoToTlv(SignalDTO dto) {
-		
-		ByteBuffer buffer = ByteBuffer.allocate(BUFFER_MAX);
-		
-		if (dto.getBrowser() != null) {
-			buffer.put(MiniTLV.serialize(dto.getBrowser(), SignalDTO.T_BROWSER));
-		}
-		
-		if (dto.getCertificate() != null) {
-			buffer.put(MiniTLV.serialize(dto.getCertificate(), SignalDTO.T_CERTIFICATE));
-		}
-		
-		if (dto.getEmail() != null) {
-			buffer.put(MiniTLV.serialize(dto.getEmail(), SignalDTO.T_EMAIL));
-		}
+		Map<byte[], Object> map = new HashMap<>();
+		map.put(new byte[]{SignalDTO.T_BROWSER}, dto.getBrowser());
+		map.put(new byte[]{SignalDTO.T_CERTIFICATE}, dto.getCertificate());
+		map.put(new byte[]{SignalDTO.T_EMAIL}, dto.getEmail());
+		map.put(new byte[]{SignalDTO.T_EXPECTED}, dto.getExpected());
+		map.put(new byte[]{SignalDTO.T_INTERVAL}, dto.getInterval());
+		map.put(new byte[]{SignalDTO.T_LATENCY}, dto.getLatency());
+		map.put(new byte[]{SignalDTO.T_NOTIFY}, dto.getNotify());
+		map.put(new byte[]{SignalDTO.T_PATH}, dto.getPath());
+		map.put(new byte[]{SignalDTO.T_URL}, dto.getUrl());
 
-		if (dto.getExpected() != null) {
-			buffer.put(MiniTLV.serialize(dto.getExpected(), SignalDTO.T_EXPECTED));
-		}
-		
-		if (dto.getInterval() != null) {
-			buffer.put(MiniTLV.serialize(dto.getInterval(), SignalDTO.T_INTERVAL));
-		}
-		
-		if (dto.getLatency() != null) {
-			buffer.put(MiniTLV.serialize(dto.getLatency(), SignalDTO.T_LATENCY));
-		}
-		
-		if (dto.getNotify() != null) {
-			buffer.put(MiniTLV.serialize(dto.getNotify(), SignalDTO.T_NOTIFY));
-		}
-		
-		if (dto.getPath() != null) {
-			buffer.put(MiniTLV.serialize(dto.getPath(), SignalDTO.T_PATH));
-		}
-		
-		if (dto.getUrl() != null) {
-			buffer.put(MiniTLV.serialize(dto.getUrl(), SignalDTO.T_URL));
-		}
-		
-		buffer.flip();
-		byte[] result = new byte[buffer.limit()];
-		buffer.get(result, 0, buffer.limit());
-		return result;
+		return MiniTLV.serializeAll(map, BUFFER_SIZE);
 	}
 
 }

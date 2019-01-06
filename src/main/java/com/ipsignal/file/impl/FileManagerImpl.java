@@ -8,6 +8,8 @@ import java.util.logging.Level;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import org.melua.MiniTLV;
+
 import com.ipsignal.Config;
 import com.ipsignal.dto.impl.SignalDTO;
 import com.ipsignal.file.FileManager;
@@ -36,6 +38,8 @@ import lombok.extern.java.Log;
 @Stateless
 public class FileManagerImpl implements FileManager {
 	
+	private static final int BUFFER_SIZE = 4096;
+
 	@EJB
 	private SignalMapper mapper;
 	
@@ -51,9 +55,10 @@ public class FileManagerImpl implements FileManager {
 	@Override
 	public boolean writeToDisk(SignalDTO dto, final String id) {
 		
-		byte[] bytes = mapper.DtoToTlv(dto);
-		
 		try {
+
+			byte[] bytes = MiniTLV.deflate(mapper.DtoToTlv(dto), BUFFER_SIZE);
+
 			final File parent = new File(new File(Config.FILER_PATH, id.substring(0, 1)), id.substring(1, 3));
 			parent.mkdirs();
 			
