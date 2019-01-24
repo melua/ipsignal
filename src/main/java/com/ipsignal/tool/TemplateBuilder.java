@@ -114,6 +114,14 @@ public class TemplateBuilder {
 	}
 
 	/**
+	 * Replace template brand with given value
+	 * @param brand
+	 */
+	public void formatBrand(String brand) {
+		replace("brand", brand);
+	}
+
+	/**
 	 * Replace template id and cancel link with given values
 	 * @param id
 	 * @param cancel

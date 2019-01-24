@@ -43,10 +43,6 @@ import lombok.extern.java.Log;
 @Stateless
 public class MailManagerImpl implements MailManager {
 
-	private static final String BRAND_NAME = "IP Signal";
-	private static final String DONOTREPLY = "noreply@ip-signal.com";
-	private static final String ALERT = "alert@ip-signal.com";
-	private static final String PREMIUM = "premium@ip-signal.com";
 	public static final String NOTIFY_UNSUBSCRIBE_PATH = "/unsub/notif/";
 	public static final String CERTIFICATE_UNSUBSCRIBE_PATH = "/unsub/certif/";
 
@@ -55,7 +51,7 @@ public class MailManagerImpl implements MailManager {
 		TemplateBuilder body = new TemplateBuilder(Config.MAIL_CRUD_CREATE);
 		body.formatSignal(entity);
 		body.formatLink(entity.getId());
-		return send("Confirm your email address.", body.toString(), DONOTREPLY, entity.getUser().getEmail(), null);
+		return send("Confirm your email address.", body.toString(), Config.DONOTREPLY, entity.getUser().getEmail(), null);
 	}
 	
 	@Override
@@ -63,7 +59,7 @@ public class MailManagerImpl implements MailManager {
 		TemplateBuilder body = new TemplateBuilder(Config.MAIL_CRUD_DELETE);
 		body.formatSignal(entity);
 		body.formatLink(entity.getId());
-		return send("Beacon deleted.", body.toString(), DONOTREPLY, entity.getUser().getEmail(), null);
+		return send("Beacon deleted.", body.toString(), Config.DONOTREPLY, entity.getUser().getEmail(), null);
 	}
 
 	@Override
@@ -71,7 +67,7 @@ public class MailManagerImpl implements MailManager {
 		TemplateBuilder body = new TemplateBuilder(Config.MAIL_CRUD_UPDATE);
 		body.formatSignal(entity);
 		body.formatLink(backup.getId());
-		return send("Beacon modified.", body.toString(), DONOTREPLY, entity.getUser().getEmail(), null);
+		return send("Beacon modified.", body.toString(), Config.DONOTREPLY, entity.getUser().getEmail(), null);
 	}
 
 	@Override
@@ -85,7 +81,7 @@ public class MailManagerImpl implements MailManager {
 			body.formatLink(entity.getId());
 		}
 		body.formatUnsubscribe(unsubscribe);
-		send("Beacon alert: " + log.getDetail(), body.toString(), ALERT, entity.getUser().getEmail(), unsubscribe);
+		send("Beacon alert: " + log.getDetail(), body.toString(), Config.ALERT, entity.getUser().getEmail(), unsubscribe);
 	}
 	
 	@Override
@@ -96,21 +92,21 @@ public class MailManagerImpl implements MailManager {
 		body.formatDays(log.getCertificate());
 		body.formatLink(entity.getId());
 		body.formatUnsubscribe(unsubscribe);
-		send("Your certificate expires in " + log.getCertificate() + " days.", body.toString(), ALERT, entity.getUser().getEmail(), unsubscribe);
+		send("Your certificate expires in " + log.getCertificate() + " days.", body.toString(), Config.ALERT, entity.getUser().getEmail(), unsubscribe);
 	}
 
 	@Override
 	public void sendPremiumExpiration(final UserEntity entity, final Integer days) {
 		TemplateBuilder body = new TemplateBuilder(Config.MAIL_PREMIUM_EXPIRED);
 		body.formatDays(days);
-		send("Your premium expirated.", body.toString(), PREMIUM, entity.getEmail(), null);
+		send("Your premium expirated.", body.toString(), Config.PREMIUM, entity.getEmail(), null);
 	}
 
 	@Override
 	public void sendPremiumExpirateSoon(final UserEntity entity, final Integer days) {
 		TemplateBuilder body = new TemplateBuilder(Config.MAIL_PREMIUM_SOON);
 		body.formatDays(days);
-		send("Your premium expires soon.", body.toString(), PREMIUM, entity.getEmail(), null);
+		send("Your premium expires soon.", body.toString(), Config.PREMIUM, entity.getEmail(), null);
 	}
 
 	/**
@@ -131,7 +127,7 @@ public class MailManagerImpl implements MailManager {
 		final MimeMessage message = new MimeMessage(session);
 
 		try {
-			message.setFrom(new InternetAddress(sender, BRAND_NAME, "UTF-8"));
+			message.setFrom(new InternetAddress(sender, Config.BRAND_NAME, "UTF-8"));
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
 			if (unsubscribe != null) {
 				message.setHeader("List-Unsubscribe", "<" + unsubscribe + ">");

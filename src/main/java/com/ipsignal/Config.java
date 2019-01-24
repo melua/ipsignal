@@ -60,6 +60,12 @@ public final class Config
 	public static final String HTML_UNSUBSCRIBE_NOTIFICATION;
 	public static final String HTML_UNSUBSCRIBE_CERTIFICATE;
 	
+	public static final String BRAND_NAME;
+	
+	public static final String DONOTREPLY;
+	public static final String ALERT;
+	public static final String PREMIUM;
+	
 	static {
 		PROPS = loadProperties("/config.properties");
 		MAVEN = loadProperties("/version.properties");
@@ -91,6 +97,11 @@ public final class Config
 		HTML_UNSUBSCRIBE_NOTIFICATION = getContent("/unsubscribe/notification.html");
 		HTML_UNSUBSCRIBE_CERTIFICATE = getContent("/unsubscribe/certificate.html");
 		
+		BRAND_NAME = getString(PROPS, "serve.brand", "IP Signal");
+		
+		DONOTREPLY = getString(PROPS, "mail.noreply", "noreply@localhost.lan");
+		ALERT = getString(PROPS, "mail.alert", "alert@localhost.lan");
+		PREMIUM = getString(PROPS, "mail.premium", "premium@localhost.lan");
 	}
 
 	private Config() {

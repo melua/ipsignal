@@ -3,4 +3,4 @@ Hello,
 Your premium account will expire in {days} days. After this limit if you want to continue with the premium privileges, please renew your subscription on http://www.ip-signal.com using the same email address. This email was sent automatically, please do not reply.
 
 Thank you for your confidence,
-The IP Signal team
+The {brand} team
