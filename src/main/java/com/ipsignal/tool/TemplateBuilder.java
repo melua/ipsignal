@@ -47,6 +47,7 @@ public class TemplateBuilder {
 	 */
 	public TemplateBuilder(String template) {
 		value = template;
+		formatBrand(Config.BRAND_NAME);
 	}
 
 	/**
@@ -117,7 +118,7 @@ public class TemplateBuilder {
 	 * Replace template brand with given value
 	 * @param brand
 	 */
-	public void formatBrand(String brand) {
+	private void formatBrand(String brand) {
 		replace("brand", brand);
 	}
 
