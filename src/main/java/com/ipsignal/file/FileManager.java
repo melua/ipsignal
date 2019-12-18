@@ -1,7 +1,5 @@
 package com.ipsignal.file;
 
-import javax.ejb.Asynchronous;
-
 /*
  * Copyright (C) 2017 Kevin Guignard
  *
@@ -19,11 +17,8 @@ import javax.ejb.Asynchronous;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import javax.ejb.Local;
-
 import com.ipsignal.dto.impl.SignalDTO;
 
-@Local(FileManager.class)
 public interface FileManager {
 
 	/**
@@ -41,7 +36,7 @@ public interface FileManager {
 	 * @param dto to write
 	 * @param id of the signal
 	 */
-	@Asynchronous
+	//@Asynchronous
 	void writeToDiskAsync(SignalDTO dto, String id);
 
 }

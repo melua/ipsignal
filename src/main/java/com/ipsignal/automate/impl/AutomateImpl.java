@@ -38,17 +38,14 @@ import java.util.logging.Level;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.net.ssl.HttpsURLConnection;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.apache.cxf.jaxrs.client.WebClient;
 import org.cyberneko.html.parsers.DOMParser;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -65,11 +62,14 @@ import com.ipsignal.entity.impl.SignalEntity;
 import com.ipsignal.mail.MailManager;
 import com.ipsignal.mem.Memcached;
 
+import io.vertx.axle.core.Vertx;
+import io.vertx.axle.ext.web.client.WebClient;
+import io.vertx.ext.web.client.WebClientOptions;
 import lombok.Cleanup;
 import lombok.extern.java.Log;
 
 @Log
-@Stateless
+@ApplicationScoped
 public class AutomateImpl implements Automate {
 
 	public static final int TIMEOUT = 2000;
@@ -79,25 +79,21 @@ public class AutomateImpl implements Automate {
 	private static final int DAY = 86400000;
 	private static final int LEAF = 0;
 
-	@EJB
-	private SignalDAO signals;
-	@EJB
-	private LogDAO logs;
-	@EJB
-	private MailManager mailer;
-	@EJB
-	private Memcached mem;
+	SignalDAO signals;
+	LogDAO logs;
+	MailManager mailer;
+	Memcached mem;
+	Config config;
+	Vertx vertx;
 
-	public AutomateImpl() {
-		// For injection
-	}
-
-	protected AutomateImpl(SignalDAO signals, LogDAO logs, MailManager mailer, Memcached mem) {
-		// For tests
+	@Inject
+	public AutomateImpl(SignalDAO signals, LogDAO logs, MailManager mailer, Memcached mem, Config config, Vertx vertx) {
 		this.signals = signals;
 		this.logs = logs;
 		this.mailer = mailer;
 		this.mem = mem;
+		this.config = config;
+		this.vertx = vertx;
 	}
 
 	@Override
@@ -143,14 +139,9 @@ public class AutomateImpl implements Automate {
 		        long now = Calendar.getInstance().getTimeInMillis();
 		        ssl = (int) ((expiration - now) / DAY);
 			}
-	        
-			@Cleanup
-			WebClient client = WebClient.create(signal.getUrl())
-					.replaceHeader(HttpHeaders.USER_AGENT, browser.getUserAgent())
-					.accept(MediaType.TEXT_HTML, MediaType.APPLICATION_XHTML_XML, MediaType.APPLICATION_XML);
-			
+		
 	        // after we get the page
-			Response response = this.doGet(client);
+			Response response = this.doGet(browser, signal.getUrl());
 			int status = response.getStatus();
 
 			/*
@@ -320,7 +311,7 @@ public class AutomateImpl implements Automate {
 		logs.add(log);
 		signals.update(signal);
 
-		if (Config.MEMC_TIME != 0) {
+		if (config.getMemcTime() != 0) {
 			// Remove from cache
 			mem.remove(signal.getId());
 		}
@@ -339,8 +330,11 @@ public class AutomateImpl implements Automate {
 		socket.connect(endpoint, timeout);
 	}
 
-	protected Response doGet(WebClient client) throws IOException {
-		return client.get();
+	protected Response doGet(Browser browser, String url) throws IOException {
+		@Cleanup
+		WebClient client = WebClient.create(vertx, new WebClientOptions().setUserAgent(browser.getUserAgent()));
+		
+		return (Response) client.get(url).send();
 	}
 
 	protected Document doParse(String source) throws SAXException, IOException {

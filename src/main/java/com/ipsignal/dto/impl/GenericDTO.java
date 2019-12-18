@@ -21,7 +21,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.ipsignal.Config;
 import com.ipsignal.dto.DTO;
 
 import lombok.AccessLevel;
@@ -66,7 +65,7 @@ public class GenericDTO implements DTO {
 	
 	// Server
 	public static final GenericDTO SENDMAILFAILED = from("ERR-SRV-MAIL", "Sending e-mail to [%s] failed, please try later.", null);
-	public static final GenericDTO SERVERVERSION = from("OK-SRV-VERSION", Config.VERSION, null);
+	public static final GenericDTO SERVERVERSION = from("OK-SRV-VERSION", "%s", null);
 
 	private String code;
 	private String detail;

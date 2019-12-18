@@ -17,12 +17,9 @@ package com.ipsignal.mapper;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import javax.ejb.Local;
-
 import com.ipsignal.dto.impl.WhoisDTO;
 import com.ipsignal.entity.impl.WhoisEntity;
 
-@Local(WhoisMapper.class)
 public interface WhoisMapper extends Mapper<WhoisEntity, WhoisDTO> {
 	
 }

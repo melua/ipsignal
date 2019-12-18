@@ -17,7 +17,6 @@ package com.ipsignal.resource;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import javax.ejb.Local;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -32,7 +31,6 @@ import com.ipsignal.annotation.Cached;
 import com.ipsignal.annotation.PATCH;
 import com.ipsignal.dto.impl.SignalDTO;
 
-@Local(SignalResource.class)
 @Path("/")
 public interface SignalResource extends Resource<SignalDTO> {
 

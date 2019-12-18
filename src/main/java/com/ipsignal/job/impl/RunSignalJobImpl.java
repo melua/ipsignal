@@ -29,8 +29,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import com.ipsignal.Config;
 import com.ipsignal.automate.Automate;
@@ -45,22 +45,24 @@ import com.ipsignal.tool.IdFactory;
 import lombok.extern.java.Log;
 
 @Log
-@Stateless
+@ApplicationScoped
 public class RunSignalJobImpl implements RunSignalJob {
 	
 	private static final int HEXID_LENGTH = 16;
 	
-	@EJB
-	private SignalDAO signals;
-	@EJB
-	private LogDAO logs;
-	@EJB
-	private MailManager mailer;
-	@EJB
-	private Automate automate;
-
-	public RunSignalJobImpl() {
-		// For injection
+	SignalDAO signals;
+	LogDAO logs;
+	MailManager mailer;
+	Automate automate;
+	Config config;
+	
+	@Inject
+	public RunSignalJobImpl(SignalDAO signals, LogDAO logs, MailManager mailer, Automate automate, Config config) {
+		this.signals = signals;
+		this.logs = logs;
+		this.mailer = mailer;
+		this.automate = automate;
+		this.config = config;
 	}
 
 	@Override
@@ -72,7 +74,7 @@ public class RunSignalJobImpl implements RunSignalJob {
 			LOGGER.log(Level.FINE, "Job [{0}] for interval {1} found {2} signals to process", new Object[] { hexid, interval, entities.size() });
 		}
 
-		if (!Config.DISABLE_JOBS && !entities.isEmpty()) {
+		if (!config.isDisableJobs() && !entities.isEmpty()) {
 
 			long start = Calendar.getInstance().getTimeInMillis();
 

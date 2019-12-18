@@ -18,20 +18,27 @@ package com.ipsignal.mapper.impl;
  */
 
 import java.text.Format;
+import java.text.SimpleDateFormat;
 
-import javax.ejb.Stateless;
-
-import org.apache.commons.lang3.time.FastDateFormat;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import com.ipsignal.Config;
 import com.ipsignal.dto.impl.LogDTO;
 import com.ipsignal.entity.impl.LogEntity;
 import com.ipsignal.mapper.LogMapper;
 
-@Stateless
+@ApplicationScoped
 public class LogMapperImpl implements LogMapper {
 	
-	private static final Format FORMATTER = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss");
+	private static final Format FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
+	Config config;
+	
+	@Inject
+	public LogMapperImpl(Config config) {
+		this.config = config;
+	}
 
 	@Override
 	public LogDTO entityToDto(final LogEntity entity) {
@@ -40,7 +47,7 @@ public class LogMapperImpl implements LogMapper {
 		}
 
 		String access = FORMATTER.format(entity.getAccess());
-		String source = entity.getSource() != null ? Config.SERVICE_URL + "/" + entity.getSignal().getId() + "/" + entity.getId() : null;
+		String source = entity.getSource() != null ? config.getServiceUrl() + "/" + entity.getSignal().getId() + "/" + entity.getId() : null;
 		return new LogDTO(access, entity.getLatency(), entity.getCertificate(), entity.getBrowser(), entity.getHttp(), entity.getObtained(), entity.getDetail(), source);
 	}
 

@@ -13,9 +13,11 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.apache.cxf.jaxrs.client.WebClient;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+
+import com.ipsignal.Config;
+import com.ipsignal.automate.Browser;
 
 /*
  * Copyright (C) 2017 Kevin Guignard
@@ -58,8 +60,8 @@ public class AutomateMock extends AutomateImpl {
 	private final Response response;
 	private final Exception exception;
 
-	public AutomateMock(int latency, int expiration, Response response, Exception exception) {
-		super(new SignalDAOStub(), new LogDAOStub(), new MailManagerMock(), new MemcachedStub());
+	public AutomateMock(int latency, int expiration, Response response, Exception exception, Config config) {
+		super(new SignalDAOStub(), new LogDAOStub(), new MailManagerMock(config), new MemcachedStub(), config, null);
 		this.latency = latency;
 		this.expiration = expiration;
 		this.response = response;
@@ -80,7 +82,7 @@ public class AutomateMock extends AutomateImpl {
 	}
 
 	@Override
-	protected Response doGet(WebClient client) throws IOException {
+	protected Response doGet(Browser browser, String url) throws IOException {
 		return this.response;
 	}
 

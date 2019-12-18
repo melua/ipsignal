@@ -1,7 +1,5 @@
 package com.ipsignal.whois;
 
-import javax.ejb.Local;
-
 import com.ipsignal.entity.impl.WhoisEntity;
 
 /*
@@ -21,7 +19,6 @@ import com.ipsignal.entity.impl.WhoisEntity;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-@Local(WhoisManager.class)
 public interface WhoisManager {
 	
 	/**

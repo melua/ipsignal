@@ -21,8 +21,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import com.ipsignal.Config;
 import com.ipsignal.dao.UserDAO;
@@ -33,16 +33,18 @@ import com.ipsignal.tool.IdFactory;
 import lombok.extern.java.Log;
 
 @Log
-@Stateless
+@ApplicationScoped
 public class PurgeUserJobImpl implements PurgeUserJob {
 	
 	private static final int HEXID_LENGTH = 16;
 	
-	@EJB
-	private UserDAO users;
-
-	public PurgeUserJobImpl() {
-		// For injection
+	UserDAO users;
+	Config config;
+	
+	@Inject
+	public PurgeUserJobImpl(UserDAO users, Config config) {
+		this.users = users;
+		this.config = config;
 	}
 
 	@Override
@@ -54,7 +56,7 @@ public class PurgeUserJobImpl implements PurgeUserJob {
 			LOGGER.log(Level.FINE, "Job [{0}] found {1} users to purge", new Object[] { hexid, entities.size() });
 		}
 
-		if (!Config.DISABLE_PURGES && !entities.isEmpty()) {
+		if (!config.isDisablePurges() && !entities.isEmpty()) {
 			long start = Calendar.getInstance().getTimeInMillis();
 
 			for (UserEntity entity : entities) {

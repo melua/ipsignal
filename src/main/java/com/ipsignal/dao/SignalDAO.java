@@ -19,8 +19,6 @@ package com.ipsignal.dao;
 
 import java.util.List;
 
-import javax.ejb.Local;
-
 import com.ipsignal.entity.impl.SignalEntity;
 
 /**
@@ -29,7 +27,7 @@ import com.ipsignal.entity.impl.SignalEntity;
  * @see DAO
  * @see com.ipsignal.entity.impl.SignalEntity
  */
-@Local(SignalDAO.class)
+
 public interface SignalDAO extends DAO<SignalEntity> {
 
 	/**

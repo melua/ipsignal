@@ -20,8 +20,6 @@ package com.ipsignal.dao;
 import java.util.Date;
 import java.util.List;
 
-import javax.ejb.Local;
-
 import com.ipsignal.entity.impl.UserEntity;
 
 /**
@@ -30,7 +28,6 @@ import com.ipsignal.entity.impl.UserEntity;
  * @see DAO
  * @see com.ipsignal.entity.impl.UserEntity
  */
-@Local(UserDAO.class)
 public interface UserDAO extends DAO<UserEntity> {
 	
 	/**

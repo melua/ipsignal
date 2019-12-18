@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import com.ipsignal.Config;
 import com.ipsignal.dao.WhoisDAO;
@@ -18,24 +18,20 @@ import com.ipsignal.whois.WhoisManager;
 import lombok.extern.java.Log;
 
 @Log
-@Stateless
+@ApplicationScoped
 public class RunWhoisJobImpl implements RunWhoisJob {
 	
 	private static final int HEXID_LENGTH = 16;
 
-	@EJB
-	private WhoisDAO dao;
-	@EJB
-	private WhoisManager manager;
+	WhoisDAO dao;
+	WhoisManager manager;
+	Config config;
 
-	public RunWhoisJobImpl() {
-		// For injection
-	}
-
-	protected RunWhoisJobImpl(WhoisDAO dao, WhoisManager manager) {
-		// For tests
+	@Inject
+	public RunWhoisJobImpl(WhoisDAO dao, WhoisManager manager, Config config) {
 		this.dao = dao;
 		this.manager = manager;
+		this.config = config;
 	}
 
 	@Override
@@ -47,7 +43,7 @@ public class RunWhoisJobImpl implements RunWhoisJob {
 			LOGGER.log(Level.FINE, "Job [{0}] found {1} whois to process", new Object[] { hexid, entities.size() });
 		}
 
-		if (!Config.DISABLE_JOBS && !entities.isEmpty()) {
+		if (!config.isDisableJobs() && !entities.isEmpty()) {
 
 			long start = Calendar.getInstance().getTimeInMillis();
 

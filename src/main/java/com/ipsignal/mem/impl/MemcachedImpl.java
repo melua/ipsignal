@@ -20,7 +20,8 @@ package com.ipsignal.mem.impl;
 import java.net.InetSocketAddress;
 import java.util.logging.Level;
 
-import javax.ejb.Stateful;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import com.ipsignal.Config;
 import com.ipsignal.mem.Memcached;
@@ -30,20 +31,24 @@ import net.spy.memcached.MemcachedClient;
 import net.spy.memcached.transcoders.SerializingTranscoder;
 
 @Log
-@Stateful
+@ApplicationScoped
 public class MemcachedImpl implements Memcached {
+	
+	Config config;
 
-	private static final String KEYBASE = Config.SERVICE_URL.getHost().concat("/");
+	private String KEYBASE = config.getServiceUrl().getHost().concat("/");
 
 	private MemcachedClient client;
 	private SerializingTranscoder trans;
 
-	public MemcachedImpl() {
+	@Inject
+	public MemcachedImpl(Config config) {
+		this.config = config;
 		trans = new SerializingTranscoder();
 		trans.setCompressionThreshold(Integer.MAX_VALUE);
-		if (Config.MEMC_TIME != 0) {
+		if (config.getMemcTime() != 0) {
 			try {
-				client = new MemcachedClient(new InetSocketAddress(Config.MEMC_HOST, Config.MEMC_PORT));
+				client = new MemcachedClient(new InetSocketAddress(config.getMemcHost(), config.getMemcPort()));
 			} catch (Exception ex) {
 				LOGGER.log(Level.SEVERE, "Error with Memcached: {0}", ex.getMessage());
 			}
@@ -52,7 +57,7 @@ public class MemcachedImpl implements Memcached {
 
 	@Override
 	public void store(String key, String value) {
-		client.set(KEYBASE + key, Config.MEMC_TIME, value, trans);
+		client.set(KEYBASE + key, config.getMemcTime(), value, trans);
 	}
 
 	@Override

@@ -21,8 +21,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import com.ipsignal.Config;
 import com.ipsignal.dao.UserDAO;
@@ -34,18 +34,20 @@ import com.ipsignal.tool.IdFactory;
 import lombok.extern.java.Log;
 
 @Log
-@Stateless
+@ApplicationScoped
 public class NotifyPremiumJobImpl implements NotifyPremiumJob {
 
 	private static final int HEXID_LENGTH = 16;
 
-	@EJB
-	private UserDAO users;
-	@EJB
-	private MailManager mailer;
-
-	public NotifyPremiumJobImpl() {
-		// For injection
+	UserDAO users;
+	MailManager mailer;
+	Config config;
+	
+	@Inject
+	public NotifyPremiumJobImpl(UserDAO users, MailManager mailer, Config config) {
+		this.users = users;
+		this.mailer = mailer;
+		this.config = config;
 	}
 
 	@Override
@@ -60,7 +62,7 @@ public class NotifyPremiumJobImpl implements NotifyPremiumJob {
 			LOGGER.log(Level.FINE, "Job [{0}] found {1} premiums to notify about expiration", new Object[] { hexid, entities.size() });
 		}
 
-		if (!Config.DISABLE_JOBS && !entities.isEmpty()) {
+		if (!config.isDisableJobs() && !entities.isEmpty()) {
 			long start = Calendar.getInstance().getTimeInMillis();
 
 			for (UserEntity user : entities) {

@@ -19,8 +19,8 @@ package com.ipsignal.resource.impl;
 
 import java.util.Date;
 
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -40,53 +40,36 @@ import com.ipsignal.entity.impl.UserEntity;
 import com.ipsignal.entity.impl.WhoisEntity;
 import com.ipsignal.file.FileManager;
 import com.ipsignal.mail.MailManager;
-import com.ipsignal.mapper.LogMapper;
 import com.ipsignal.mapper.SignalMapper;
-import com.ipsignal.mem.Memcached;
 import com.ipsignal.resource.SignalResource;
 import com.ipsignal.tool.DomainParser;
 import com.ipsignal.tool.TemplateBuilder;
 
-@Stateless
+@ApplicationScoped
 public class SignalResourceImpl implements SignalResource {
 
-	@EJB
-	private SignalMapper mapper;
-	@EJB
-	private LogMapper logmap;
-	@EJB
-	private SignalDAO dao;
-	@EJB
-	private WhoisDAO wdao;
-	@EJB
-	private UserDAO user;
-	@EJB
-	private LogDAO log;
-	@EJB
-	private MailManager mailer;
-	@EJB
-	private Automate automate;
-	@EJB
-	private Memcached mem;
-	@EJB
-	private FileManager filer;
+	SignalMapper mapper;
+	SignalDAO dao;
+	WhoisDAO wdao;
+	UserDAO user;
+	LogDAO log;
+	MailManager mailer;
+	Automate automate;
+	FileManager filer;
+	Config config;
 
-	public SignalResourceImpl() {
-		// For injection
-	}
-
-	protected SignalResourceImpl(SignalMapper mapper, LogMapper logmap, SignalDAO dao, WhoisDAO wdao, UserDAO user, LogDAO log, MailManager mailer, Automate automate, Memcached mem, FileManager filer) {
-		// For tests
+	@Inject
+	public SignalResourceImpl(SignalMapper mapper, SignalDAO dao, WhoisDAO wdao, UserDAO user,
+			LogDAO log, MailManager mailer, Automate automate, FileManager filer, Config config) {
 		this.mapper = mapper;
-		this.logmap = logmap;
 		this.dao = dao;
 		this.wdao = wdao;
 		this.user = user;
 		this.log = log;
 		this.mailer = mailer;
 		this.automate = automate;
-		this.mem = mem;
 		this.filer = filer;
+		this.config = config;
 	}
 
 	@Override
@@ -218,7 +201,7 @@ public class SignalResourceImpl implements SignalResource {
 		}
 		
 		// Is read only
-		if (Config.READ_ONLY.contains(entity.getId())) {
+		if (config.getReadOnlyIds().contains(entity.getId())) {
 			return Response.status(Status.BAD_REQUEST).entity(GenericDTO.OBJECTREADONLY.format(id)).build();
 		}
 
@@ -292,7 +275,7 @@ public class SignalResourceImpl implements SignalResource {
 		}
 
 		// Is read only
-		if (Config.READ_ONLY.contains(entity.getId())) {
+		if (config.getReadOnlyIds().contains(entity.getId())) {
 			return Response.status(Status.BAD_REQUEST).entity(GenericDTO.OBJECTREADONLY.format(id)).build();
 		}
 
@@ -332,7 +315,7 @@ public class SignalResourceImpl implements SignalResource {
 		}
 
 		// Is read only
-		if (Config.READ_ONLY.contains(entity.getId())) {
+		if (config.getReadOnlyIds().contains(entity.getId())) {
 			return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(GenericDTO.OBJECTREADONLY.format(id)).build();
 		}
 
@@ -353,7 +336,7 @@ public class SignalResourceImpl implements SignalResource {
 		dao.update(entity);
 
 		// Build response
-		TemplateBuilder body = new TemplateBuilder(Config.HTML_UNSUBSCRIBE_NOTIFICATION);
+		TemplateBuilder body = new TemplateBuilder(config.getUnsubscribeNotificationHtml(), config);
 		body.formatHtml(entity.getId(), entity.getId());
 
 		// Send response
@@ -371,7 +354,7 @@ public class SignalResourceImpl implements SignalResource {
 		}
 
 		// Is read only
-		if (Config.READ_ONLY.contains(entity.getId())) {
+		if (config.getReadOnlyIds().contains(entity.getId())) {
 			return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(GenericDTO.OBJECTREADONLY.format(id)).build();
 		}
 
@@ -396,7 +379,7 @@ public class SignalResourceImpl implements SignalResource {
 		dao.update(entity);
 
 		// Build response
-		TemplateBuilder body = new TemplateBuilder(Config.HTML_UNSUBSCRIBE_CERTIFICATE);
+		TemplateBuilder body = new TemplateBuilder(config.getUnsubscribeCertificateHtml(), config);
 		body.formatHtml(entity.getId(), backup.getId());
 
 		// Send response

@@ -20,6 +20,7 @@ import java.io.IOException;
  */
 
 import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,10 +29,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
-import org.apache.commons.lang3.time.FastDateFormat;
 import org.melua.MiniTLV;
 
 import com.ipsignal.dto.impl.LogDTO;
@@ -47,24 +47,19 @@ import com.ipsignal.mapper.WhoisMapper;
 import lombok.extern.java.Log;
 
 @Log
-@Stateless
+@ApplicationScoped
 public class SignalMapperImpl implements SignalMapper {
 	
-	private static final Format FORMATTER = FastDateFormat.getInstance("yyyy-MM-dd");
+	private static final Format FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
 	private static final int BUFFER_SIZE = 4096;
 
-	@EJB
 	LogMapper mapper;
-	@EJB
 	WhoisMapper wmapper;
 
-	public SignalMapperImpl() {
-		// For injection
-	}
-
-	protected SignalMapperImpl(LogMapper mapper) {
-		// For tests
+	@Inject
+	public SignalMapperImpl(LogMapper mapper, WhoisMapper wmapper) {
 		this.mapper = mapper;
+		this.wmapper = wmapper;
 	}
 	
 	@Override

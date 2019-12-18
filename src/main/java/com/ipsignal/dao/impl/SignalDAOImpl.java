@@ -20,7 +20,7 @@ package com.ipsignal.dao.impl;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.ejb.Stateless;
+import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
@@ -29,13 +29,13 @@ import javax.persistence.TypedQuery;
 import com.ipsignal.dao.SignalDAO;
 import com.ipsignal.entity.impl.SignalEntity;
 
-@Stateless
+@ApplicationScoped
 public class SignalDAOImpl implements SignalDAO {
 
 	private static final int EXPIRATION_DAYS = 15;
 
     @PersistenceContext(unitName = "ipsignal-unit", type = PersistenceContextType.TRANSACTION)
-    private EntityManager entityManager;
+    EntityManager entityManager;
 
     @Override
 	public void add(final SignalEntity entity) {

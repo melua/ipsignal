@@ -1,5 +1,7 @@
 package com.ipsignal.mock.mapper;
 
+import com.ipsignal.Config;
+
 /*
  * Copyright (C) 2017 Kevin Guignard
  *
@@ -19,11 +21,12 @@ package com.ipsignal.mock.mapper;
 
 import com.ipsignal.mapper.impl.LogMapperImpl;
 import com.ipsignal.mapper.impl.SignalMapperImpl;
+import com.ipsignal.mapper.impl.WhoisMapperImpl;
 
 public class SignalMapperMock extends SignalMapperImpl {
 	
-	public SignalMapperMock() {
-		super(new LogMapperImpl());
+	public SignalMapperMock(Config config) {
+		super(new LogMapperImpl(config), new WhoisMapperImpl());
 	}
 
 }

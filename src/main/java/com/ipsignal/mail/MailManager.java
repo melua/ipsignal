@@ -17,13 +17,10 @@ package com.ipsignal.mail;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import javax.ejb.Local;
-
 import com.ipsignal.entity.impl.LogEntity;
 import com.ipsignal.entity.impl.SignalEntity;
 import com.ipsignal.entity.impl.UserEntity;
 
-@Local(MailManager.class)
 public interface MailManager {
 
 	/**

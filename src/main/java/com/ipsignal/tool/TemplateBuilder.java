@@ -32,22 +32,24 @@ import lombok.extern.java.Log;
 
 @Log
 public class TemplateBuilder {
-
+	
 	private static final String LINK_SEPARATOR = "/";
 	public static final String BEGIN_TAG = "{";
 	public static final String CLOSE_TAG = "}";
 	public static final String UNSET_TAG = "(n/a)";
 
 	private String value;
+	private Config config;
 
 	/**
 	 * Create a new TemplateBuilder
 	 * initialized with the given template
 	 * @param template
 	 */
-	public TemplateBuilder(String template) {
-		value = template;
-		formatBrand(Config.BRAND_NAME);
+	public TemplateBuilder(String template, Config config) {
+		this.value = template;
+		this.config = config;
+		formatBrand(config.getBrandName());
 	}
 
 	/**
@@ -103,7 +105,7 @@ public class TemplateBuilder {
 			link.append(LINK_SEPARATOR);
 			link.append(val);
 		}
-		replace("link", Config.SERVICE_URL + link.toString());
+		replace("link", config.getServiceUrl() + link.toString());
 	}
 
 	/**
@@ -129,7 +131,7 @@ public class TemplateBuilder {
 	 */
 	public void formatHtml(String id, String cancel) {
 		replace("id", id);
-		replace("link", Config.SERVICE_URL + LINK_SEPARATOR + cancel);
+		replace("link", config.getServiceUrl() + LINK_SEPARATOR + cancel);
 	}
 
 	/**

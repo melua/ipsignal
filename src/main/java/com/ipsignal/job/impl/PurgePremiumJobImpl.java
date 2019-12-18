@@ -21,32 +21,31 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import com.ipsignal.Config;
 import com.ipsignal.dao.UserDAO;
 import com.ipsignal.entity.impl.SignalEntity;
 import com.ipsignal.entity.impl.UserEntity;
 import com.ipsignal.job.PurgePremiumJob;
-import com.ipsignal.mail.MailManager;
 import com.ipsignal.tool.IdFactory;
 
 import lombok.extern.java.Log;
 
 @Log
-@Stateless
+@ApplicationScoped
 public class PurgePremiumJobImpl implements PurgePremiumJob {
 
 	private static final int HEXID_LENGTH = 16;
 
-	@EJB
-	private UserDAO users;
-	@EJB
-	private MailManager mailer;
-
-	public PurgePremiumJobImpl() {
-		// For injection
+	UserDAO users;
+	Config config;
+	
+	@Inject
+	public PurgePremiumJobImpl(UserDAO users, Config config) {
+		this.users = users;
+		this.config = config;
 	}
 
 	@Override
@@ -58,7 +57,7 @@ public class PurgePremiumJobImpl implements PurgePremiumJob {
 			LOGGER.log(Level.FINE, "Job [{0}] found {1} premiums to downgrade", new Object[] { hexid, entities.size() });
 		}
 
-		if (!Config.DISABLE_PURGES && !entities.isEmpty()) {
+		if (!config.isDisablePurges() && !entities.isEmpty()) {
 			long start = Calendar.getInstance().getTimeInMillis();
 
 			for (UserEntity entity : entities) {

@@ -1,5 +1,7 @@
 package com.ipsignal.dao.impl;
 
+import javax.enterprise.context.ApplicationScoped;
+
 /*
  * Copyright (C) 2017 Kevin Guignard
  *
@@ -17,7 +19,6 @@ package com.ipsignal.dao.impl;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
@@ -25,11 +26,11 @@ import javax.persistence.PersistenceContextType;
 import com.ipsignal.dao.LogDAO;
 import com.ipsignal.entity.impl.LogEntity;
 
-@Stateless
+@ApplicationScoped
 public class LogDAOImpl implements LogDAO {
 	
     @PersistenceContext(unitName = "ipsignal-unit", type = PersistenceContextType.TRANSACTION)
-    private EntityManager entityManager;
+    EntityManager entityManager;
 
     @Override
 	public void add(final LogEntity entity) {

@@ -1,7 +1,5 @@
 package com.ipsignal.mem;
 
-import javax.ejb.Local;
-
 /*
  * Copyright (C) 2017 Kevin Guignard
  *
@@ -19,7 +17,6 @@ import javax.ejb.Local;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-@Local(Memcached.class)
 public interface Memcached {
 
 	/**

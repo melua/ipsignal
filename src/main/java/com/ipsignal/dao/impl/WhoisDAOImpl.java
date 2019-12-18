@@ -3,6 +3,8 @@ package com.ipsignal.dao.impl;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.enterprise.context.ApplicationScoped;
+
 /*
  * Copyright (C) 2017 Kevin Guignard
  *
@@ -20,7 +22,6 @@ import java.util.List;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
@@ -29,14 +30,14 @@ import javax.persistence.TypedQuery;
 import com.ipsignal.dao.WhoisDAO;
 import com.ipsignal.entity.impl.WhoisEntity;
 
-@Stateless
+@ApplicationScoped
 public class WhoisDAOImpl implements WhoisDAO {
 	
 	private static final int EXPIRES_SOON_DAYS = 180;
 	private static final int ACCESS_DELAY_DAYS = 31;
 	
 	@PersistenceContext(unitName = "ipsignal-unit", type = PersistenceContextType.TRANSACTION)
-    private EntityManager entityManager;
+    EntityManager entityManager;
 
     @Override
 	public void add(final WhoisEntity entity) {

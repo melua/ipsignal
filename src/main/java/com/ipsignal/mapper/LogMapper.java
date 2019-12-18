@@ -17,12 +17,9 @@ package com.ipsignal.mapper;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import javax.ejb.Local;
-
 import com.ipsignal.dto.impl.LogDTO;
 import com.ipsignal.entity.impl.LogEntity;
 
-@Local(LogMapper.class)
 public interface LogMapper extends Mapper<LogEntity, LogDTO> {
 	
 }

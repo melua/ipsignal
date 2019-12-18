@@ -17,18 +17,10 @@ package com.ipsignal.mail.impl;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
-import java.util.Properties;
 import java.util.logging.Level;
 
-import javax.ejb.Stateless;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import com.ipsignal.Config;
 import com.ipsignal.entity.impl.LogEntity;
@@ -37,43 +29,54 @@ import com.ipsignal.entity.impl.UserEntity;
 import com.ipsignal.mail.MailManager;
 import com.ipsignal.tool.TemplateBuilder;
 
+import io.quarkus.mailer.Mail;
+import io.quarkus.mailer.ReactiveMailer;
 import lombok.extern.java.Log;
 
 @Log
-@Stateless
+@ApplicationScoped
 public class MailManagerImpl implements MailManager {
 
 	public static final String NOTIFY_UNSUBSCRIBE_PATH = "/unsub/notif/";
 	public static final String CERTIFICATE_UNSUBSCRIBE_PATH = "/unsub/certif/";
+	
+	ReactiveMailer mailer;
+	Config config;
+	
+	@Inject
+	public MailManagerImpl(ReactiveMailer mailer, Config config) {
+		this.mailer = mailer;
+		this.config = config;
+	}
 
 	@Override
 	public Boolean sendSignalCreation(final SignalEntity entity) {
-		TemplateBuilder body = new TemplateBuilder(Config.MAIL_CRUD_CREATE);
+		TemplateBuilder body = new TemplateBuilder(config.getCrudCreateContent(), config);
 		body.formatSignal(entity);
 		body.formatLink(entity.getId());
-		return send("Confirm your email address.", body.toString(), Config.DONOTREPLY, entity.getUser().getEmail(), null);
+		return send("Confirm your email address.", body.toString(), config.getNoReplyMail(), entity.getUser().getEmail(), null);
 	}
 	
 	@Override
 	public Boolean sendSignalDeletion(SignalEntity entity) {
-		TemplateBuilder body = new TemplateBuilder(Config.MAIL_CRUD_DELETE);
+		TemplateBuilder body = new TemplateBuilder(config.getCrudeDeleteContent(), config);
 		body.formatSignal(entity);
 		body.formatLink(entity.getId());
-		return send("Beacon deleted.", body.toString(), Config.DONOTREPLY, entity.getUser().getEmail(), null);
+		return send("Beacon deleted.", body.toString(), config.getNoReplyMail(), entity.getUser().getEmail(), null);
 	}
 
 	@Override
 	public Boolean sendSignalModification(final SignalEntity entity, final SignalEntity backup) {
-		TemplateBuilder body = new TemplateBuilder(Config.MAIL_CRUD_UPDATE);
+		TemplateBuilder body = new TemplateBuilder(config.getCrudUpdateContent(), config);
 		body.formatSignal(entity);
 		body.formatLink(backup.getId());
-		return send("Beacon modified.", body.toString(), Config.DONOTREPLY, entity.getUser().getEmail(), null);
+		return send("Beacon modified.", body.toString(), config.getNoReplyMail(), entity.getUser().getEmail(), null);
 	}
 
 	@Override
 	public void sendSignalNotification(final SignalEntity entity, final LogEntity log) {
-		String unsubscribe = Config.SERVICE_URL + NOTIFY_UNSUBSCRIBE_PATH + entity.getId();
-		TemplateBuilder body = new TemplateBuilder(Config.MAIL_ALERT_NOTIFICATION);
+		String unsubscribe = config.getServiceUrl() + NOTIFY_UNSUBSCRIBE_PATH + entity.getId();
+		TemplateBuilder body = new TemplateBuilder(config.getAlertNotificationContent(), config);
 		body.formatLog(log);
 		if (log.getSource() != null) {
 			body.formatLink(entity.getId(), log.getId());
@@ -81,32 +84,32 @@ public class MailManagerImpl implements MailManager {
 			body.formatLink(entity.getId());
 		}
 		body.formatUnsubscribe(unsubscribe);
-		send("Beacon alert: " + log.getDetail(), body.toString(), Config.ALERT, entity.getUser().getEmail(), unsubscribe);
+		send("Beacon alert: " + log.getDetail(), body.toString(), config.getAlertMail(), entity.getUser().getEmail(), unsubscribe);
 	}
 	
 	@Override
 	public void sendCertificateExpirationSoon(final SignalEntity entity, final LogEntity log) {
-		String unsubscribe = Config.SERVICE_URL + CERTIFICATE_UNSUBSCRIBE_PATH + entity.getId();
-		TemplateBuilder body = new TemplateBuilder(Config.MAIL_ALERT_CERTIFICATE);
+		String unsubscribe = config.getServiceUrl() + CERTIFICATE_UNSUBSCRIBE_PATH + entity.getId();
+		TemplateBuilder body = new TemplateBuilder(config.getAlertCertificateContent(), config);
 		body.formatDomain(entity.getUrl());
 		body.formatDays(log.getCertificate());
 		body.formatLink(entity.getId());
 		body.formatUnsubscribe(unsubscribe);
-		send("Your certificate expires in " + log.getCertificate() + " days.", body.toString(), Config.ALERT, entity.getUser().getEmail(), unsubscribe);
+		send("Your certificate expires in " + log.getCertificate() + " days.", body.toString(), config.getAlertMail(), entity.getUser().getEmail(), unsubscribe);
 	}
 
 	@Override
 	public void sendPremiumExpiration(final UserEntity entity, final Integer days) {
-		TemplateBuilder body = new TemplateBuilder(Config.MAIL_PREMIUM_EXPIRED);
+		TemplateBuilder body = new TemplateBuilder(config.getPremiumExpiredContent(), config);
 		body.formatDays(days);
-		send("Your premium expirated.", body.toString(), Config.PREMIUM, entity.getEmail(), null);
+		send("Your premium expirated.", body.toString(), config.getPremiumMail(), entity.getEmail(), null);
 	}
 
 	@Override
 	public void sendPremiumExpirateSoon(final UserEntity entity, final Integer days) {
-		TemplateBuilder body = new TemplateBuilder(Config.MAIL_PREMIUM_SOON);
+		TemplateBuilder body = new TemplateBuilder(config.getPremiumSoonContent(), config);
 		body.formatDays(days);
-		send("Your premium expires soon.", body.toString(), Config.PREMIUM, entity.getEmail(), null);
+		send("Your premium expires soon.", body.toString(), config.getPremiumMail(), entity.getEmail(), null);
 	}
 
 	/**
@@ -119,26 +122,17 @@ public class MailManagerImpl implements MailManager {
 	 * @return true if successful, false otherwise
 	 */
 	private Boolean send(final String title, final String body, final String sender, final String recipient, final String unsubscribe) {
-		final Properties properties = System.getProperties();
-		properties.setProperty("mail.smtp.host", Config.SMTP_HOST);
-		properties.setProperty("mail.smtp.port", String.valueOf(Config.SMTP_PORT));
-
-		final Session session = Session.getDefaultInstance(properties);
-		final MimeMessage message = new MimeMessage(session);
-
+		
 		try {
-			message.setFrom(new InternetAddress(sender, Config.BRAND_NAME, "UTF-8"));
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+			Mail mail = Mail.withText(recipient, title, body);
+			mail.setFrom(config.getBrandName() + "<" +  sender + ">");
 			if (unsubscribe != null) {
-				message.setHeader("List-Unsubscribe", "<" + unsubscribe + ">");
+				mail.addHeader("List-Unsubscribe", "<" + unsubscribe + ">");
 			}
-			message.setSubject(title, "UTF-8");
-			message.setContent(body, "text/plain; charset=utf-8");
-			message.setSentDate(new Date());
-			send(message);
+			send(mail);
 			LOGGER.log(Level.INFO, "{0} has sent a mail to {1}", new String[]{sender, recipient});
 			return true;
-		} catch (MessagingException | UnsupportedEncodingException ex) {
+		} catch (Exception ex) {
 			LOGGER.log(Level.SEVERE, "Error with message or encoding: {0}", ex.getMessage());
 			return false;
 		}
@@ -146,11 +140,10 @@ public class MailManagerImpl implements MailManager {
 
 	/**
 	 * Send the message to the mail server
-	 * @param message
-	 * @throws MessagingException
+	 * @param mail
 	 */
-	protected void send(final MimeMessage message) throws MessagingException {
-		Transport.send(message);
+	protected void send(final Mail mail) {
+		mailer.send(mail);
 	}
 
 }

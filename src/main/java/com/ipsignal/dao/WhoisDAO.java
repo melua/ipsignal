@@ -19,8 +19,6 @@ import java.util.List;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import javax.ejb.Local;
-
 import com.ipsignal.entity.impl.WhoisEntity;
 
 /**
@@ -29,7 +27,6 @@ import com.ipsignal.entity.impl.WhoisEntity;
  * @see DAO
  * @see com.ipsignal.entity.impl.WhoisEntity
  */
-@Local(WhoisDAO.class)
 public interface WhoisDAO extends DAO<WhoisEntity> {
 	
 	/**

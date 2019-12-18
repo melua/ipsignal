@@ -2,38 +2,29 @@ package com.ipsignal.test;
 
 import java.util.Date;
 
+import javax.inject.Inject;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-/*
- * Copyright (C) 2017 Kevin Guignard
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
+import com.ipsignal.Config;
 import com.ipsignal.dto.impl.SignalDTO;
 import com.ipsignal.entity.impl.SignalEntity;
 import com.ipsignal.entity.impl.UserEntity;
 import com.ipsignal.mapper.SignalMapper;
 import com.ipsignal.mock.mapper.SignalMapperMock;
 
+import io.quarkus.test.junit.QuarkusTest;
+
+@QuarkusTest
 public class SignalMapperTest {
+	
+	@Inject
+	static Config config;
 	
 	private static SignalMapper mapper;
 	private String browser;
@@ -48,12 +39,12 @@ public class SignalMapperTest {
 	private String url;
 	private Date premium;
 
-	@BeforeClass
+	@BeforeAll
 	public static void init() throws Exception {
-		mapper = new SignalMapperMock();
+		mapper = new SignalMapperMock(config);
 	}
 	
-	@Before	
+	@BeforeEach
 	public void setUp() {
 		browser = RandomStringUtils.random(60);
 		certificate = RandomUtils.nextInt();
@@ -73,20 +64,20 @@ public class SignalMapperTest {
 		SignalDTO dto = new SignalDTO(url, certificate, latency, path, expected, email, browser, notify, interval, retention, null, null, null);
 		SignalEntity entity = mapper.dtoToEntity(dto, null);
 		
-		Assert.assertNotNull(entity);
-		Assert.assertNotNull(entity.getId());
+		Assertions.assertNotNull(entity);
+		Assertions.assertNotNull(entity.getId());
 		
-		Assert.assertEquals(dto.getUrl(), entity.getUrl());
-		Assert.assertEquals(dto.getCertificate(), entity.getCertificate());
-		Assert.assertEquals(dto.getLatency(), entity.getLatency());
-		Assert.assertEquals(dto.getPath(), entity.getPath());
-		Assert.assertEquals(dto.getExpected(), entity.getExpected());
-		Assert.assertEquals(dto.getEmail(), entity.getUser().getEmail());
-		Assert.assertEquals(dto.getBrowser(), entity.getBrowser());
-		Assert.assertEquals(dto.getPremium(), entity.getUser().getPremium());
-		Assert.assertEquals(dto.getNotify(), entity.getNotify());
-		Assert.assertEquals(dto.getInterval(), entity.getInterval());
-		Assert.assertEquals(dto.getRetention(), entity.getRetention());
+		Assertions.assertEquals(dto.getUrl(), entity.getUrl());
+		Assertions.assertEquals(dto.getCertificate(), entity.getCertificate());
+		Assertions.assertEquals(dto.getLatency(), entity.getLatency());
+		Assertions.assertEquals(dto.getPath(), entity.getPath());
+		Assertions.assertEquals(dto.getExpected(), entity.getExpected());
+		Assertions.assertEquals(dto.getEmail(), entity.getUser().getEmail());
+		Assertions.assertEquals(dto.getBrowser(), entity.getBrowser());
+		Assertions.assertEquals(dto.getPremium(), entity.getUser().getPremium());
+		Assertions.assertEquals(dto.getNotify(), entity.getNotify());
+		Assertions.assertEquals(dto.getInterval(), entity.getInterval());
+		Assertions.assertEquals(dto.getRetention(), entity.getRetention());
 	}
 	
 	@Test
@@ -98,18 +89,18 @@ public class SignalMapperTest {
 		
 		entity = mapper.dtoToEntity(dto, entity);
 		
-		Assert.assertNotNull(entity);
-		Assert.assertNotNull(entity.getUser().getPremium());
-		Assert.assertNotEquals(dto.getUrl(), entity.getUrl());
-		Assert.assertNotEquals(dto.getEmail(), entity.getUser().getEmail());
-		Assert.assertNotEquals(dto.getNotify(), entity.getNotify());
-		Assert.assertEquals(dto.getCertificate(), entity.getCertificate());
-		Assert.assertEquals(dto.getLatency(), entity.getLatency());
-		Assert.assertEquals(dto.getPath(), entity.getPath());
-		Assert.assertEquals(dto.getExpected(), entity.getExpected());
-		Assert.assertEquals(dto.getBrowser(), entity.getBrowser());
-		Assert.assertEquals(dto.getInterval(), entity.getInterval());
-		Assert.assertEquals(dto.getRetention(), entity.getRetention());
+		Assertions.assertNotNull(entity);
+		Assertions.assertNotNull(entity.getUser().getPremium());
+		Assertions.assertNotEquals(dto.getUrl(), entity.getUrl());
+		Assertions.assertNotEquals(dto.getEmail(), entity.getUser().getEmail());
+		Assertions.assertNotEquals(dto.getNotify(), entity.getNotify());
+		Assertions.assertEquals(dto.getCertificate(), entity.getCertificate());
+		Assertions.assertEquals(dto.getLatency(), entity.getLatency());
+		Assertions.assertEquals(dto.getPath(), entity.getPath());
+		Assertions.assertEquals(dto.getExpected(), entity.getExpected());
+		Assertions.assertEquals(dto.getBrowser(), entity.getBrowser());
+		Assertions.assertEquals(dto.getInterval(), entity.getInterval());
+		Assertions.assertEquals(dto.getRetention(), entity.getRetention());
 	}
 	
 	@Test
@@ -119,18 +110,18 @@ public class SignalMapperTest {
 		
 		SignalDTO dto = mapper.entityToDto(entity);
 		
-		Assert.assertNotNull(dto);
-		Assert.assertNotNull(dto.getPremium());
-		Assert.assertEquals(entity.getUrl(), dto.getUrl());
-		Assert.assertEquals(entity.getCertificate(), dto.getCertificate());
-		Assert.assertEquals(entity.getLatency(), dto.getLatency());
-		Assert.assertEquals(entity.getPath(), dto.getPath());
-		Assert.assertEquals(entity.getExpected(), dto.getExpected());
-		Assert.assertEquals(entity.getUser().getEmail(), dto.getEmail());
-		Assert.assertEquals(entity.getBrowser(), dto.getBrowser());
-		Assert.assertEquals(entity.getNotify(), dto.getNotify());
-		Assert.assertEquals(entity.getInterval(), dto.getInterval());
-		Assert.assertEquals(entity.getRetention(), dto.getRetention());
+		Assertions.assertNotNull(dto);
+		Assertions.assertNotNull(dto.getPremium());
+		Assertions.assertEquals(entity.getUrl(), dto.getUrl());
+		Assertions.assertEquals(entity.getCertificate(), dto.getCertificate());
+		Assertions.assertEquals(entity.getLatency(), dto.getLatency());
+		Assertions.assertEquals(entity.getPath(), dto.getPath());
+		Assertions.assertEquals(entity.getExpected(), dto.getExpected());
+		Assertions.assertEquals(entity.getUser().getEmail(), dto.getEmail());
+		Assertions.assertEquals(entity.getBrowser(), dto.getBrowser());
+		Assertions.assertEquals(entity.getNotify(), dto.getNotify());
+		Assertions.assertEquals(entity.getInterval(), dto.getInterval());
+		Assertions.assertEquals(entity.getRetention(), dto.getRetention());
 	}
 	
 	@Test
@@ -140,19 +131,19 @@ public class SignalMapperTest {
 		
 		SignalEntity backup = mapper.backupEntity(entity);
 		
-		Assert.assertNotNull(backup);
-		Assert.assertNotEquals(entity.getId(), backup.getId());
-		Assert.assertEquals(entity.getUrl(), backup.getUrl());
-		Assert.assertEquals(entity.getCertificate(), backup.getCertificate());
-		Assert.assertEquals(entity.getLatency(), backup.getLatency());
-		Assert.assertEquals(entity.getPath(), backup.getPath());
-		Assert.assertEquals(entity.getExpected(), backup.getExpected());
-		Assert.assertEquals(entity.getUser().getEmail(), backup.getUser().getEmail());
-		Assert.assertEquals(entity.getBrowser(), backup.getBrowser());
-		Assert.assertEquals(entity.getUser().getPremium(), backup.getUser().getPremium());
-		Assert.assertEquals(entity.getNotify(), backup.getNotify());
-		Assert.assertEquals(entity.getInterval(), backup.getInterval());
-		Assert.assertEquals(entity.getRetention(), backup.getRetention());
+		Assertions.assertNotNull(backup);
+		Assertions.assertNotEquals(entity.getId(), backup.getId());
+		Assertions.assertEquals(entity.getUrl(), backup.getUrl());
+		Assertions.assertEquals(entity.getCertificate(), backup.getCertificate());
+		Assertions.assertEquals(entity.getLatency(), backup.getLatency());
+		Assertions.assertEquals(entity.getPath(), backup.getPath());
+		Assertions.assertEquals(entity.getExpected(), backup.getExpected());
+		Assertions.assertEquals(entity.getUser().getEmail(), backup.getUser().getEmail());
+		Assertions.assertEquals(entity.getBrowser(), backup.getBrowser());
+		Assertions.assertEquals(entity.getUser().getPremium(), backup.getUser().getPremium());
+		Assertions.assertEquals(entity.getNotify(), backup.getNotify());
+		Assertions.assertEquals(entity.getInterval(), backup.getInterval());
+		Assertions.assertEquals(entity.getRetention(), backup.getRetention());
 	}
 
 	@Test
@@ -164,19 +155,19 @@ public class SignalMapperTest {
 		
 		mapper.restoreEntity(child, parent);
 		
-		Assert.assertNotNull(parent);
-		Assert.assertNotEquals(child.getId(), parent.getId());
-		Assert.assertNotEquals(child.getUrl(), parent.getUrl());
-		Assert.assertNotEquals(child.getUser().getEmail(), parent.getUser().getEmail());
-		Assert.assertNotEquals(child.getUser().getPremium(), parent.getUser().getPremium());
-		Assert.assertNotEquals(child.getNotify(), parent.getNotify());
-		Assert.assertEquals(child.getCertificate(), parent.getCertificate());
-		Assert.assertEquals(child.getLatency(), parent.getLatency());
-		Assert.assertEquals(child.getPath(), parent.getPath());
-		Assert.assertEquals(child.getExpected(), parent.getExpected());
-		Assert.assertEquals(child.getBrowser(), parent.getBrowser());	
-		Assert.assertEquals(child.getInterval(), parent.getInterval());
-		Assert.assertEquals(child.getRetention(), parent.getRetention());
+		Assertions.assertNotNull(parent);
+		Assertions.assertNotEquals(child.getId(), parent.getId());
+		Assertions.assertNotEquals(child.getUrl(), parent.getUrl());
+		Assertions.assertNotEquals(child.getUser().getEmail(), parent.getUser().getEmail());
+		Assertions.assertNotEquals(child.getUser().getPremium(), parent.getUser().getPremium());
+		Assertions.assertNotEquals(child.getNotify(), parent.getNotify());
+		Assertions.assertEquals(child.getCertificate(), parent.getCertificate());
+		Assertions.assertEquals(child.getLatency(), parent.getLatency());
+		Assertions.assertEquals(child.getPath(), parent.getPath());
+		Assertions.assertEquals(child.getExpected(), parent.getExpected());
+		Assertions.assertEquals(child.getBrowser(), parent.getBrowser());	
+		Assertions.assertEquals(child.getInterval(), parent.getInterval());
+		Assertions.assertEquals(child.getRetention(), parent.getRetention());
 	}
 
 }

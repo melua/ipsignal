@@ -21,7 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.ejb.Stateless;
+import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
@@ -30,13 +30,13 @@ import javax.persistence.TypedQuery;
 import com.ipsignal.dao.UserDAO;
 import com.ipsignal.entity.impl.UserEntity;
 
-@Stateless
+@ApplicationScoped
 public class UserDAOImpl implements UserDAO {
 	
 	private static final int GRACETIME_DAYS = 14;
 
     @PersistenceContext(unitName = "ipsignal-unit", type = PersistenceContextType.TRANSACTION)
-    private EntityManager entityManager;
+    EntityManager entityManager;
 
     @Override
 	public void add(final UserEntity entity) {

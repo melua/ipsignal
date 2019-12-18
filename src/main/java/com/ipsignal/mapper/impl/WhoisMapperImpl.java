@@ -18,19 +18,18 @@ package com.ipsignal.mapper.impl;
  */
 
 import java.text.Format;
+import java.text.SimpleDateFormat;
 
-import javax.ejb.Stateless;
-
-import org.apache.commons.lang3.time.FastDateFormat;
+import javax.enterprise.context.ApplicationScoped;
 
 import com.ipsignal.dto.impl.WhoisDTO;
 import com.ipsignal.entity.impl.WhoisEntity;
 import com.ipsignal.mapper.WhoisMapper;
 
-@Stateless
+@ApplicationScoped
 public class WhoisMapperImpl implements WhoisMapper {
 	
-	private static final Format FORMATTER = FastDateFormat.getInstance("yyyy-MM-dd");
+	private static final Format FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
 
 	@Override
 	public WhoisDTO entityToDto(final WhoisEntity entity) {

@@ -17,9 +17,6 @@ package com.ipsignal.job;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import javax.ejb.Local;
-
-@Local(PurgePremiumJob.class)
 public interface PurgePremiumJob {
 	
 	/**

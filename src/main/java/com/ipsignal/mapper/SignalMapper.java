@@ -17,12 +17,9 @@ package com.ipsignal.mapper;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import javax.ejb.Local;
-
 import com.ipsignal.dto.impl.SignalDTO;
 import com.ipsignal.entity.impl.SignalEntity;
 
-@Local(SignalMapper.class)
 public interface SignalMapper extends Mapper<SignalEntity, SignalDTO> {
 	
 	/**

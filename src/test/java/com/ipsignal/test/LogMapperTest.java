@@ -1,30 +1,14 @@
 package com.ipsignal.test;
 
+import javax.inject.Inject;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
-
-/*
- * Copyright (C) 2017 Kevin Guignard
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published
- * by the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.ipsignal.Config;
 import com.ipsignal.dto.impl.LogDTO;
@@ -34,7 +18,13 @@ import com.ipsignal.entity.impl.UserEntity;
 import com.ipsignal.mapper.LogMapper;
 import com.ipsignal.mapper.impl.LogMapperImpl;
 
+import io.quarkus.test.junit.QuarkusTest;
+
+@QuarkusTest
 public class LogMapperTest {
+	
+	@Inject
+	static Config config;
 	
 	private static LogMapper mapper;
 	private String access;
@@ -47,12 +37,12 @@ public class LogMapperTest {
 	private String source;
 	private String arg;
 
-	@BeforeClass
+	@BeforeAll
 	public static void init() throws Exception {
-		mapper = new LogMapperImpl();
+		mapper = new LogMapperImpl(config);
 	}
 	
-	@Before	
+	@BeforeEach
 	public void setUp() {
 		access = RandomStringUtils.random(60);
 		latency = RandomUtils.nextInt();
@@ -73,15 +63,15 @@ public class LogMapperTest {
 		
 		LogDTO dto = mapper.entityToDto(entity);
 		
-		Assert.assertNotNull(dto);
-		Assert.assertEquals(FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss").format(entity.getAccess()), dto.getAccess());
-		Assert.assertEquals(entity.getLatency(), dto.getLatency());
-		Assert.assertEquals(entity.getCertificate(), dto.getCertificate());
-		Assert.assertEquals(entity.getBrowser(), dto.getBrowser());
-		Assert.assertEquals(entity.getHttp(), dto.getHttp());
-		Assert.assertEquals(entity.getObtained(), dto.getObtained());
-		Assert.assertEquals(String.format(LogEntity.EQUALS.getDetail(), arg), dto.getDetail());
-		Assert.assertEquals(Config.SERVICE_URL + "/" + signal.getId() + "/" + entity.getId(), dto.getSource());
+		Assertions.assertNotNull(dto);
+		Assertions.assertEquals(FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss").format(entity.getAccess()), dto.getAccess());
+		Assertions.assertEquals(entity.getLatency(), dto.getLatency());
+		Assertions.assertEquals(entity.getCertificate(), dto.getCertificate());
+		Assertions.assertEquals(entity.getBrowser(), dto.getBrowser());
+		Assertions.assertEquals(entity.getHttp(), dto.getHttp());
+		Assertions.assertEquals(entity.getObtained(), dto.getObtained());
+		Assertions.assertEquals(String.format(LogEntity.EQUALS.getDetail(), arg), dto.getDetail());
+		Assertions.assertEquals(config.getServiceUrl() + "/" + signal.getId() + "/" + entity.getId(), dto.getSource());
 	}
 
 	@Test
@@ -91,7 +81,7 @@ public class LogMapperTest {
 		
 		entity = mapper.dtoToEntity(dto, entity);
 		
-		Assert.assertNull(entity);
+		Assertions.assertNull(entity);
 	}
 	
 }
